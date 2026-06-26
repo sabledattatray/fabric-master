@@ -76,5 +76,96 @@ export const ARTICLES: Article[] = [
     description: "A high-level guide on transitioning your legacy data estate into the Fabric ecosystem.",
     category: "Migrations",
     content: "## The Evolution of Analytics\n\nMicrosoft Fabric is the next evolution of Azure Synapse Analytics. Migrating requires understanding the paradigm shift to OneLake.\n\n### Dedicated SQL Pools vs. Fabric Warehouse\n\nFabric Warehouses separate compute and storage natively. You no longer need to scale DWUs. Compute scales automatically based on your Fabric Capacity.\n\n### Synapse Spark vs. Fabric Spark\n\nFabric Spark starts up significantly faster (often in seconds via 'Starter Pools') compared to legacy Synapse Spark. This reduces the wait time and the associated idle CU burn.\n\nFabric Master can help you map your existing Synapse compute costs to the equivalent Fabric SKU."
+  },
+  {
+    id: "what-is-microsoft-fabric-capacity",
+    title: "What is Microsoft Fabric Capacity?",
+    description: "A comprehensive guide to understanding Fabric Capacity, how it works, and why it matters.",
+    category: "Guides",
+    content: "## Understanding Fabric Capacity\n\nMicrosoft Fabric Capacity is the underlying compute power that runs all your workloads—from Data Factory pipelines to Power BI reports. Instead of paying for individual services, you purchase a pool of compute resources."
+  },
+  {
+    id: "what-is-a-capacity-unit",
+    title: "What is a Capacity Unit (CU)?",
+    description: "Learn how Microsoft measures computing power in Fabric using Capacity Units.",
+    category: "Guides",
+    content: "## Capacity Units Explained\n\nA Capacity Unit (CU) is a measure of compute power in Microsoft Fabric. SKUs are named after their CU count (e.g., F64 has 64 CUs). Background jobs and interactive queries consume fractions of these units per second."
+  },
+  {
+    id: "what-is-throttling",
+    title: "What is Throttling?",
+    description: "How Fabric protects its infrastructure and what happens when you exceed your capacity.",
+    category: "Guides",
+    content: "## Throttling in Fabric\n\nThrottling occurs when your workloads demand more CUs than your capacity allows over a sustained period (after smoothing). Fabric will delay or reject operations until your capacity debt is cleared."
+  },
+  {
+    id: "how-reserved-capacity-works",
+    title: "How Reserved Capacity works",
+    description: "Maximize your ROI by committing to Microsoft Fabric Reserved Instances.",
+    category: "Guides",
+    content: "## Reserved Capacity\n\nBy committing to a 1-year term, you can save up to 41% compared to Pay-As-You-Go pricing. Reserved capacity is billed monthly but requires continuous usage to be cost-effective."
+  },
+  {
+    id: "payg-vs-reserved",
+    title: "PAYG vs Reserved",
+    description: "Which billing model is right for your organization? A detailed comparison.",
+    category: "Guides",
+    content: "## Pay-As-You-Go vs. Reserved\n\nPAYG offers ultimate flexibility—you can pause capacities to stop billing. Reserved Instances offer deep discounts but cannot be paused. Choose PAYG for variable workloads and Reserved for baseline steady-state usage."
+  },
+  {
+    id: "sku-selection-guide",
+    title: "SKU Selection Guide",
+    description: "How to choose the right Microsoft Fabric SKU for your specific workloads.",
+    category: "Guides",
+    content: "## Choosing Your SKU\n\nUse Fabric Master's Capacity Calculator to input your expected data volumes, user concurrency, and pipeline executions to receive a data-driven SKU recommendation."
+  },
+  {
+    id: "enterprise-sizing-guide",
+    title: "Enterprise Sizing Guide",
+    description: "Architecting Fabric capacities for large-scale enterprise deployments.",
+    category: "Guides",
+    content: "## Enterprise Sizing\n\nLarge enterprises often use multiple capacities (e.g., one F64 for production, one F8 for development) to isolate noisy neighbors and manage chargebacks effectively."
+  },
+  {
+    id: "common-mistakes",
+    title: "Common Mistakes",
+    description: "Avoid these expensive pitfalls when provisioning Microsoft Fabric.",
+    category: "Guides",
+    content: "## Avoid Overpaying\n\nCommon mistakes include over-provisioning 'just in case', failing to optimize DAX queries, and not leveraging auto-pause features during weekends."
+  },
+  {
+    id: "f2-vs-f4",
+    title: "F2 vs F4 Comparison",
+    description: "Entry-level SKUs compared. When to upgrade from F2 to F4.",
+    category: "Comparisons",
+    content: "## F2 vs F4\n\nThe F2 is strictly for small PoCs. Upgrading to F4 doubles your compute and memory limits, making it suitable for small team departmental analytics."
+  },
+  {
+    id: "f8-vs-f16",
+    title: "F8 vs F16 Comparison",
+    description: "Mid-tier SKUs compared. Handling increased concurrency and data volume.",
+    category: "Comparisons",
+    content: "## F8 vs F16\n\nF16 marks the transition to more serious data engineering capabilities, allowing for larger Spark clusters and better background job smoothing."
+  },
+  {
+    id: "f32-vs-f64",
+    title: "F32 vs F64 Comparison",
+    description: "The enterprise threshold. Why F64 is the most popular SKU.",
+    category: "Comparisons",
+    content: "## F32 vs F64\n\nF64 is the critical threshold. It unlocks Power BI Free user viewing (you don't need Pro licenses for viewers) and enables Copilot features. For many, F64 is the sweet spot."
+  },
+  {
+    id: "f64-vs-f128",
+    title: "F64 vs F128 Comparison",
+    description: "Scaling up. Handling massive enterprise data estates.",
+    category: "Comparisons",
+    content: "## F64 vs F128\n\nWhen your F64 starts hitting 100% utilization during peak hours, F128 provides the necessary headroom for thousands of concurrent users and massive ETL pipelines."
+  },
+  {
+    id: "f128-vs-f256",
+    title: "F128 vs F256 Comparison",
+    description: "Top-tier SKUs for massive, global data architectures.",
+    category: "Comparisons",
+    content: "## F128 vs F256\n\nReserved for the largest organizations. F256 provides immense compute power capable of processing petabytes of data with minimal latency."
   }
 ];

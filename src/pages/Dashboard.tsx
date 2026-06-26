@@ -4,7 +4,7 @@ import { EvaluationResponse } from '../types';
 import { Button } from '../components/ui/Button';
 import { 
   ArrowLeft, CheckCircle2, AlertTriangle, TrendingDown, Database, 
-  Download, Check, X, Info, Zap, Star, FileText 
+  Download, Check, X, Info, Zap, Star, FileText, Link, Linkedin, Twitter
 } from 'lucide-react';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { SEO } from '../components/SEO';
@@ -413,11 +413,11 @@ export function Dashboard() {
                 </p>
               </div>
 
-              {/* Export Report Cover */}
-              <div className="bg-[#161b22] text-[#c9d1d9] rounded-md p-6 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow border border-[#30363d] cursor-pointer print:hidden" onClick={handleExport}>
-                <div className="absolute -right-10 -top-10 w-32 h-32 bg-[#1f6feb] opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity"></div>
+              {/* Share & Export Report Cover */}
+              <div className="bg-[#161b22] text-[#c9d1d9] rounded-md p-6 shadow-sm relative overflow-hidden border border-[#30363d] print:hidden">
+                <div className="absolute -right-10 -top-10 w-32 h-32 bg-[#1f6feb] opacity-10 rounded-full blur-2xl transition-opacity"></div>
                 <h3 className="text-xs uppercase tracking-wider text-[#8b949e] font-semibold mb-4 flex items-center">
-                  <FileText className="w-4 h-4 mr-2" /> {t('Export Report')}
+                  <FileText className="w-4 h-4 mr-2" /> {t('Share & Export')}
                 </h3>
                 <div className="space-y-4 relative z-10">
                   <div>
@@ -434,22 +434,31 @@ export function Dashboard() {
                       <div className="text-xs text-[#8b949e] uppercase">{t('Est. Cost')}</div>
                       <div className="font-semibold text-[#c9d1d9]">${financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}/mo</div>
                     </div>
-                    <div>
-                      <div className="text-xs text-[#8b949e] uppercase">{t('Opt. Score')}</div>
-                      <div className="font-semibold text-[#3fb950]">{efficiencyScore}%</div>
-                    </div>
                   </div>
                   
-                  <div>
-                    <div className="text-xs text-[#8b949e] uppercase">{t('Prepared by')}</div>
-                    <div className="text-sm font-semibold flex items-center mt-1 text-[#c9d1d9]">
-                      <Database className="w-3 h-3 mr-1 text-[#58a6ff]" /> {t('Fabric Master Toolkit')}
+                  <div className="grid grid-cols-1 gap-2 pt-2">
+                    <Button variant="primary" className="w-full flex items-center justify-center gap-2" onClick={handleExport}>
+                      <Download className="w-4 h-4" /> {t('Download PDF')}
+                    </Button>
+                    <div className="grid grid-cols-3 gap-2 mt-2">
+                      <Button variant="outline" className="w-full text-xs flex justify-center py-2" onClick={() => {
+                        navigator.clipboard.writeText(window.location.href);
+                        alert(t("Link copied to clipboard!"));
+                      }}>
+                        <Link className="w-4 h-4" />
+                      </Button>
+                      <Button variant="outline" className="w-full text-xs flex justify-center py-2 text-[#0a66c2]" onClick={() => {
+                        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`, '_blank');
+                      }}>
+                        <Linkedin className="w-4 h-4" />
+                      </Button>
+                      <Button variant="outline" className="w-full text-xs flex justify-center py-2" onClick={() => {
+                        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent("Check out my Microsoft Fabric Capacity Plan on Fabric Master!")}`, '_blank');
+                      }}>
+                        <Twitter className="w-4 h-4" />
+                      </Button>
                     </div>
                   </div>
-                  
-                  <Button variant="primary" className="w-full mt-4" onClick={(e) => { e.stopPropagation(); handleExport(); }}>
-                    {t('Download PDF')}
-                  </Button>
                 </div>
               </div>
 

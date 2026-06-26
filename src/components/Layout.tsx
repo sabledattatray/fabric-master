@@ -15,11 +15,31 @@ export function Layout({ children }: LayoutProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { t } = useTranslation();
 
-  const navigation = [
-    { name: t('Home'), href: '/', icon: Home },
-    { name: t('Capacity Calculator'), href: '/wizard', icon: Calculator },
-    { name: t('Pricing Matrices'), href: '/pricing', icon: DollarSign },
-    { name: t('Documentation'), href: '/docs', icon: BookOpen },
+  const navigationGroups = [
+    {
+      title: t('Core Tools'),
+      items: [
+        { name: t('Home'), href: '/', icon: Home },
+        { name: t('Capacity Calculator'), href: '/wizard', icon: Calculator },
+        { name: t('Cost Calculator'), href: '/wizard', icon: DollarSign },
+      ]
+    },
+    {
+      title: t('Estimators'),
+      items: [
+        { name: t('Reserved Savings'), href: '/wizard', icon: DollarSign },
+        { name: t('Spark CU Estimator'), href: '/wizard', icon: Calculator },
+        { name: t('Power BI Capacity'), href: '/wizard', icon: Calculator },
+        { name: t('Pricing Matrices'), href: '/pricing', icon: DollarSign },
+      ]
+    },
+    {
+      title: t('Resources'),
+      items: [
+        { name: t('Documentation Hub'), href: '/docs', icon: BookOpen },
+        { name: t('F-SKU Comparisons'), href: '/docs', icon: BookOpen },
+      ]
+    }
   ];
 
   return (
@@ -114,29 +134,36 @@ export function Layout({ children }: LayoutProps) {
               <Search className="absolute right-2.5 top-2 w-4 h-4 text-[#8b949e]" />
             </div>
 
-            <nav className="space-y-1">
-              {navigation.map((item) => {
-                const isActive = location.pathname === item.href || (item.href !== '/' && location.pathname.startsWith(item.href));
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => {
-                      navigate(item.href);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
-                      isActive 
-                        ? 'bg-[#1f6feb]/10 text-[#58a6ff] font-semibold' 
-                        : 'text-[#c9d1d9] hover:bg-[#21262d] font-medium'
-                    }`}
-                  >
-                    <Icon className={`w-4 h-4 mr-3 ${isActive ? 'text-[#58a6ff]' : 'text-[#8b949e]'}`} />
-                    {item.name}
-                  </button>
-                );
-              })}
-            </nav>
+            <div className="space-y-6">
+              {navigationGroups.map((group, idx) => (
+                <div key={idx} className="space-y-1">
+                  <h3 className="px-3 text-xs font-semibold text-[#8b949e] uppercase tracking-wider mb-2">
+                    {group.title}
+                  </h3>
+                  {group.items.map((item) => {
+                    const isActive = location.pathname === item.href || (item.href !== '/' && location.pathname.startsWith(item.href));
+                    const Icon = item.icon;
+                    return (
+                      <button
+                        key={item.name}
+                        onClick={() => {
+                          navigate(item.href);
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className={`w-full flex items-center px-3 py-2 text-sm rounded-md transition-colors ${
+                          isActive 
+                            ? 'bg-[#1f6feb]/10 text-[#58a6ff] font-semibold' 
+                            : 'text-[#c9d1d9] hover:bg-[#21262d] font-medium'
+                        }`}
+                      >
+                        <Icon className={`w-4 h-4 mr-3 ${isActive ? 'text-[#58a6ff]' : 'text-[#8b949e]'}`} />
+                        {item.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
         </aside>
 

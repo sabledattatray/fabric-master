@@ -44,6 +44,7 @@ export function SEO({
     }
   };
 
+  const currentUrl = url !== 'https://fabric-master.vercel.app' ? url : (typeof window !== 'undefined' ? window.location.href : url);
   const finalSchema = schema || defaultSchema;
 
   return (
@@ -53,11 +54,11 @@ export function SEO({
       <meta name="title" content={siteTitle} />
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href={currentUrl} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={article ? 'article' : type} />
-      <meta property="og:url" content={url} />
+      <meta property="og:url" content={currentUrl} />
       <meta property="og:title" content={siteTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
@@ -65,7 +66,7 @@ export function SEO({
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={url} />
+      <meta property="twitter:url" content={currentUrl} />
       <meta property="twitter:title" content={siteTitle} />
       <meta property="twitter:description" content={description} />
       <meta property="twitter:image" content={image} />
