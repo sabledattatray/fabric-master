@@ -60,9 +60,9 @@ export function Landing() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0d1117] opacity-90"></div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center gap-8 max-w-4xl w-full py-12 mt-8 md:mt-0">
+        <div className="relative z-10 flex flex-col items-center gap-8 max-w-4xl w-full py-12 mt-8 md:mt-0 font-hero">
           <div className="space-y-4 md:space-y-6 text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-hero font-bold tracking-tight text-white drop-shadow-lg leading-tight">
               {t("The Open-Source Microsoft Fabric Toolkit")}
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-[#c9d1d9] font-light max-w-2xl mx-auto drop-shadow-sm px-2">
