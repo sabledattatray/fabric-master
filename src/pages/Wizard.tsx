@@ -97,7 +97,7 @@ export function Wizard() {
       {/* Document Workspace */}
       <main className="flex-1 overflow-y-auto p-6 md:p-10 flex flex-col bg-[#0d1117] items-center">
           <div className="w-full max-w-3xl mt-4 flex-1">
-            <h1 className="text-4xl font-semibold tracking-tight text-[#e6edf3] border-b border-[#30363d] pb-4 mb-8">
+            <h1 className="text-4xl font-display font-bold tracking-tight text-[#e6edf3] border-b border-[#30363d] pb-4 mb-8">
               {STEPS[currentStep].title}
             </h1>
             {/* Form Container */}

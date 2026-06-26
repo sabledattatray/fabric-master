@@ -25,21 +25,14 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="h-screen bg-[#0d1117] text-[#c9d1d9] font-sans flex flex-col">
       {/* Global Top Header */}
-      <header className="h-16 flex items-center justify-between px-4 md:px-6 bg-[#010409] border-b border-[#30363d] shrink-0 sticky top-0 z-40">
+      <header className="h-16 flex items-center justify-between px-4 md:px-6 bg-[#010409]/95 backdrop-blur-md border-b border-[#30363d] shrink-0 sticky top-0 z-50 transition-colors duration-300">
         <div className="flex items-center flex-1 min-w-0">
-          <button 
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="md:hidden p-2 -ml-2 mr-2 text-[#8b949e] hover:text-[#c9d1d9]"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-
           <div 
-            className="flex items-center space-x-2 text-white cursor-pointer group shrink-0"
+            className="flex items-center space-x-2.5 text-white cursor-pointer group shrink-0"
             onClick={() => navigate('/')}
           >
-            <FabricMasterLogo className="w-7 h-7 text-[#c9d1d9] group-hover:text-[#58a6ff] transition-colors" />
-            <span className="font-semibold text-lg tracking-tight group-hover:text-[#58a6ff] transition-colors hidden sm:inline-block">
+            <FabricMasterLogo className="w-7 h-7 md:w-8 md:h-8 text-[#c9d1d9] group-hover:text-[#58a6ff] transition-all duration-300 ease-in-out transform group-hover:scale-105" />
+            <span className="font-semibold text-lg md:text-xl tracking-tight group-hover:text-[#58a6ff] transition-colors duration-300 flex items-center">
               {t('Fabric Master')}
             </span>
           </div>
@@ -67,8 +60,15 @@ export function Layout({ children }: LayoutProps) {
           </div>
         </div>
 
-        <div className="ml-4 flex items-center shrink-0">
+        <div className="ml-4 flex items-center shrink-0 space-x-2 md:space-x-4">
           <LanguageSelector />
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="md:hidden p-2 -mr-2 text-[#8b949e] hover:text-[#c9d1d9] transition-colors focus:outline-none"
+            aria-label="Open menu"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
         </div>
       </header>
 

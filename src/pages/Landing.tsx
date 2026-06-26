@@ -40,7 +40,7 @@ export function Landing() {
         
         <div className="relative z-10 flex flex-col items-center justify-center gap-8 max-w-4xl px-6">
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg">
+            <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight text-white drop-shadow-lg">
               {t('Fabric Master')}
             </h1>
             <p className="text-xl md:text-2xl text-[#c9d1d9] font-light max-w-2xl mx-auto drop-shadow-sm">
@@ -89,7 +89,7 @@ export function Landing() {
           
           {Object.entries(groupedArticles).map(([category, articles]) => (
             <div key={category}>
-              <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
+              <h2 className="text-xl font-display font-semibold text-white mb-4 flex items-center">
                 <BookOpen className="w-5 h-5 mr-2 text-[#8b949e]" />
                 {t(category)}
               </h2>

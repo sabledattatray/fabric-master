@@ -79,7 +79,7 @@ export function Dashboard() {
               <div className="inline-block px-2 py-1 bg-[#238636]/10 text-[#3fb950] text-[10px] font-bold uppercase rounded-md mb-3 flex items-center w-max border border-[#3fb950]/20">
                 <CheckCircle2 className="w-3 h-3 mr-1" /> {t('Capacity Assessment Complete')}
               </div>
-              <h1 className="text-4xl font-semibold tracking-tight text-[#e6edf3]">{t('Fabric Capacity Consultant')}</h1>
+              <h1 className="text-4xl font-display font-bold tracking-tight text-[#e6edf3]">{t('Fabric Capacity Consultant')}</h1>
               <p className="text-xl text-[#8b949e] mt-3 font-light">{t('AI-driven analysis and decision support for your Microsoft Fabric investment.')}</p>
             </div>
             <div className="flex items-center space-x-3">

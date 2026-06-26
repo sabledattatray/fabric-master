@@ -65,7 +65,7 @@ export function ArticlePage() {
         
         <div className="mb-10 pb-8 border-b border-[#30363d]">
           <div className="text-sm text-[#58a6ff] font-medium mb-2">{t(article.category)}</div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">{t(article.title)}</h1>
+          <h1 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-white mb-4">{t(article.title)}</h1>
           <p className="text-xl text-[#8b949e] leading-relaxed">{t(article.description)}</p>
         </div>
         
@@ -73,8 +73,8 @@ export function ArticlePage() {
           <div className="markdown-body text-[#c9d1d9] leading-relaxed space-y-6">
             <Markdown
               components={{
-                h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-white mt-10 mb-4 border-b border-[#30363d] pb-2" {...props} />,
-                h3: ({node, ...props}) => <h3 className="text-xl font-semibold text-white mt-8 mb-4" {...props} />,
+                h2: ({node, ...props}) => <h2 className="text-2xl font-display font-bold text-white mt-10 mb-4 border-b border-[#30363d] pb-2" {...props} />,
+                h3: ({node, ...props}) => <h3 className="text-xl font-display font-semibold text-white mt-8 mb-4" {...props} />,
                 p: ({node, ...props}) => <p className="mb-4 text-base" {...props} />,
                 ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-6 space-y-2" {...props} />,
                 ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-6 space-y-2" {...props} />,

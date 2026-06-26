@@ -34,7 +34,7 @@ export function PricingMatrices() {
       <div className="flex-1 overflow-y-auto p-6 md:p-10 flex flex-col items-center w-full">
         <div className="max-w-4xl w-full flex-1">
           <div className="border-b border-[#30363d] pb-6 mb-8">
-            <h1 className="text-4xl font-semibold tracking-tight text-[#e6edf3]">{t('Pricing Matrices')}</h1>
+            <h1 className="text-4xl font-display font-bold tracking-tight text-[#e6edf3]">{t('Pricing Matrices')}</h1>
             <p className="text-xl text-[#8b949e] mt-3 font-light">{t('Current Microsoft Fabric SKU pricing estimates (Pay-As-You-Go vs Reserved).')}</p>
           </div>
 
