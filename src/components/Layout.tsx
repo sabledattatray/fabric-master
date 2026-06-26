@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Search, Menu, BookOpen, Calculator, DollarSign, Home } from 'lucide-react';
+import { Search, Menu, BookOpen, Calculator, DollarSign, Home, X } from 'lucide-react';
 import { LanguageSelector } from './LanguageSelector';
 import { FabricMasterLogo } from './FabricMasterLogo';
 import { useTranslation } from 'react-i18next';
@@ -23,9 +23,9 @@ export function Layout({ children }: LayoutProps) {
   ];
 
   return (
-    <div className="h-screen bg-[#0d1117] text-[#c9d1d9] font-sans flex flex-col">
+    <div className="h-screen bg-[#0d1117] text-[#c9d1d9] font-sans flex flex-col print:h-auto print:min-h-0 print:overflow-visible print:block">
       {/* Global Top Header */}
-      <header className="h-16 flex items-center justify-between px-4 md:px-6 bg-[#010409]/95 backdrop-blur-md border-b border-[#30363d] shrink-0 sticky top-0 z-50 transition-colors duration-300">
+      <header className="h-16 flex items-center justify-between px-4 md:px-6 bg-[#010409]/95 backdrop-blur-md border-b border-[#30363d] shrink-0 sticky top-0 z-50 transition-colors duration-300 print:hidden">
         <div className="flex items-center flex-1 min-w-0">
           <div 
             className="flex items-center space-x-2.5 text-white cursor-pointer group shrink-0"
@@ -38,7 +38,7 @@ export function Layout({ children }: LayoutProps) {
           </div>
 
           {/* Desktop separators and additional header items */}
-          <div className="hidden md:flex items-center ml-6 flex-1">
+          <div className="hidden lg:flex items-center ml-6 flex-1">
             <div className="h-6 w-px bg-[#30363d] mr-6"></div>
             
             <div className="flex items-center space-x-2 text-sm text-[#8b949e] shrink-0">
@@ -60,11 +60,11 @@ export function Layout({ children }: LayoutProps) {
           </div>
         </div>
 
-        <div className="ml-4 flex items-center shrink-0 space-x-2 md:space-x-4">
+        <div className="ml-4 flex items-center shrink-0 space-x-2 lg:space-x-4">
           <LanguageSelector />
           <button 
             onClick={() => setIsMobileMenuOpen(true)}
-            className="md:hidden p-2 -mr-2 text-[#8b949e] hover:text-[#c9d1d9] transition-colors focus:outline-none"
+            className="lg:hidden p-2 -mr-2 text-[#8b949e] hover:text-[#c9d1d9] transition-colors focus:outline-none"
             aria-label="Open menu"
           >
             <Menu className="w-6 h-6" />
@@ -73,24 +73,39 @@ export function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Layout Area */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden print:overflow-visible print:block print:h-auto">
         
         {/* Mobile sidebar overlay */}
         {isMobileMenuOpen && (
           <div 
-            className="fixed inset-0 z-40 bg-black/50 md:hidden"
+            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
             onClick={() => setIsMobileMenuOpen(false)}
           />
         )}
 
         {/* Sidebar Navigation */}
         <aside className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-[#010409] border-r border-[#30363d] transform transition-transform duration-200 ease-in-out flex flex-col top-16
+          fixed inset-y-0 left-0 z-50 w-64 bg-[#010409] border-r border-[#30363d] transform transition-transform duration-200 ease-in-out flex flex-col top-0 lg:top-16
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-          md:translate-x-0 md:static md:flex-shrink-0
+          lg:translate-x-0 lg:static lg:flex-shrink-0 print:hidden
         `}>
+          <div className="flex items-center justify-between p-4 lg:hidden border-b border-[#30363d]">
+            <div className="flex items-center space-x-2 text-white">
+              <FabricMasterLogo className="w-6 h-6 text-[#c9d1d9]" />
+              <span className="font-semibold text-lg tracking-tight">
+                {t('Menu')}
+              </span>
+            </div>
+            <button 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="p-2 -mr-2 text-[#8b949e] hover:text-[#c9d1d9] transition-colors focus:outline-none"
+              aria-label="Close menu"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
           <div className="p-4 flex-1 overflow-y-auto">
-            <div className="mb-6 relative md:hidden">
+            <div className="mb-6 relative lg:hidden">
               <input 
                 type="text" 
                 placeholder={t('Search or ask Copilot')} 
@@ -126,7 +141,7 @@ export function Layout({ children }: LayoutProps) {
         </aside>
 
         {/* Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden print:overflow-visible print:block print:h-auto">
           {children}
         </div>
       </div>

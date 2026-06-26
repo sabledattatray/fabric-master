@@ -58,11 +58,11 @@ export function Footer() {
         </div>
 
         {/* Legal */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between text-xs text-[#8b949e] pt-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between text-xs text-[#8b949e] pt-8 border-t border-[#30363d]/50">
           <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 mb-4 md:mb-0">
             <span className="font-semibold">{t('Legal')}</span>
-            <div className="flex flex-wrap gap-x-4 gap-y-2">
-              <span>© 2026 Fabric Master, Inc.</span>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 items-center">
+              <span>© {new Date().getFullYear()} Fabric Master</span>
               <a href="#" className="text-[#58a6ff] hover:underline">{t('Terms')}</a>
               <a href="#" className="text-[#58a6ff] hover:underline">{t('Privacy')}</a>
               <a href="#" className="text-[#58a6ff] hover:underline">{t('Status')}</a>
@@ -70,6 +70,17 @@ export function Footer() {
               <a href="#" className="text-[#58a6ff] hover:underline">{t('Expert services')}</a>
               <a href="#" className="text-[#58a6ff] hover:underline">{t('Blog')}</a>
             </div>
+          </div>
+          <div className="flex items-center">
+            <span className="mr-1">{t('Built by')}</span>
+            <a 
+              href="https://dattasable.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-[#c9d1d9] font-medium hover:text-[#58a6ff] transition-colors"
+            >
+              Datta Sable
+            </a>
           </div>
         </div>
         

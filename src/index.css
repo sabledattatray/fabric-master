@@ -10,3 +10,19 @@ body {
   background-color: #0d1117;
   color: #c9d1d9;
 }
+
+@media print {
+  html, body, #root, .h-screen, .h-full, .overflow-y-auto, .overflow-hidden {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    background-color: #0d1117 !important; /* Keep dark theme for report */
+    color: #c9d1d9 !important;
+  }
+  
+  /* Reset flex to block to prevent page cuts */
+  .flex-1 {
+    display: block !important;
+    height: auto !important;
+  }
+}
