@@ -39,7 +39,7 @@ export function Landing() {
   );
 
   return (
-    <div className="w-full flex flex-col items-center bg-[#0d1117]">
+    <div className="w-full h-full overflow-y-auto custom-scrollbar flex flex-col items-center bg-[#0d1117]">
       <SEO
         title={t("Microsoft Fabric Capacity Calculator & Cost Planning")}
         description={t(
@@ -49,7 +49,7 @@ export function Landing() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full flex flex-col items-center pt-24 pb-24 px-4 border-b border-[#30363d] min-h-[calc(100vh-4rem)]">
+      <section className="relative w-full flex flex-col items-center justify-center pt-24 pb-24 px-4 border-b border-[#30363d] min-h-[calc(100vh-4rem)]">
         <div className="absolute inset-0 bg-black z-0 overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
@@ -60,7 +60,7 @@ export function Landing() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0d1117] opacity-90"></div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center gap-8 max-w-4xl w-full my-auto py-12">
+        <div className="relative z-10 flex flex-col items-center gap-8 max-w-4xl w-full py-12 mt-8 md:mt-0">
           <div className="space-y-4 md:space-y-6 text-center">
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight">
               {t("The Open-Source Microsoft Fabric Toolkit")}
