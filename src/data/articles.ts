@@ -167,5 +167,19 @@ export const ARTICLES: Article[] = [
     description: "Top-tier SKUs for massive, global data architectures.",
     category: "Comparisons",
     content: "## F128 vs F256\n\nReserved for the largest organizations. F256 provides immense compute power capable of processing petabytes of data with minimal latency."
+  },
+  {
+    id: "power-bi-premium-vs-fabric",
+    title: "Power BI Premium vs Fabric",
+    description: "Understanding the transition from P-SKUs to F-SKUs.",
+    category: "Comparisons",
+    content: "## Power BI Premium vs Fabric\n\nMicrosoft is retiring Power BI Premium P-SKUs in favor of Fabric F-SKUs. An F64 is roughly equivalent to a P1, providing the same Power BI capabilities while unlocking the full Fabric ecosystem (Synapse, Data Factory, OneLake)."
+  },
+  {
+    id: "f2-vs-f64",
+    title: "Microsoft Fabric F2 vs F64 Comparison",
+    description: "The journey from PoC to Enterprise Production.",
+    category: "Comparisons",
+    content: "## F2 vs F64\n\nThe F2 is the absolute minimum entry point, perfect for learning and small proofs-of-concept. However, it lacks Power BI Free user distribution and Copilot features. F64 is the true enterprise starting point."
   }
 ];

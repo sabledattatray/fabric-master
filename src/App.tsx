@@ -13,6 +13,7 @@ import { Dashboard } from './pages/Dashboard';
 import { PricingMatrices } from './pages/PricingMatrices';
 import { Documentation } from './pages/Documentation';
 import { ArticlePage } from './pages/ArticlePage';
+import { About } from './pages/About';
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
               <Route path="/pricing" element={<PricingMatrices />} />
               <Route path="/docs" element={<Documentation />} />
               <Route path="/docs/:articleId" element={<ArticlePage />} />
+              <Route path="/about" element={<About />} />
             </Routes>
           </Layout>
         </Router>

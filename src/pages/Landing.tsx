@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Database, Globe, Search, ThumbsUp, ThumbsDown, GitPullRequest, Users, MessageSquare, ChevronUp, FileText, BookOpen } from 'lucide-react';
+import { Database, Globe, Search, ThumbsUp, ThumbsDown, GitPullRequest, Users, MessageSquare, ChevronUp, FileText, BookOpen, Star, Github, Linkedin, ExternalLink } from 'lucide-react';
 import { Footer } from '../components/Footer';
 import { ARTICLES } from '../data/articles';
 import { SEO } from '../components/SEO';
@@ -34,6 +34,7 @@ export function Landing() {
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" 
             alt="Hero Background" 
             className="w-full h-full object-cover opacity-40 mix-blend-screen"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0d1117] opacity-90"></div>
         </div>
@@ -41,10 +42,10 @@ export function Landing() {
         <div className="relative z-10 flex flex-col items-center my-auto gap-8 max-w-4xl w-full">
           <div className="space-y-4 md:space-y-6 text-center">
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight">
-              {t('Fabric Master')}
+              {t('The Open-Source Microsoft Fabric Toolkit')}
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-[#c9d1d9] font-light max-w-2xl mx-auto drop-shadow-sm px-2">
-              {t('Help for wherever you are on your Fabric Master journey.')}
+              {t('Plan capacity, estimate pricing, compare Fabric SKUs, calculate reserved savings, forecast growth, and optimize Microsoft Fabric deployments.')}
             </p>
           </div>
           
@@ -53,38 +54,107 @@ export function Landing() {
               onClick={() => navigate('/wizard')}
               className="px-8 py-3.5 bg-[#2f81f7] hover:bg-[#1f6feb] text-white font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto text-lg"
             >
-              {t('Get started')}
+              {t('Launch Capacity Calculator')}
             </button>
             <button 
               onClick={() => navigate('/docs')}
               className="px-8 py-3.5 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto text-lg"
             >
-              {t('Learn more')}
+              {t('View Documentation')}
             </button>
+            <a 
+              href="https://github.com/dattasable/fabric-master"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-3.5 bg-transparent hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto text-lg flex items-center justify-center gap-2"
+            >
+              <Github className="w-5 h-5" /> {t('GitHub')}
+            </a>
+          </div>
+
+          {/* Personal Branding Mini-Section */}
+          <div className="mt-8 flex flex-col items-center justify-center space-y-2 border border-[#30363d] bg-[#161b22]/80 backdrop-blur-sm rounded-full px-6 py-3">
+            <div className="flex items-center space-x-2 text-sm text-[#8b949e]">
+               <span>{t('Created by')}</span>
+               <a href="https://dattasable.com" target="_blank" rel="noopener noreferrer" className="text-white font-medium hover:text-[#58a6ff] transition-colors flex items-center">
+                 Datta Sable
+               </a>
+            </div>
+            <div className="flex items-center space-x-3 text-xs text-[#8b949e] font-mono">
+               <span>Microsoft Fabric Engineer</span>
+               <span className="w-1 h-1 bg-[#30363d] rounded-full"></span>
+               <span>Data Platform Architect</span>
+               <span className="w-1 h-1 bg-[#30363d] rounded-full"></span>
+               <span>Open Source Developer</span>
+            </div>
           </div>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left w-full max-w-4xl">
             <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-lg">
               <Database className="w-8 h-8 text-[#58a6ff] mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">{t('Capacity Calculator')}</h3>
-              <p className="text-[#8b949e] text-sm">{t('Calculate your Microsoft Fabric capacity requirements.')}</p>
+              <p className="text-[#8b949e] text-sm">{t('Calculate your Microsoft Fabric capacity requirements accurately.')}</p>
             </div>
             <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-lg">
-              <Search className="w-8 h-8 text-[#3fb950] mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">{t('Predictive Analytics')}</h3>
-              <p className="text-[#8b949e] text-sm">{t('AI-driven analysis and decision support for your Microsoft Fabric investment.')}</p>
+              <Globe className="w-8 h-8 text-[#3fb950] mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">{t('Fabric Cost Optimizer')}</h3>
+              <p className="text-[#8b949e] text-sm">{t('Compare reserved vs pay-as-you-go pricing for Microsoft Fabric.')}</p>
             </div>
             <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-lg">
-              <Globe className="w-8 h-8 text-[#d29922] mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">{t('Enterprise Edition')}</h3>
-              <p className="text-[#8b949e] text-sm">{t('All the power of Fabric Master, designed for scale.')}</p>
+              <Search className="w-8 h-8 text-[#d29922] mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">{t('Power BI Capacity')}</h3>
+              <p className="text-[#8b949e] text-sm">{t('Estimate Power BI Premium and Fabric Capacity needs.')}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Content Grid */}
+      {/* SEO Optimized Content Section */}
+      <section className="w-full border-b border-[#30363d] bg-[#010409] py-16 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl font-display font-bold text-white mb-6">
+              The Definitive <span className="text-[#58a6ff]">Microsoft Fabric Capacity Calculator</span>
+            </h2>
+            <p className="text-[#8b949e] text-lg leading-relaxed mb-6">
+              Whether you're migrating from Synapse Analytics, upgrading from Power BI Premium, or building a new data estate on OneLake, understanding your <strong className="text-[#c9d1d9] font-medium">Microsoft Fabric Pricing</strong> is critical. Fabric Master helps you avoid over-provisioning and accurately estimate costs.
+            </p>
+            <ul className="space-y-4 text-[#c9d1d9]">
+              <li className="flex items-start">
+                <Database className="w-5 h-5 text-[#3fb950] mr-3 mt-1 shrink-0" />
+                <span><strong>Microsoft Fabric Cost Calculator:</strong> Predict your monthly and annual spend with precision.</span>
+              </li>
+              <li className="flex items-start">
+                <Search className="w-5 h-5 text-[#3fb950] mr-3 mt-1 shrink-0" />
+                <span><strong>Microsoft Fabric SKU Comparison:</strong> Compare F2, F64, F128 and more to find your perfect fit.</span>
+              </li>
+              <li className="flex items-start">
+                <Globe className="w-5 h-5 text-[#3fb950] mr-3 mt-1 shrink-0" />
+                <span><strong>Fabric Reserved Capacity Savings:</strong> Discover how 1-year reservations impact your ROI.</span>
+              </li>
+            </ul>
+          </div>
+          <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-8 relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-4 opacity-10">
+               <Database className="w-32 h-32 text-[#58a6ff]" />
+             </div>
+             <h3 className="text-xl font-bold text-white mb-4">Fabric Spark Capacity Estimator</h3>
+             <p className="text-[#8b949e] mb-6">
+               Spark compute is one of the highest consumers of Capacity Units (CUs). Calculate your exact CU requirements based on executor count, node sizes, and concurrency.
+             </p>
+             <button onClick={() => navigate('/wizard')} className="text-[#58a6ff] hover:text-white font-medium flex items-center transition-colors">
+               Start Estimating <Globe className="w-4 h-4 ml-2" />
+             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Content Grid (Documentation / Blog) */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-12">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-display font-bold text-white">Fabric Master Documentation & Guides</h2>
+          <Link to="/docs" className="text-[#58a6ff] hover:underline text-sm font-medium">View all resources &rarr;</Link>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
           
           {Object.entries(groupedArticles).map(([category, articles]) => (
@@ -108,8 +178,27 @@ export function Landing() {
 
         </div>
       </main>
+
+      {/* Trust Badges */}
+      <section className="w-full border-t border-[#30363d] bg-[#010409] py-12 px-6 text-center">
+         <h2 className="text-[#8b949e] font-semibold uppercase tracking-wider text-sm mb-6">Trusted By The Open Source Community</h2>
+         <div className="flex flex-wrap justify-center gap-6 md:gap-12 opacity-70">
+            <div className="flex items-center space-x-2 text-[#c9d1d9] font-medium">
+              <Github className="w-6 h-6" /> <span>Open Source</span>
+            </div>
+            <div className="flex items-center space-x-2 text-[#c9d1d9] font-medium">
+              <Star className="w-6 h-6 text-[#d29922]" /> <span>GitHub Stars</span>
+            </div>
+            <div className="flex items-center space-x-2 text-[#c9d1d9] font-medium">
+              <GitPullRequest className="w-6 h-6 text-[#3fb950]" /> <span>MIT License</span>
+            </div>
+            <div className="flex items-center space-x-2 text-[#c9d1d9] font-medium">
+              <Users className="w-6 h-6 text-[#58a6ff]" /> <span>Community Driven</span>
+            </div>
+         </div>
+      </section>
       
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full">
         <Footer />
       </div>
     </div>

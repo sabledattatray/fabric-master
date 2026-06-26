@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Search, Menu, BookOpen, Calculator, DollarSign, Home, X } from 'lucide-react';
+import { Search, Menu, BookOpen, Calculator, DollarSign, Home, X, Users } from 'lucide-react';
 import { LanguageSelector } from './LanguageSelector';
 import { FabricMasterLogo } from './FabricMasterLogo';
 import { useTranslation } from 'react-i18next';
@@ -38,6 +38,7 @@ export function Layout({ children }: LayoutProps) {
       items: [
         { name: t('Documentation Hub'), href: '/docs', icon: BookOpen },
         { name: t('F-SKU Comparisons'), href: '/docs', icon: BookOpen },
+        { name: t('About Datta Sable'), href: '/about', icon: Users },
       ]
     }
   ];
