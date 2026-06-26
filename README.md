@@ -19,6 +19,18 @@
 
 <br />
 
+## 🌐 Live Application
+
+👉 [https://fabric.dattasable.com](https://fabric.dattasable.com)
+
+Free Microsoft Fabric Capacity Calculator
+
+- Capacity Planning
+- SKU Comparison
+- Pricing Estimator
+- Growth Forecast
+- PDF Reports
+
 ## 📖 Overview
 
 **Fabric Master** is an enterprise-grade capacity calculator and optimization engine designed specifically for **Microsoft Fabric**. It takes the guesswork out of sizing your data workloads by utilizing intelligent algorithms to recommend the perfect F-SKU based on your unique Data Factory, Spark, and Power BI requirements.

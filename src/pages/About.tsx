@@ -19,7 +19,7 @@ export function About() {
         
         <div className="mb-12 text-center">
           <img 
-            src="https://avatars.githubusercontent.com/u/dattasable?v=4" 
+            src="https://avatars.githubusercontent.com/u/sabledattatray?v=4" 
             alt="Datta Sable" 
             className="w-32 h-32 rounded-full border-4 border-[#30363d] mx-auto mb-6 bg-[#161b22]"
             onError={(e) => {
@@ -41,7 +41,7 @@ export function About() {
           <a href="https://dattasable.com" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#21262d] border border-[#30363d] rounded-md text-[#c9d1d9] hover:bg-[#30363d] hover:text-white transition-colors flex items-center font-medium text-sm">
              <Code className="w-4 h-4 mr-2" /> Website
           </a>
-          <a href="https://github.com/dattasable" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#21262d] border border-[#30363d] rounded-md text-[#c9d1d9] hover:bg-[#30363d] hover:text-white transition-colors flex items-center font-medium text-sm">
+          <a href="https://github.com/sabledattatray" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#21262d] border border-[#30363d] rounded-md text-[#c9d1d9] hover:bg-[#30363d] hover:text-white transition-colors flex items-center font-medium text-sm">
              <Github className="w-4 h-4 mr-2" /> GitHub
           </a>
           <a href="https://linkedin.com/in/dattasable" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#2f81f7] text-white rounded-md hover:bg-[#1f6feb] transition-colors flex items-center font-medium text-sm">
@@ -88,7 +88,7 @@ export function About() {
                 <p className="text-sm text-[#8b949e] mb-4">
                   If Fabric Master saved your team money or simplified your capacity planning, consider giving it a star on GitHub.
                 </p>
-                <a href="https://github.com/dattasable/fabric-master" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-[#58a6ff] hover:underline font-medium">
+                <a href="https://github.com/sabledattatray/fabric-master" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-[#58a6ff] hover:underline font-medium">
                   Star on GitHub &rarr;
                 </a>
              </div>

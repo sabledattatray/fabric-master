@@ -60,7 +60,7 @@ export function SEO({
     "jobTitle": ["Microsoft Fabric Engineer", "Data Platform Architect", "Open Source Developer"],
     "url": "https://dattasable.com",
     "sameAs": [
-      "https://github.com/dattasable",
+      "https://github.com/sabledattatray",
       "https://www.linkedin.com/in/dattasable/"
     ]
   };

@@ -33,7 +33,7 @@ export function Footer() {
             <p className="text-sm text-[#8b949e] mb-4">
               {t('Fabric Master is open source and community-driven. Have an improvement? Submit a pull request.')}
             </p>
-            <a href="https://github.com/dattasable/fabric-master" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-1.5 rounded-md bg-[#21262d] border border-[#30363d] hover:bg-[#30363d] transition-colors text-sm font-medium text-[#c9d1d9] mb-4">
+            <a href="https://github.com/sabledattatray/fabric-master" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-1.5 rounded-md bg-[#21262d] border border-[#30363d] hover:bg-[#30363d] transition-colors text-sm font-medium text-[#c9d1d9] mb-4">
               <GitPullRequest className="w-4 h-4 mr-2" /> {t('Contribute on GitHub')}
             </a>
             <br/>
@@ -45,7 +45,7 @@ export function Footer() {
             <h3 className="text-base font-semibold text-white mb-4">{t('Connect')}</h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="https://github.com/dattasable/fabric-master" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#58a6ff] hover:underline">
+                <a href="https://github.com/sabledattatray/fabric-master" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#58a6ff] hover:underline">
                   <Github className="w-4 h-4 mr-2" /> {t('Star on GitHub')}
                 </a>
               </li>
