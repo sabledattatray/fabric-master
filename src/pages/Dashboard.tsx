@@ -664,20 +664,20 @@ export function Dashboard() {
                 <p className="text-xs text-[#8b949e] mb-4">{t('Add details to personalize the exported PDF report.')}</p>
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-xs font-medium text-[#c9d1d9] mb-1">Company Name</label>
+                    <label className="block text-xs font-medium text-[#c9d1d9] mb-1">{t('Company Name')}</label>
                     <input 
                       type="text" 
-                      placeholder="e.g. Contoso Ltd." 
+                      placeholder={t('e.g. Contoso Ltd.')} 
                       className="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
                       value={reportDetails.companyName}
                       onChange={(e) => setReportDetails({...reportDetails, companyName: e.target.value})}
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-[#c9d1d9] mb-1">Project Name</label>
+                    <label className="block text-xs font-medium text-[#c9d1d9] mb-1">{t('Project Name')}</label>
                     <input 
                       type="text" 
-                      placeholder="e.g. Data Estate Migration" 
+                      placeholder={t('e.g. Data Estate Migration')} 
                       className="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
                       value={reportDetails.projectName}
                       onChange={(e) => setReportDetails({...reportDetails, projectName: e.target.value})}
@@ -685,20 +685,20 @@ export function Dashboard() {
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-medium text-[#c9d1d9] mb-1">Environment</label>
+                      <label className="block text-xs font-medium text-[#c9d1d9] mb-1">{t('Environment')}</label>
                       <input 
                         type="text" 
-                        placeholder="e.g. Production" 
+                        placeholder={t('e.g. Production')} 
                         className="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
                         value={reportDetails.environment}
                         onChange={(e) => setReportDetails({...reportDetails, environment: e.target.value})}
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-[#c9d1d9] mb-1">Consultant Name</label>
+                      <label className="block text-xs font-medium text-[#c9d1d9] mb-1">{t('Consultant Name')}</label>
                       <input 
                         type="text" 
-                        placeholder="Your name" 
+                        placeholder={t('Your name')} 
                         className="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
                         value={reportDetails.consultantName}
                         onChange={(e) => setReportDetails({...reportDetails, consultantName: e.target.value})}

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useWizard } from '../../context/WizardContext';
+import { useTranslation } from 'react-i18next';
 
 export function Step4Existing() {
   const { data, updateData } = useWizard();
+  const { t } = useTranslation();
 
   const skus = [
-    { name: 'None (New Deployment)', cu: null },
+    { name: t('None (New Deployment)'), cu: null },
     { name: 'F2 (2 CU)', cu: 2 },
     { name: 'F4 (4 CU)', cu: 4 },
     { name: 'F8 (8 CU)', cu: 8 },
@@ -22,12 +24,12 @@ export function Step4Existing() {
   return (
     <div className="space-y-6">
       <div className="mb-4">
-        <p className="text-base text-[#8b949e]">Optionally provide your current Microsoft Fabric SKU to compare with our recommendation.</p>
+        <p className="text-base text-[#8b949e]">{t('Optionally provide your current Microsoft Fabric SKU to compare with our recommendation.')}</p>
       </div>
       
       <div className="grid gap-6">
         <div className="space-y-1.5 w-full">
-          <label className="block text-sm font-semibold text-[#e6edf3]">Current SKU (Optional)</label>
+          <label className="block text-sm font-semibold text-[#e6edf3]">{t('Current SKU (Optional)')}</label>
           <select
             value={data.currentSkuCu === null || data.currentSkuCu === undefined ? '' : data.currentSkuCu.toString()}
             onChange={(e) => {

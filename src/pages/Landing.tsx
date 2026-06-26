@@ -39,7 +39,7 @@ export function Landing() {
   );
 
   return (
-    <div className="w-full h-full overflow-y-auto custom-scrollbar flex flex-col items-center bg-[#0d1117]">
+    <div className="w-full h-full overflow-y-auto custom-scrollbar bg-[#0d1117] block">
       <SEO
         title={t("Microsoft Fabric Capacity Calculator & Cost Planning")}
         description={t(
@@ -49,8 +49,8 @@ export function Landing() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full flex flex-col items-center justify-center pt-24 pb-24 px-4 border-b border-[#30363d] min-h-[calc(100vh-4rem)]">
-        <div className="absolute inset-0 bg-black z-0 overflow-hidden">
+      <section className="relative w-full flex flex-col items-center justify-center py-24 md:py-32 px-4 border-b border-[#30363d] min-h-[calc(100vh-4rem)] overflow-hidden">
+        <div className="absolute inset-0 bg-black z-0">
           <img
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
             alt="Hero Background"
@@ -60,28 +60,28 @@ export function Landing() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0d1117] opacity-90"></div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center gap-8 max-w-4xl w-full py-12 mt-8 md:mt-0 font-hero">
+        <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8 max-w-4xl w-full mt-4 md:mt-0 font-hero my-auto">
           <div className="space-y-4 md:space-y-6 text-center">
-            <h1 className="text-[40px] sm:text-[48px] md:text-[56px] font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight">
+            <h1 className="text-[32px] sm:text-[40px] md:text-[56px] font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight px-2">
               {t("The Open-Source Microsoft Fabric Toolkit")}
             </h1>
-            <p className="text-base sm:text-lg md:text-[16px] text-[#c9d1d9] font-normal max-w-2xl mx-auto drop-shadow-sm px-2">
+            <p className="text-sm sm:text-lg md:text-[16px] text-[#c9d1d9] font-normal max-w-2xl mx-auto drop-shadow-sm px-4">
               {t(
                 "Plan capacity, estimate pricing, compare Fabric SKUs, calculate reserved savings, forecast growth, and optimize Microsoft Fabric deployments.",
               )}
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-2 sm:mt-4 w-full sm:w-auto px-4 sm:px-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4 mt-2 sm:mt-4 w-full sm:w-auto px-4 sm:px-0">
             <button
               onClick={() => navigate("/wizard")}
-              className="px-8 py-3.5 bg-[#2f81f7] hover:bg-[#1f6feb] text-white font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[16px]"
+              className="px-6 md:px-8 py-3.5 bg-[#2f81f7] hover:bg-[#1f6feb] text-white font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[15px] md:text-[16px] whitespace-normal sm:whitespace-nowrap h-auto min-h-[48px]"
             >
               {t("Launch Capacity Calculator")}
             </button>
             <button
               onClick={() => navigate("/docs")}
-              className="px-8 py-3.5 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[16px]"
+              className="px-6 md:px-8 py-3.5 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[15px] md:text-[16px] whitespace-normal sm:whitespace-nowrap h-auto min-h-[48px]"
             >
               {t("View Documentation")}
             </button>
@@ -89,15 +89,15 @@ export function Landing() {
               href="https://github.com/sabledattatray/fabric-master"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3.5 bg-transparent hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[16px] flex items-center justify-center gap-2"
+              className="px-6 md:px-8 py-3.5 bg-transparent hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[15px] md:text-[16px] flex items-center justify-center gap-2 whitespace-normal sm:whitespace-nowrap h-auto min-h-[48px]"
             >
-              <Github className="w-5 h-5" /> {t("GitHub")}
+              <Github className="w-5 h-5 shrink-0" /> {t("GitHub")}
             </a>
           </div>
 
           {/* Personal Branding Mini-Section */}
-          <div className="mt-8 flex flex-col items-center justify-center space-y-2 border border-[#30363d] bg-[#161b22]/80 backdrop-blur-sm rounded-full px-6 py-3">
-            <div className="flex items-center space-x-2 text-sm text-[#8b949e]">
+          <div className="mt-6 md:mt-8 flex flex-col items-center justify-center space-y-2 border border-[#30363d] bg-[#161b22]/80 backdrop-blur-sm rounded-3xl md:rounded-full px-4 md:px-6 py-3 w-full sm:w-auto text-center">
+            <div className="flex items-center justify-center space-x-2 text-sm text-[#8b949e]">
               <span>{t("Created by")}</span>
               <a
                 href="https://dattasable.com"
@@ -108,25 +108,25 @@ export function Landing() {
                 Datta Sable
               </a>
             </div>
-            <div className="flex items-center space-x-3 text-xs text-[#8b949e] font-mono">
-              <span>Microsoft Fabric Engineer</span>
-              <span className="w-1 h-1 bg-[#30363d] rounded-full"></span>
-              <span>Data Platform Architect</span>
-              <span className="w-1 h-1 bg-[#30363d] rounded-full"></span>
-              <span>Open Source Developer</span>
+            <div className="flex items-center justify-center space-x-2 md:space-x-3 text-[10px] md:text-xs text-[#8b949e] font-mono flex-wrap">
+              <span>{t("Microsoft Fabric Engineer")}</span>
+              <span className="hidden md:inline-block w-1 h-1 bg-[#30363d] rounded-full"></span>
+              <span className="md:hidden opacity-50">•</span>
+              <span>{t("Data Platform Architect")}</span>
+              <span className="hidden md:inline-block w-1 h-1 bg-[#30363d] rounded-full"></span>
+              <span className="md:hidden opacity-50">•</span>
+              <span>{t("Open Source Developer")}</span>
             </div>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left w-full max-w-4xl">
+          <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 text-left w-full max-w-4xl">
             <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-2xl">
               <Database className="w-8 h-8 text-[#58a6ff] mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">
                 {t("Capacity Calculator")}
               </h3>
               <p className="text-[#8b949e] text-sm">
-                {t(
-                  "Calculate your Microsoft Fabric capacity requirements accurately.",
-                )}
+                {t("Calculate your Microsoft Fabric capacity requirements.")}
               </p>
             </div>
             <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-2xl">

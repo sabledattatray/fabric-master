@@ -144,7 +144,7 @@ export function Layout({ children }: LayoutProps) {
             <div className="flex items-center space-x-2 text-white">
               <FabricMasterLogo className="w-6 h-6 text-[#c9d1d9]" />
               <span className="font-semibold text-lg tracking-tight">
-                {t("Menu")}
+                {t("Fabric Master")}
               </span>
             </div>
             <button
