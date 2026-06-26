@@ -10,10 +10,10 @@
   </p>
 
   <p>
-    <a href="https://github.com/your-username/fabric-master/commits/main"><img src="https://img.shields.io/github/last-commit/your-username/fabric-master.svg?style=for-the-badge&color=2f81f7" alt="Last Commit"></a>
-    <a href="https://github.com/your-username/fabric-master/stargazers"><img src="https://img.shields.io/github/stars/your-username/fabric-master.svg?style=for-the-badge&color=d29922" alt="Stars"></a>
-    <a href="https://github.com/your-username/fabric-master/issues"><img src="https://img.shields.io/github/issues/your-username/fabric-master.svg?style=for-the-badge&color=3fb950" alt="Issues"></a>
-    <a href="https://github.com/your-username/fabric-master/blob/main/LICENSE"><img src="https://img.shields.io/github/license/your-username/fabric-master.svg?style=for-the-badge&color=ea4aaa" alt="License"></a>
+    <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge&color=3fb950" alt="Status">
+    <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge&color=2f81f7" alt="Version">
+    <img src="https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react&color=61DAFB" alt="React">
+    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&color=ea4aaa" alt="License">
   </p>
 </div>
 
