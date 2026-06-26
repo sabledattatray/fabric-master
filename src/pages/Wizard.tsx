@@ -10,6 +10,7 @@ import { LanguageSelector } from '../components/LanguageSelector';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
 import { useTranslation } from 'react-i18next';
+import { calculateCapacity } from '../lib/calculator';
 
 export function Wizard() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -41,20 +42,18 @@ export function Wizard() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/v1/capacity-evaluation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      // Simulate network delay for UX
+      await new Promise(resolve => setTimeout(resolve, 800));
       
-      const result = await response.json();
+      const result = calculateCapacity(data);
+      
       if (result.success) {
         navigate('/results', { state: { evaluation: result } });
       } else {
         alert("Failed to calculate capacity: " + result.error);
       }
     } catch (err) {
-      alert("Network error computing workloads.");
+      alert("Error computing workloads.");
     } finally {
       setIsSubmitting(false);
     }

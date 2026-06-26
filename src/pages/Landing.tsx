@@ -28,7 +28,7 @@ export function Landing() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full h-auto min-h-[36rem] flex flex-col items-center justify-center text-center overflow-hidden border-b border-[#30363d] py-20">
+      <section className="relative w-full h-auto min-h-[36rem] flex flex-col items-center justify-center text-center overflow-hidden border-b border-[#30363d] py-24 md:py-20 mt-8 md:mt-0">
         <div className="absolute inset-0 bg-black z-0">
           <img 
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" 
