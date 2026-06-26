@@ -15,6 +15,33 @@ export function ArticlePage() {
     return ARTICLES.find(a => a.id === articleId);
   }, [articleId]);
 
+  const articleSchema = useMemo(() => {
+    if (!article) return undefined;
+    return {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": t(article.title),
+      "description": t(article.description),
+      "author": {
+        "@type": "Organization",
+        "name": "Fabric Master Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Fabric Master",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://fabric-master.vercel.app/favicon.svg"
+        }
+      },
+      "datePublished": new Date().toISOString().split('T')[0],
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://fabric-master.vercel.app/docs/${articleId}`
+      }
+    };
+  }, [article, t, articleId]);
+
   if (!article) {
     return <Navigate to="/docs" replace />;
   }
@@ -24,8 +51,11 @@ export function ArticlePage() {
       <SEO 
         title={t(article.title)} 
         description={t(article.description)} 
-        keywords={`Microsoft Fabric, ${article.category}, Capacity, Fabric Master`}
+        keywords={`Microsoft Fabric, ${article.category}, Capacity, Fabric Master, ${t(article.title)}`}
         type="article"
+        article={true}
+        url={`https://fabric-master.vercel.app/docs/${articleId}`}
+        schema={articleSchema}
       />
       <div className="w-full max-w-4xl p-6 md:p-10 flex-1">
         <Link to="/docs" className="inline-flex items-center text-sm text-[#8b949e] hover:text-[#58a6ff] mb-8 transition-colors">

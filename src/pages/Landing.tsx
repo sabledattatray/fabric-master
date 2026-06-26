@@ -22,9 +22,9 @@ export function Landing() {
   return (
     <div className="h-full overflow-y-auto flex flex-col items-center">
       <SEO 
-        title={t('Home')} 
-        description={t('Help for wherever you are on your Fabric Master journey.')}
-        keywords="Microsoft Fabric, Capacity Planning, FinOps, Data Engineering, Power BI"
+        title={t('Microsoft Fabric Capacity Calculator & Cost Planning')} 
+        description={t('Enterprise-grade Microsoft Fabric Capacity Planning Toolkit, SKU Recommendation Engine, and Pricing Estimator. Calculate your Fabric CU requirements, optimize costs, and forecast capacity growth.')}
+        keywords="Microsoft Fabric Capacity Calculator, Microsoft Fabric Calculator, Microsoft Fabric SKU Calculator, Microsoft Fabric Pricing Calculator, Microsoft Fabric Capacity Planning, Microsoft Fabric Cost Calculator, Microsoft Fabric Capacity Estimator, Fabric Capacity Calculator, Power BI Premium Replacement, Fabric Pricing Calculator"
       />
 
       {/* Hero Section */}

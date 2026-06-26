@@ -63,9 +63,9 @@ export function Wizard() {
   return (
     <div className="h-full flex overflow-hidden">
       <SEO 
-        title={t("Capacity Calculator")} 
-        description={t("Calculate your Microsoft Fabric capacity requirements.")}
-        keywords="Microsoft Fabric, Capacity Calculator, FinOps, Sizing"
+        title={t("Microsoft Fabric Capacity Calculator")} 
+        description={t("Estimate your Microsoft Fabric capacity units (CU) and optimize pricing across Power BI, Data Factory, and Spark workloads.")}
+        keywords="Microsoft Fabric Capacity Calculator, Microsoft Fabric Calculator, Microsoft Fabric Capacity Units Calculator, Fabric Capacity Sizing, Microsoft Fabric Workload Calculator, Fabric CU Calculator"
       />
       {/* Sidebar Navigator */}
       <aside className="w-64 border-r border-[#30363d] bg-[#0d1117] flex-col hidden md:flex overflow-y-auto custom-scrollbar shrink-0">

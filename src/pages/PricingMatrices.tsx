@@ -27,9 +27,9 @@ export function PricingMatrices() {
   return (
     <div className="h-full overflow-y-auto flex flex-col items-center">
       <SEO 
-        title={t("Pricing Matrices")} 
-        description={t("Current Microsoft Fabric SKU pricing estimates (Pay-As-You-Go vs Reserved).")} 
-        keywords="Microsoft Fabric, Pricing, Sizing, Sku, FinOps"
+        title={t("Microsoft Fabric Pricing Calculator & SKU Cost Guide")} 
+        description={t("Compare Microsoft Fabric SKU pricing estimates (Pay-As-You-Go vs Reserved Instance). Find out how much Microsoft Fabric costs for F2, F64, and Enterprise.")} 
+        keywords="Microsoft Fabric Pricing Calculator, Microsoft Fabric Cost, Microsoft Fabric Capacity Units, Microsoft Fabric CU, Microsoft Fabric F64 pricing, Microsoft Fabric Reserved Instance, Microsoft Fabric PAYG"
       />
       <div className="flex-1 overflow-y-auto p-6 md:p-10 flex flex-col items-center w-full">
         <div className="max-w-4xl w-full flex-1">

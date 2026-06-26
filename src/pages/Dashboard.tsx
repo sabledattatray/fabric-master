@@ -66,9 +66,9 @@ export function Dashboard() {
   return (
     <div className="h-full overflow-y-auto flex flex-col items-center">
       <SEO 
-        title={`${t('Evaluation Results')} - ${targetSkuRecommendation.costOptimizedSkuName}`}
-        description={t("Your AI-driven Microsoft Fabric capacity assessment.")}
-        keywords="Microsoft Fabric, Capacity Assessment, Sizing, Pricing"
+        title={`${t('Evaluation Results')} - ${targetSkuRecommendation.costOptimizedSkuName} | Microsoft Fabric Capacity Estimator`}
+        description={t("Your AI-driven Microsoft Fabric capacity assessment. See detailed SKU recommendations, financial breakdowns, and throttling analysis.")}
+        keywords="Microsoft Fabric Capacity Calculator, Microsoft Fabric Cost Calculator, Microsoft Fabric Cost Estimation Tool, Microsoft Fabric Enterprise Capacity Planning, Microsoft Fabric Capacity Recommendation"
       />
       <div className="flex-1 overflow-y-auto p-6 md:p-10 flex justify-center bg-[#0d1117] print:p-0 print:overflow-visible w-full">
         <div className="max-w-7xl w-full space-y-8">
