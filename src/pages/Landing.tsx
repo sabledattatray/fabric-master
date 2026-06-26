@@ -20,7 +20,7 @@ export function Landing() {
   }, {} as Record<string, typeof ARTICLES>);
 
   return (
-    <div className="h-full overflow-y-auto flex flex-col items-center">
+    <div className="h-full overflow-y-auto flex flex-col items-center w-full bg-[#0d1117] custom-scrollbar">
       <SEO 
         title={t('Microsoft Fabric Capacity Calculator & Cost Planning')} 
         description={t('Enterprise-grade Microsoft Fabric Capacity Planning Toolkit, SKU Recommendation Engine, and Pricing Estimator. Calculate your Fabric CU requirements, optimize costs, and forecast capacity growth.')}
@@ -28,8 +28,8 @@ export function Landing() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full h-auto min-h-[36rem] flex flex-col items-center justify-center text-center overflow-hidden border-b border-[#30363d] py-24 md:py-20 mt-8 md:mt-0">
-        <div className="absolute inset-0 bg-black z-0">
+      <section className="relative w-full min-h-[calc(100vh-4rem)] flex flex-col items-center pt-24 pb-16 px-4 border-b border-[#30363d]">
+        <div className="absolute inset-0 bg-black z-0 overflow-hidden">
           <img 
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" 
             alt="Hero Background" 
@@ -38,26 +38,26 @@ export function Landing() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0d1117] opacity-90"></div>
         </div>
         
-        <div className="relative z-10 flex flex-col items-center justify-center gap-8 max-w-4xl px-6">
-          <div className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight text-white drop-shadow-lg">
+        <div className="relative z-10 flex flex-col items-center my-auto gap-8 max-w-4xl w-full">
+          <div className="space-y-4 md:space-y-6 text-center">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight">
               {t('Fabric Master')}
             </h1>
-            <p className="text-xl md:text-2xl text-[#c9d1d9] font-light max-w-2xl mx-auto drop-shadow-sm">
+            <p className="text-lg sm:text-xl md:text-2xl text-[#c9d1d9] font-light max-w-2xl mx-auto drop-shadow-sm px-2">
               {t('Help for wherever you are on your Fabric Master journey.')}
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-2 sm:mt-4 w-full sm:w-auto px-4 sm:px-0">
             <button 
               onClick={() => navigate('/wizard')}
-              className="px-8 py-3 bg-[#2f81f7] hover:bg-[#1f6feb] text-white font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto"
+              className="px-8 py-3.5 bg-[#2f81f7] hover:bg-[#1f6feb] text-white font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto text-lg"
             >
               {t('Get started')}
             </button>
             <button 
               onClick={() => navigate('/docs')}
-              className="px-8 py-3 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto"
+              className="px-8 py-3.5 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto text-lg"
             >
               {t('Learn more')}
             </button>
