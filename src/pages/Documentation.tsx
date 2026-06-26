@@ -45,7 +45,7 @@ export function Documentation() {
                     <Link 
                       key={article.id} 
                       to={`/docs/${article.id}`}
-                      className="block bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm hover:border-[#8b949e] transition-colors group"
+                      className="block bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm hover:border-[#8b949e] transition-colors group"
                     >
                       <div className="flex items-start">
                         <FileText className="w-5 h-5 mr-3 text-[#8b949e] group-hover:text-[#58a6ff] shrink-0 mt-0.5" />

@@ -62,10 +62,10 @@ export function Landing() {
 
         <div className="relative z-10 flex flex-col items-center gap-8 max-w-4xl w-full py-12 mt-8 md:mt-0 font-hero">
           <div className="space-y-4 md:space-y-6 text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-hero font-bold tracking-tight text-white drop-shadow-lg leading-tight">
+            <h1 className="text-[40px] sm:text-[48px] md:text-[56px] font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight">
               {t("The Open-Source Microsoft Fabric Toolkit")}
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-[#c9d1d9] font-light max-w-2xl mx-auto drop-shadow-sm px-2">
+            <p className="text-base sm:text-lg md:text-[16px] text-[#c9d1d9] font-normal max-w-2xl mx-auto drop-shadow-sm px-2">
               {t(
                 "Plan capacity, estimate pricing, compare Fabric SKUs, calculate reserved savings, forecast growth, and optimize Microsoft Fabric deployments.",
               )}
@@ -75,13 +75,13 @@ export function Landing() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-2 sm:mt-4 w-full sm:w-auto px-4 sm:px-0">
             <button
               onClick={() => navigate("/wizard")}
-              className="px-8 py-3.5 bg-[#2f81f7] hover:bg-[#1f6feb] text-white font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto text-lg"
+              className="px-8 py-3.5 bg-[#2f81f7] hover:bg-[#1f6feb] text-white font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[16px]"
             >
               {t("Launch Capacity Calculator")}
             </button>
             <button
               onClick={() => navigate("/docs")}
-              className="px-8 py-3.5 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto text-lg"
+              className="px-8 py-3.5 bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[16px]"
             >
               {t("View Documentation")}
             </button>
@@ -89,7 +89,7 @@ export function Landing() {
               href="https://github.com/sabledattatray/fabric-master"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3.5 bg-transparent hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-semibold rounded-md shadow-sm transition-colors w-full sm:w-auto text-lg flex items-center justify-center gap-2"
+              className="px-8 py-3.5 bg-transparent hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[16px] flex items-center justify-center gap-2"
             >
               <Github className="w-5 h-5" /> {t("GitHub")}
             </a>
@@ -118,7 +118,7 @@ export function Landing() {
           </div>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left w-full max-w-4xl">
-            <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-lg">
+            <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-2xl">
               <Database className="w-8 h-8 text-[#58a6ff] mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">
                 {t("Capacity Calculator")}
@@ -129,7 +129,7 @@ export function Landing() {
                 )}
               </p>
             </div>
-            <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-lg">
+            <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-2xl">
               <Globe className="w-8 h-8 text-[#3fb950] mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">
                 {t("Fabric Cost Optimizer")}
@@ -140,7 +140,7 @@ export function Landing() {
                 )}
               </p>
             </div>
-            <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-lg">
+            <div className="bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] p-6 rounded-2xl">
               <Search className="w-8 h-8 text-[#d29922] mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">
                 {t("Power BI Capacity")}

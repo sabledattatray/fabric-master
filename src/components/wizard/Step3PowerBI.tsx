@@ -29,7 +29,7 @@ export function Step3PowerBI() {
             step="1"
             value={data.powerBiInput.queryComplexityScale}
             onChange={(e) => updateData('powerBiInput', { queryComplexityScale: Number(e.target.value) })}
-            className="w-full h-2 bg-[#30363d] rounded-lg appearance-none cursor-pointer accent-[#58a6ff]"
+            className="w-full h-2 bg-[#30363d] rounded-2xl appearance-none cursor-pointer accent-[#58a6ff]"
           />
           <div className="flex justify-between text-xs text-[#8b949e] px-1 mt-2">
             <span>Simple (1)</span>

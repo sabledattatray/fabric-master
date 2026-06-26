@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Step1DataFactory } from '../components/wizard/Step1DataFactory';
 import { Step2Spark } from '../components/wizard/Step2Spark';
 import { Step3PowerBI } from '../components/wizard/Step3PowerBI';
+import { Step4Existing } from '../components/wizard/Step4Existing';
 import { useWizard } from '../context/WizardContext';
 import { Button } from '../components/ui/Button';
 import { ArrowRight, ArrowLeft, Loader2, Database } from 'lucide-react';
@@ -22,7 +23,8 @@ export function Wizard() {
   const STEPS = [
     { id: 'data-factory', title: t('Data Factory') },
     { id: 'spark', title: t('Spark') },
-    { id: 'power-bi', title: t('Power BI') }
+    { id: 'power-bi', title: t('Power BI') },
+    { id: 'existing', title: t('Current Setup') }
   ];
 
   const handleNext = async () => {
@@ -48,7 +50,7 @@ export function Wizard() {
       const result = calculateCapacity(data);
       
       if (result.success) {
-        navigate('/results', { state: { evaluation: result } });
+        navigate('/results', { state: { evaluation: result, inputData: data } });
       } else {
         alert("Failed to calculate capacity: " + result.error);
       }
@@ -74,7 +76,7 @@ export function Wizard() {
             <ul className="space-y-1">
               {STEPS.map((step, index) => (
                 <li key={step.id} className={`flex items-center ${index > currentStep ? 'opacity-50' : ''}`}>
-                  <span className={`text-sm rounded-md px-2 py-1.5 w-full transition-colors ${index === currentStep ? 'font-semibold text-[#58a6ff] bg-[#1f6feb]/10' : (index < currentStep ? 'font-medium text-[#c9d1d9] hover:bg-[#21262d]' : 'text-[#8b949e]')}`}>
+                  <span className={`text-sm rounded-xl px-2 py-1.5 w-full transition-colors ${index === currentStep ? 'font-semibold text-[#58a6ff] bg-[#1f6feb]/10' : (index < currentStep ? 'font-medium text-[#c9d1d9] hover:bg-[#21262d]' : 'text-[#8b949e]')}`}>
                     {index + 1}. {step.title}
                   </span>
                 </li>
@@ -104,6 +106,7 @@ export function Wizard() {
               {currentStep === 0 && <Step1DataFactory />}
               {currentStep === 1 && <Step2Spark />}
               {currentStep === 2 && <Step3PowerBI />}
+              {currentStep === 3 && <Step4Existing />}
               
               <div className="mt-12 flex items-center justify-between pt-6">
                 <Button 

@@ -1,10 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lato:wght@400;700;900&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  --font-display: "Space Grotesk", sans-serif;
-  --font-hero: "Segoe UI Semibold", "Segoe UI", Lato, Helvetica, Arial, sans-serif;
+  --font-sans:
+    "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display: "Geist", sans-serif;
+  --font-hero: "Geist", sans-serif;
+  --font-mono:
+    "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+:root:lang(ja) {
+  --font-sans:
+    "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif;
+  --font-display: "Noto Sans JP", sans-serif;
+  --font-hero: "Noto Sans JP", sans-serif;
+}
+
+:root:lang(zh) {
+  --font-sans:
+    "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif;
+  --font-display: "Noto Sans SC", sans-serif;
+  --font-hero: "Noto Sans SC", sans-serif;
+}
+
+:root:lang(ko) {
+  --font-sans:
+    "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif;
+  --font-display: "Noto Sans KR", sans-serif;
+  --font-hero: "Noto Sans KR", sans-serif;
 }
 
 body {
@@ -13,14 +43,20 @@ body {
 }
 
 @media print {
-  html, body, #root, .h-screen, .h-full, .overflow-y-auto, .overflow-hidden {
+  html,
+  body,
+  #root,
+  .h-screen,
+  .h-full,
+  .overflow-y-auto,
+  .overflow-hidden {
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
     background-color: #0d1117 !important; /* Keep dark theme for report */
     color: #c9d1d9 !important;
   }
-  
+
   /* Reset flex to block to prevent page cuts */
   .flex-1 {
     display: block !important;

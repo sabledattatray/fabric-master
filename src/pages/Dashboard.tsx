@@ -16,6 +16,7 @@ export function Dashboard() {
   const location = useLocation();
   const navigate = useNavigate();
   const evaluation = location.state?.evaluation as EvaluationResponse | undefined;
+  const inputData = location.state?.inputData as any;
   const [isExporting, setIsExporting] = useState(false);
   const [reportDetails, setReportDetails] = useState({
     companyName: '',
@@ -59,6 +60,27 @@ export function Dashboard() {
   const currentIndex = allSkus.indexOf(cu);
   const prevSkuCu = currentIndex > 0 ? allSkus[currentIndex - 1] : null;
   const nextSkuCu = currentIndex < allSkus.length - 1 ? allSkus[currentIndex + 1] : null;
+  const nextSkuName = nextSkuCu ? `F${nextSkuCu}` : 'a higher tier';
+
+  // Estimate Upgrade Date
+  let upgradeDate = "";
+  if (m6 > cu) {
+    const d = new Date(); d.setMonth(d.getMonth() + 6);
+    upgradeDate = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  } else if (y1 > cu) {
+    const d = new Date(); d.setFullYear(d.getFullYear() + 1);
+    upgradeDate = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  } else if (y2 > cu) {
+    const d = new Date(); d.setFullYear(d.getFullYear() + 2);
+    upgradeDate = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  } else {
+    upgradeDate = "beyond 2 years";
+  }
+
+  const existingCu = inputData?.currentSkuCu as number | null | undefined;
+  const existingSkuName = existingCu ? `F${existingCu}` : null;
+  
+  const riAnnualSavings = financialSummary.potentialSavingsMonthly * 12;
 
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -190,13 +212,25 @@ export function Dashboard() {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 print:hidden border-b border-[#30363d] pb-6 mb-8">
             <div>
-              <div className="inline-block px-2 py-1 bg-[#238636]/10 text-[#3fb950] text-[10px] font-bold uppercase rounded-md mb-3 flex items-center w-max border border-[#3fb950]/20">
+              <div className="inline-block px-2 py-1 bg-[#238636]/10 text-[#3fb950] text-[10px] font-bold uppercase rounded-xl mb-3 flex items-center w-max border border-[#3fb950]/20">
                 <CheckCircle2 className="w-3 h-3 mr-1" /> {t('Capacity Assessment Complete')}
               </div>
               <h1 className="text-4xl font-display font-bold tracking-tight text-[#e6edf3]">{t('Fabric Capacity Consultant')}</h1>
               <p className="text-xl text-[#8b949e] mt-3 font-light">{t('AI-driven analysis and decision support for your Microsoft Fabric investment.')}</p>
             </div>
             <div className="flex items-center space-x-3">
+              <Button variant="outline" onClick={async () => {
+                const encodedData = btoa(JSON.stringify(inputData));
+                const url = `${window.location.origin}/report?data=${encodedData}`;
+                try {
+                  await navigator.clipboard.writeText(url);
+                  alert(t('Share link copied to clipboard!'));
+                } catch (err) {
+                  prompt(t('Copy this link to share:'), url);
+                }
+              }}>
+                <LinkIcon className="w-4 h-4 mr-2 text-[#8b949e]" /> {t('Share')}
+              </Button>
               <Button variant="outline" onClick={() => navigate('/wizard')}>
                 <ArrowLeft className="w-4 h-4 mr-2 text-[#8b949e]" /> {t('Adjust Parameters')}
               </Button>
@@ -211,48 +245,84 @@ export function Dashboard() {
             {/* Left Column - Main Content (Span 8) */}
             <div className="lg:col-span-8 space-y-8 print:w-full">
               
-              {/* Executive Summary */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border print:bg-light">
-                <h3 className="text-lg font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3] print-text-dark print-border">{t('Executive Summary')}</h3>
+              {/* Board Recommendation */}
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border print:bg-light">
+                <h3 className="text-lg font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3] print-text-dark print-border">{t('Board Recommendation')}</h3>
                 <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="flex-1 space-y-4">
                     <p className="text-[#c9d1d9] print-text-dark leading-relaxed">
-                      {t('Based on your workload parameters, we analyzed 12 different Microsoft Fabric capacity tiers. Your optimal balance of performance and cost efficiency is the')} <strong>{targetSkuRecommendation.costOptimizedSkuName}</strong> {t('tier.')}
+                      {t('Based on projected workload growth over the next two years, Microsoft Fabric')} <strong>{targetSkuRecommendation.costOptimizedSkuName}</strong> {t('provides the optimal balance between performance, scalability, and operational cost.')}
                     </p>
-                    <ul className="space-y-3">
-                      <li className="flex items-start text-sm text-[#c9d1d9] print-text-dark font-medium">
-                        <Check className="w-5 h-5 text-[#3fb950] mr-3 shrink-0" />
-                        {t('Supports your current estimated workload of')} {baseCu} {t('CU')}
-                      </li>
-                      <li className="flex items-start text-sm text-[#c9d1d9] print-text-dark font-medium">
-                        <Check className="w-5 h-5 text-[#3fb950] mr-3 shrink-0" />
-                        {t('Includes')} {remaining} {t('CU headroom for short-term growth')}
-                      </li>
-                      <li className="flex items-start text-sm text-[#c9d1d9] print-text-dark font-medium">
-                        <Check className="w-5 h-5 text-[#3fb950] mr-3 shrink-0" />
-                        {t('Low throttling risk')} ({throttlingAnalysis.optimizedTierRiskPercentage}% {t('projected')})
-                      </li>
-                      <li className="flex items-start text-sm text-[#c9d1d9] print-text-dark font-medium">
-                        <Check className="w-5 h-5 text-[#3fb950] mr-3 shrink-0" />
-                        {t('Saves up to')} ${financialSummary.potentialSavingsMonthly.toLocaleString()}{t('/month with a Reserved Instance')}
-                      </li>
-                    </ul>
+                    <p className="text-[#c9d1d9] print-text-dark leading-relaxed">
+                      {t('An upgrade to')} <strong>{nextSkuName}</strong> {t('is projected around')} <strong>{upgradeDate}</strong>.
+                    </p>
+                    <div className="mt-4 pt-4 border-t border-[#30363d] print-border">
+                      <p className="text-sm text-[#8b949e] uppercase font-semibold mb-1">{t('Estimated annual savings with Reserved Capacity')}:</p>
+                      <p className="text-2xl font-bold font-mono text-[#3fb950]">${riAnnualSavings.toLocaleString()}</p>
+                    </div>
                   </div>
-                  <div className="w-full md:w-64 bg-[#161b22] border border-[#30363d] rounded-md p-6 text-center flex flex-col items-center justify-center shrink-0 print:border-2 print-border">
+                  <div className="w-full md:w-64 bg-[#161b22] border border-[#30363d] rounded-xl p-6 text-center flex flex-col items-center justify-center shrink-0 print:border-2 print-border">
                     <span className="text-xs uppercase tracking-wider text-[#8b949e] font-semibold mb-2 flex items-center">
                       <Star className="w-4 h-4 mr-1 text-[#d29922] fill-current" /> {t('Recommended')}
                     </span>
-                    <div className="text-5xl font-semibold text-[#e6edf3] print-text-dark tracking-tight">{targetSkuRecommendation.costOptimizedSkuName}</div>
-                    <div className="text-sm text-[#8b949e] mt-2">{cu} {t('Capacity Units')}</div>
+                    <div className="text-5xl font-bold font-mono text-[#e6edf3] print-text-dark tracking-tight">{targetSkuRecommendation.costOptimizedSkuName}</div>
+                    <div className="text-sm font-mono text-[#8b949e] mt-2">{cu} <span className="font-sans">{t('Capacity Units')}</span></div>
                   </div>
                 </div>
               </div>
+
+              {/* Compare Existing Capacity */}
+              {existingCu && (
+                <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border">
+                  <h3 className="text-lg font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3] print-text-dark print-border">{t('Compare Existing Capacity')}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-4 flex flex-col items-center justify-center">
+                      <span className="text-xs text-[#8b949e] uppercase tracking-wider mb-1">{t('Current')}</span>
+                      <span className="text-3xl font-bold font-mono text-[#e6edf3]">{existingSkuName}</span>
+                    </div>
+                    <div className="bg-[#161b22] border border-[#3fb950]/30 rounded-xl p-4 flex flex-col items-center justify-center">
+                      <span className="text-xs text-[#3fb950] uppercase tracking-wider mb-1 font-semibold">{t('Recommended')}</span>
+                      <span className="text-3xl font-bold font-mono text-[#e6edf3]">{targetSkuRecommendation.costOptimizedSkuName}</span>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#c9d1d9] mb-1">{t('Performance Improvement')}</h4>
+                      <p className="text-sm text-[#8b949e] leading-relaxed">
+                        {cu > existingCu 
+                          ? `${t('Upgrading to')} ${targetSkuRecommendation.costOptimizedSkuName} ${t('provides')} ${((cu / existingCu) * 100 - 100).toFixed(0)}% ${t('more compute power, eliminating current bottleneck risks.')}`
+                          : cu < existingCu 
+                          ? `${t('Downsizing to')} ${targetSkuRecommendation.costOptimizedSkuName} ${t('will maintain required performance while reducing excess capacity by')} ${((existingCu - cu) / existingCu * 100).toFixed(0)}%.`
+                          : t('Your current capacity perfectly matches our recommendation.')}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#c9d1d9] mb-1">{t('Migration Notes')}</h4>
+                      <p className="text-sm text-[#8b949e] leading-relaxed">
+                        {cu !== existingCu 
+                          ? t('Capacity scaling in Microsoft Fabric is seamless and requires no data migration or downtime. You can adjust your SKU directly from the Azure Portal.')
+                          : t('No migration required.')}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-[#c9d1d9] mb-1">{t('Upgrade Timeline')}</h4>
+                      <p className="text-sm text-[#8b949e] leading-relaxed">
+                        {cu > existingCu 
+                          ? t('Immediate upgrade recommended to mitigate throttling risks.')
+                          : cu < existingCu 
+                          ? t('Immediate downscale recommended to optimize costs.')
+                          : `${t('Maintain current capacity until')} ${upgradeDate}.`}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Grid for Utilization and Why */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:grid-cols-2">
                 
                 {/* Capacity Utilization */}
-                <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border">
+                <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border">
                   <h3 className="text-lg font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3] print-text-dark print-border">{t('Capacity Utilization')}</h3>
                   
                   <div className="space-y-2">
@@ -296,7 +366,7 @@ export function Dashboard() {
                 </div>
 
                 {/* Why this SKU */}
-                <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border">
+                <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border">
                   <h3 className="text-lg font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3] print-text-dark print-border">{t('Why')} {targetSkuRecommendation.costOptimizedSkuName}?</h3>
                   <ul className="space-y-3">
                     <li className="flex items-center text-sm text-[#c9d1d9] print-text-dark">
@@ -324,7 +394,7 @@ export function Dashboard() {
               </div>
 
               {/* Alternative SKUs */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-md shadow-sm overflow-hidden print:shadow-none print:border print-border">
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl shadow-sm overflow-hidden print:shadow-none print:border print-border">
                 <div className="p-4 border-b border-[#30363d] print-border bg-[#161b22] print:bg-white">
                   <h3 className="text-sm font-semibold text-[#e6edf3] print-text-dark">{t('Alternative SKUs')}</h3>
                 </div>
@@ -376,7 +446,7 @@ export function Dashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:grid-cols-2 print:break-inside-avoid">
                 
                 {/* AI Recommendations */}
-                <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border">
+                <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border">
                   <h3 className="text-lg font-semibold border-b border-[#30363d] pb-2 mb-4 flex items-center text-[#e6edf3] print-text-dark print-border">
                     <Zap className="w-5 h-5 mr-2 text-[#58a6ff]" /> {t('AI Insights')}
                   </h3>
@@ -402,7 +472,7 @@ export function Dashboard() {
                 </div>
 
                 {/* Growth Forecast */}
-                <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border flex flex-col">
+                <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border flex flex-col">
                   <h3 className="text-lg font-semibold border-b border-[#30363d] pb-2 mb-4 flex items-center text-[#e6edf3] print-text-dark print-border">
                     <TrendingDown className="w-5 h-5 mr-2 text-[#8b949e] rotate-180" /> {t('Growth Forecast')}
                   </h3>
@@ -423,7 +493,7 @@ export function Dashboard() {
                     </ResponsiveContainer>
                   </div>
 
-                  <div className="bg-[#161b22] print:bg-[#f6f8fa] rounded-md p-3 border border-[#30363d] print-border mt-auto">
+                  <div className="bg-[#161b22] print:bg-[#f6f8fa] rounded-xl p-3 border border-[#30363d] print-border mt-auto">
                     <p className="text-sm text-[#c9d1d9] print-text-dark">
                       <strong>{t('Recommendation:')}</strong> {t('Upgrade to')} {nextSkuCu ? `F${nextSkuCu}` : t('a larger tier')} {t('around')} {new Date(Date.now() + 1000*60*60*24*365 * (nextSkuCu && nextSkuCu > y1 ? 1.5 : 0.8)).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}.
                     </p>
@@ -432,7 +502,7 @@ export function Dashboard() {
               </div>
 
               {/* Methodology Section */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border print:break-inside-avoid">
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border print:break-inside-avoid">
                 <h3 className="text-sm font-semibold border-b border-[#30363d] pb-2 mb-3 text-[#e6edf3] print-text-dark print-border">{t('Methodology')}</h3>
                 <p className="text-sm text-[#8b949e] print-text-dark leading-relaxed">
                   Recommendations are based on workload estimates, concurrent usage, Spark utilization, Microsoft Fabric pricing guidelines, and projected growth curves. Financial estimates assume consistent usage over the billing period. Actual sizing and costs should be validated with production telemetry in Microsoft Fabric.
@@ -466,7 +536,7 @@ export function Dashboard() {
             <div className="lg:col-span-4 space-y-8 print:w-full print:mt-8">
               
               {/* Scores */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm space-y-6 print:shadow-none print:border print:break-inside-avoid">
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm space-y-6 print:shadow-none print:border print:break-inside-avoid">
                 <div>
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-sm font-semibold text-[#c9d1d9] print-text-dark">{t('Capacity Health')}</span>
@@ -498,7 +568,7 @@ export function Dashboard() {
               </div>
 
               {/* Pricing breakdown with Chart */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border print:break-inside-avoid">
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border print:break-inside-avoid">
                 <h3 className="text-sm font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3] print-text-dark print-border">{t('Pricing Breakdown')}</h3>
                 
                 <div className="h-32 mb-6 border-b border-[#30363d] pb-6 print-border">
@@ -523,29 +593,29 @@ export function Dashboard() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-[#8b949e]">{t('Hourly')}</span>
-                    <span className="text-sm font-medium text-[#c9d1d9] print-text-dark">${financialSummary.payAsYouGoHourlyCost}</span>
+                    <span className="text-sm font-medium font-mono text-[#c9d1d9] print-text-dark">${financialSummary.payAsYouGoHourlyCost}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-[#8b949e]">{t('Daily')}</span>
-                    <span className="text-sm font-medium text-[#c9d1d9] print-text-dark">${dailyCost.toLocaleString()}</span>
+                    <span className="text-sm font-medium font-mono text-[#c9d1d9] print-text-dark">${dailyCost.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-[#8b949e]">{t('Monthly')}</span>
-                    <span className="text-lg font-semibold text-[#c9d1d9] print-text-dark">${financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}</span>
+                    <span className="text-lg font-semibold font-mono text-[#c9d1d9] print-text-dark">${financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center pt-3 border-t border-[#30363d] print-border">
                     <span className="text-sm text-[#8b949e]">{t('Yearly (PAYG)')}</span>
-                    <span className="text-sm font-medium text-[#c9d1d9] print-text-dark">${yearlyCost.toLocaleString()}</span>
+                    <span className="text-sm font-medium font-mono text-[#c9d1d9] print-text-dark">${yearlyCost.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center pt-3 border-t border-[#30363d] print-border">
                     <span className="text-sm font-semibold text-[#58a6ff] print:text-[#0969da]">{t('Yearly (Reserved)')}</span>
-                    <span className="text-lg font-semibold text-[#58a6ff] print:text-[#0969da]">${riYearlyCost.toLocaleString()}</span>
+                    <span className="text-lg font-semibold font-mono text-[#58a6ff] print:text-[#0969da]">${riYearlyCost.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
 
               {/* Enterprise Readiness */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border print:break-inside-avoid">
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border print:break-inside-avoid">
                 <h3 className="text-sm font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3] print-text-dark print-border">{t('Enterprise Assessment')}</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
@@ -565,14 +635,14 @@ export function Dashboard() {
                     <div className="flex text-[#d29922] text-[10px]"><Star className="fill-current w-3 h-3" /><Star className="fill-current w-3 h-3" /><Star className="fill-current w-3 h-3" /><Star className="fill-current w-3 h-3" /><Star className="fill-current w-3 h-3" /></div>
                   </div>
                 </div>
-                <div className="mt-4 p-3 bg-[#161b22] print:bg-[#f6f8fa] rounded-md border border-[#30363d] print-border flex items-center justify-between">
+                <div className="mt-4 p-3 bg-[#161b22] print:bg-[#f6f8fa] rounded-xl border border-[#30363d] print-border flex items-center justify-between">
                   <span className="text-xs font-semibold text-[#8b949e] uppercase">{t('Overall')}</span>
                   <span className="text-xs font-semibold text-[#3fb950] flex items-center"><CheckCircle2 className="w-3 h-3 mr-1" /> {t('Production Ready')}</span>
                 </div>
               </div>
 
               {/* Explain Every Metric */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:shadow-none print:border print:break-inside-avoid">
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border print:break-inside-avoid">
                 <div className="flex items-center justify-between mb-4 border-b border-[#30363d] print-border pb-2">
                   <h3 className="text-sm font-semibold text-[#c9d1d9] print-text-dark">{t('Throttling Risk:')} {throttlingAnalysis.optimizedTierRiskPercentage}%</h3>
                   <AlertTriangle className={`w-4 h-4 ${throttlingAnalysis.optimizedTierRiskPercentage > 20 ? 'text-[#d29922]' : 'text-[#3fb950]'}`} />
@@ -581,7 +651,7 @@ export function Dashboard() {
                 <p className="text-sm text-[#c9d1d9] print-text-dark mb-3">
                   {t('Microsoft Fabric may delay workloads when capacity becomes saturated.')}
                 </p>
-                <p className="text-sm text-[#c9d1d9] print-text-dark bg-[#161b22] print:bg-white p-3 rounded-md border border-[#30363d] print-border">
+                <p className="text-sm text-[#c9d1d9] print-text-dark bg-[#161b22] print:bg-white p-3 rounded-xl border border-[#30363d] print-border">
                   {throttlingAnalysis.optimizedTierRiskPercentage > 20 
                     ? t("Your workload has some peak burst risks, consider smoothing jobs or using the Safe SKU during high load periods.")
                     : t("Your workload has sufficient headroom, so throttling is extremely unlikely.")}
@@ -589,7 +659,7 @@ export function Dashboard() {
               </div>
 
               {/* Report Settings (Hidden in Print) */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-md p-6 shadow-sm print:hidden">
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:hidden">
                 <h3 className="text-sm font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3]">{t('Report Customization')}</h3>
                 <p className="text-xs text-[#8b949e] mb-4">{t('Add details to personalize the exported PDF report.')}</p>
                 <div className="space-y-3">
@@ -598,7 +668,7 @@ export function Dashboard() {
                     <input 
                       type="text" 
                       placeholder="e.g. Contoso Ltd." 
-                      className="w-full bg-[#161b22] border border-[#30363d] rounded-md px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
+                      className="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
                       value={reportDetails.companyName}
                       onChange={(e) => setReportDetails({...reportDetails, companyName: e.target.value})}
                     />
@@ -608,7 +678,7 @@ export function Dashboard() {
                     <input 
                       type="text" 
                       placeholder="e.g. Data Estate Migration" 
-                      className="w-full bg-[#161b22] border border-[#30363d] rounded-md px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
+                      className="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
                       value={reportDetails.projectName}
                       onChange={(e) => setReportDetails({...reportDetails, projectName: e.target.value})}
                     />
@@ -619,7 +689,7 @@ export function Dashboard() {
                       <input 
                         type="text" 
                         placeholder="e.g. Production" 
-                        className="w-full bg-[#161b22] border border-[#30363d] rounded-md px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
+                        className="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
                         value={reportDetails.environment}
                         onChange={(e) => setReportDetails({...reportDetails, environment: e.target.value})}
                       />
@@ -629,7 +699,7 @@ export function Dashboard() {
                       <input 
                         type="text" 
                         placeholder="Your name" 
-                        className="w-full bg-[#161b22] border border-[#30363d] rounded-md px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
+                        className="w-full bg-[#161b22] border border-[#30363d] rounded-xl px-3 py-1.5 text-sm text-[#c9d1d9] focus:outline-none focus:border-[#58a6ff]"
                         value={reportDetails.consultantName}
                         onChange={(e) => setReportDetails({...reportDetails, consultantName: e.target.value})}
                       />
@@ -639,7 +709,7 @@ export function Dashboard() {
               </div>
 
               {/* Share & Export Report Cover */}
-              <div className="bg-[#161b22] text-[#c9d1d9] rounded-md p-6 shadow-sm relative overflow-hidden border border-[#30363d] print:hidden">
+              <div className="bg-[#161b22] text-[#c9d1d9] rounded-xl p-6 shadow-sm relative overflow-hidden border border-[#30363d] print:hidden">
                 <div className="absolute -right-10 -top-10 w-32 h-32 bg-[#1f6feb] opacity-10 rounded-full blur-2xl transition-opacity"></div>
                 <h3 className="text-xs uppercase tracking-wider text-[#8b949e] font-semibold mb-4 flex items-center">
                   <FileText className="w-4 h-4 mr-2" /> {t('Share & Export')}
@@ -653,11 +723,11 @@ export function Dashboard() {
                   <div className="grid grid-cols-2 gap-4 py-4 border-y border-[#30363d]">
                     <div>
                       <div className="text-xs text-[#8b949e] uppercase">{t('Recommended')}</div>
-                      <div className="font-semibold text-[#c9d1d9]">{targetSkuRecommendation.costOptimizedSkuName}</div>
+                      <div className="font-semibold font-mono text-[#c9d1d9]">{targetSkuRecommendation.costOptimizedSkuName}</div>
                     </div>
                     <div>
                       <div className="text-xs text-[#8b949e] uppercase">{t('Est. Cost')}</div>
-                      <div className="font-semibold text-[#c9d1d9]">${financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}/mo</div>
+                      <div className="font-semibold font-mono text-[#c9d1d9]">${financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}/mo</div>
                     </div>
                   </div>
                   

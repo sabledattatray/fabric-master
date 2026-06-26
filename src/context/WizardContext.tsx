@@ -31,13 +31,14 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<WorkloadCalculationInput>(defaultData);
 
   const updateData = (key: keyof WorkloadCalculationInput, value: any) => {
-    setData((prev) => ({
-      ...prev,
-      [key]: {
-        ...(typeof prev[key] === 'object' ? prev[key] : {}),
-        ...value,
-      },
-    }));
+    setData((prev) => {
+      // If the existing value is an object (and not null), merge it. Otherwise, replace it.
+      const isObject = prev[key] !== null && typeof prev[key] === 'object' && !Array.isArray(prev[key]);
+      return {
+        ...prev,
+        [key]: isObject ? { ...prev[key], ...value } : value,
+      };
+    });
   };
 
   return (

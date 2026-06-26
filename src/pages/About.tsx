@@ -38,13 +38,13 @@ export function About() {
         </div>
 
         <div className="flex justify-center space-x-4 mb-16">
-          <a href="https://dattasable.com" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#21262d] border border-[#30363d] rounded-md text-[#c9d1d9] hover:bg-[#30363d] hover:text-white transition-colors flex items-center font-medium text-sm">
+          <a href="https://dattasable.com" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#21262d] border border-[#30363d] rounded-xl text-[#c9d1d9] hover:bg-[#30363d] hover:text-white transition-colors flex items-center font-medium text-sm">
              <Code className="w-4 h-4 mr-2" /> Website
           </a>
-          <a href="https://github.com/sabledattatray" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#21262d] border border-[#30363d] rounded-md text-[#c9d1d9] hover:bg-[#30363d] hover:text-white transition-colors flex items-center font-medium text-sm">
+          <a href="https://github.com/sabledattatray" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#21262d] border border-[#30363d] rounded-xl text-[#c9d1d9] hover:bg-[#30363d] hover:text-white transition-colors flex items-center font-medium text-sm">
              <Github className="w-4 h-4 mr-2" /> GitHub
           </a>
-          <a href="https://linkedin.com/in/dattasable" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#2f81f7] text-white rounded-md hover:bg-[#1f6feb] transition-colors flex items-center font-medium text-sm">
+          <a href="https://linkedin.com/in/dattasable" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-[#2f81f7] text-white rounded-xl hover:bg-[#1f6feb] transition-colors flex items-center font-medium text-sm">
              <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
           </a>
         </div>
@@ -81,7 +81,7 @@ export function About() {
              <p className="mb-4">
                I believe in building in public. Fabric Master is proudly open-source under the MIT License. The community is welcome to audit the calculation models, suggest improvements, and contribute new features.
              </p>
-             <div className="bg-[#161b22] border border-[#30363d] rounded-md p-6 mt-6">
+             <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-6 mt-6">
                 <h3 className="font-semibold text-white mb-2 flex items-center">
                   <Coffee className="w-5 h-5 mr-2 text-[#8b949e]" /> Support the project
                 </h3>

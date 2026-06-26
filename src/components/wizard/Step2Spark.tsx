@@ -23,7 +23,7 @@ export function Step2Spark() {
         <div className="space-y-1.5 w-full">
           <label className="block text-sm font-semibold text-[#e6edf3]">vCores per Node</label>
           <select
-            className="flex h-8 w-full rounded-md border border-[#30363d] bg-[#0d1117] px-3 text-sm text-[#c9d1d9] focus:outline-none focus:bg-[#0d1117] focus:border-[#58a6ff] focus:ring-1 focus:ring-[#58a6ff] shadow-inner"
+            className="flex h-8 w-full rounded-xl border border-[#30363d] bg-[#0d1117] px-3 text-sm text-[#c9d1d9] focus:outline-none focus:bg-[#0d1117] focus:border-[#58a6ff] focus:ring-1 focus:ring-[#58a6ff] shadow-inner"
             value={data.sparkComputeInput.vCoresPerNode}
             onChange={(e) => updateData('sparkComputeInput', { vCoresPerNode: Number(e.target.value) })}
           >

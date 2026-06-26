@@ -35,14 +35,14 @@ export function LanguageSelector() {
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-1.5 rounded-md border border-[#30363d] bg-transparent hover:bg-[#21262d] text-[#8b949e] hover:text-[#c9d1d9] transition-colors focus:outline-none"
+        className="p-1.5 rounded-xl border border-[#30363d] bg-transparent hover:bg-[#21262d] text-[#8b949e] hover:text-[#c9d1d9] transition-colors focus:outline-none"
         aria-label="Select Language"
       >
         <Globe className="w-5 h-5" />
       </button>
       
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[#161b22] ring-1 ring-[#30363d] focus:outline-none z-50">
+        <div className="absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-[#161b22] ring-1 ring-[#30363d] focus:outline-none z-50">
           <div className="py-2 max-h-64 overflow-y-auto custom-scrollbar" role="menu" aria-orientation="vertical">
             {LANGUAGES.map((language) => (
               <button

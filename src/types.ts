@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const WorkloadCalculationSchema = z.object({
   regionId: z.string().min(2).max(32).regex(/^[a-z0-9-]+$/),
   currencyCode: z.string().length(3).toUpperCase(),
+  currentSkuCu: z.number().optional().nullable(),
   dataFactoryInput: z.object({
     monthlyPipelines: z.number().nonnegative().max(10000000),
     avgActivities: z.number().int().nonnegative().max(500),

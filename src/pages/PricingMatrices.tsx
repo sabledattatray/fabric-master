@@ -38,7 +38,7 @@ export function PricingMatrices() {
             <p className="text-xl text-[#8b949e] mt-3 font-light">{t('Current Microsoft Fabric SKU pricing estimates (Pay-As-You-Go vs Reserved).')}</p>
           </div>
 
-          <div className="bg-[#0d1117] border border-[#30363d] rounded-md shadow-sm overflow-hidden mb-12">
+          <div className="bg-[#0d1117] border border-[#30363d] rounded-xl shadow-sm overflow-hidden mb-12">
             <table className="w-full text-left text-sm">
               <thead className="bg-[#161b22] text-[#8b949e] text-xs uppercase font-semibold border-b border-[#30363d]">
                 <tr>
