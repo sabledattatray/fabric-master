@@ -50,6 +50,12 @@ export function Wizard() {
       const result = calculateCapacity(data);
       
       if (result.success) {
+        try {
+          localStorage.setItem('fabric_master_last_evaluation', JSON.stringify(result));
+          localStorage.setItem('fabric_master_last_input_data', JSON.stringify(data));
+        } catch (storageErr) {
+          console.warn("Could not save to localStorage:", storageErr);
+        }
         navigate('/results', { state: { evaluation: result, inputData: data } });
       } else {
         alert("Failed to calculate capacity: " + result.error);

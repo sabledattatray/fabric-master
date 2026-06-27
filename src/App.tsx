@@ -21,6 +21,8 @@ import { SparkEstimator } from "./pages/SparkEstimator";
 import { PowerBICapacity } from "./pages/PowerBICapacity";
 import { FskuComparisons } from "./pages/FskuComparisons";
 import { Report } from "./pages/Report";
+import { Terms } from "./pages/Terms";
+import { Privacy } from "./pages/Privacy";
 
 export default function App() {
   const { i18n } = useTranslation();
@@ -48,6 +50,8 @@ export default function App() {
               <Route path="/power-bi-capacity" element={<PowerBICapacity />} />
               <Route path="/fsku-comparisons" element={<FskuComparisons />} />
               <Route path="/report" element={<Report />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
             </Routes>
           </Layout>
         </Router>

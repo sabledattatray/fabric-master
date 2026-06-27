@@ -75,7 +75,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="h-screen bg-[#0d1117] text-[#c9d1d9] font-sans flex flex-col print:h-auto print:min-h-0 print:overflow-visible print:block">
       {/* Global Top Header */}
-      <header className="h-16 flex items-center justify-between px-4 md:px-6 bg-[#010409]/95 backdrop-blur-md border-b border-[#30363d] shrink-0 sticky top-0 z-50 transition-colors duration-300 print:hidden">
+      <header className="h-16 flex items-center justify-between px-4 md:px-6 bg-[#0D1117]/95 backdrop-blur-md border-b border-[#30363d] shrink-0 sticky top-0 z-50 transition-colors duration-300 print:hidden">
         <div className="flex items-center flex-1 min-w-0">
           <div
             className="flex items-center space-x-2.5 text-white cursor-pointer group shrink-0"
@@ -135,7 +135,7 @@ export function Layout({ children }: LayoutProps) {
         {/* Sidebar Navigation */}
         <aside
           className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-[#010409] border-r border-[#30363d] transform transition-transform duration-200 ease-in-out flex flex-col top-0 lg:top-16
+          fixed inset-y-0 left-0 z-50 w-64 bg-[#0D1117] border-r border-[#30363d] transform transition-transform duration-200 ease-in-out flex flex-col top-0 lg:top-16
           ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0 lg:static lg:flex-shrink-0 print:hidden
         `}

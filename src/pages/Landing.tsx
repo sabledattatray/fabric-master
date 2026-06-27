@@ -49,17 +49,7 @@ export function Landing() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full flex flex-col items-center px-4 border-b border-[#30363d] min-h-[calc(100vh-4rem)] overflow-hidden">
-        <div className="absolute inset-0 bg-black z-0">
-          <img
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
-            alt="Hero Background"
-            className="w-full h-full object-cover opacity-40 mix-blend-screen"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0d1117] opacity-90"></div>
-        </div>
-
+      <section className="relative w-full flex flex-col items-center px-4 border-b border-[#30363d] min-h-[calc(100vh-4rem)] overflow-hidden bg-[#161B22]">
         <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8 max-w-4xl w-full pt-16 pb-16 md:pt-24 md:pb-24 font-hero flex-1 justify-center">
           <div className="space-y-4 md:space-y-6 text-center">
             <h1 className="text-[32px] sm:text-[40px] md:text-[56px] font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight px-2">
@@ -75,7 +65,7 @@ export function Landing() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 md:gap-4 mt-2 sm:mt-4 w-full sm:w-auto px-4 sm:px-0">
             <button
               onClick={() => navigate("/wizard")}
-              className="px-6 md:px-8 py-3.5 bg-[#2f81f7] hover:bg-[#1f6feb] text-white font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[15px] md:text-[16px] whitespace-normal sm:whitespace-nowrap h-auto min-h-[48px]"
+              className="px-6 md:px-8 py-3.5 bg-[#2EA043] hover:bg-[#2c974b] text-white font-medium rounded-xl shadow-sm transition-colors w-full sm:w-auto text-[15px] md:text-[16px] whitespace-normal sm:whitespace-nowrap h-auto min-h-[48px]"
             >
               {t("Launch Capacity Calculator")}
             </button>
@@ -154,7 +144,7 @@ export function Landing() {
       </section>
 
       {/* SEO Optimized Content Section */}
-      <section className="w-full border-b border-[#30363d] bg-[#010409] py-16 px-6">
+      <section className="w-full border-b border-[#30363d] bg-[#0D1117] py-16 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl font-display font-bold text-white mb-6">
@@ -258,7 +248,7 @@ export function Landing() {
       </main>
 
       {/* Trust Badges */}
-      <section className="w-full border-t border-[#30363d] bg-[#010409] py-12 px-6 text-center">
+      <section className="w-full border-t border-[#30363d] bg-[#0D1117] py-12 px-6 text-center">
         <h2 className="text-[#8b949e] font-semibold uppercase tracking-wider text-sm mb-6">
           Trusted By The Open Source Community
         </h2>

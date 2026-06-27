@@ -36,7 +36,7 @@ export function WizardProvider({ children }: { children: React.ReactNode }) {
       const isObject = prev[key] !== null && typeof prev[key] === 'object' && !Array.isArray(prev[key]);
       return {
         ...prev,
-        [key]: isObject ? { ...prev[key], ...value } : value,
+        [key]: isObject ? { ...(prev[key] as any), ...value } : value,
       };
     });
   };

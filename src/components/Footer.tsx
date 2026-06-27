@@ -65,8 +65,8 @@ export function Footer() {
             <span className="font-semibold">{t('Legal')}</span>
             <div className="flex flex-wrap gap-x-4 gap-y-2 items-center">
               <span>© {new Date().getFullYear()} Fabric Master</span>
-              <a href="#" className="text-[#58a6ff] hover:underline">{t('Terms')}</a>
-              <a href="#" className="text-[#58a6ff] hover:underline">{t('Privacy')}</a>
+              <Link to="/terms" className="text-[#58a6ff] hover:underline">{t('Terms')}</Link>
+              <Link to="/privacy" className="text-[#58a6ff] hover:underline">{t('Privacy')}</Link>
               <Link to="/docs" className="text-[#58a6ff] hover:underline">{t('Documentation')}</Link>
             </div>
           </div>

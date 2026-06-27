@@ -98,7 +98,7 @@ export function SEO({
 
   const currentUrl = url !== 'https://fabric.dattasable.com' ? url : (typeof window !== 'undefined' ? window.location.href : url);
   
-  const schemasToRender = [websiteSchema, softwareSchema, personSchema, faqSchema];
+  const schemasToRender: any[] = [websiteSchema, softwareSchema, personSchema, faqSchema];
   if (schema) {
     if (Array.isArray(schema)) {
       schemasToRender.push(...schema);

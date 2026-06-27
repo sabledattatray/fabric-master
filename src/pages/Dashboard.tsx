@@ -9,15 +9,34 @@ import {
 } from 'lucide-react';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { SEO } from '../components/SEO';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid, Legend, Gauge, PieChart, Pie } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid, Legend, PieChart, Pie } from 'recharts';
 import { useTranslation } from 'react-i18next';
 
 export function Dashboard() {
   const location = useLocation();
   const navigate = useNavigate();
-  const evaluation = location.state?.evaluation as EvaluationResponse | undefined;
-  const inputData = location.state?.inputData as any;
+  
+  // Try state first, then fallback to localStorage
+  const evaluation = (location.state?.evaluation || (() => {
+    try {
+      const saved = localStorage.getItem('fabric_master_last_evaluation');
+      return saved ? JSON.parse(saved) : undefined;
+    } catch {
+      return undefined;
+    }
+  })()) as EvaluationResponse | undefined;
+
+  const inputData = (location.state?.inputData || (() => {
+    try {
+      const saved = localStorage.getItem('fabric_master_last_input_data');
+      return saved ? JSON.parse(saved) : undefined;
+    } catch {
+      return undefined;
+    }
+  })()) as any;
+
   const [isExporting, setIsExporting] = useState(false);
+  const [showIframeModal, setShowIframeModal] = useState(false);
   const [reportDetails, setReportDetails] = useState({
     companyName: '',
     projectName: '',
@@ -97,10 +116,23 @@ export function Dashboard() {
   ];
 
   const handleExport = () => {
+    const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+    
+    if (isIframe) {
+      setShowIframeModal(true);
+      return;
+    }
+
     setIsExporting(true);
     setTimeout(() => {
-      window.print();
-      setIsExporting(false);
+      try {
+        window.print();
+      } catch (err) {
+        console.error("Print operation failed:", err);
+        alert(t("Failed to open print dialog. Please make sure popups/modals are allowed or open the app in a new tab."));
+      } finally {
+        setIsExporting(false);
+      }
     }, 500);
   };
 
@@ -119,94 +151,206 @@ export function Dashboard() {
           .print-footer {
             display: none !important;
           }
+          .print-watermark {
+            display: none !important;
+          }
           @media print {
             @page {
-              margin: 15mm;
+              margin: 20mm 15mm 20mm 15mm;
             }
             body {
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;
-              background-color: white !important;
+              background-color: #ffffff !important;
+              color: #111827 !important;
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
             }
-            .print-text-dark {
-              color: #24292f !important;
+            
+            #root, html, body, .flex-1, .overflow-y-auto {
+              background: #ffffff !important;
+              background-color: #ffffff !important;
+              color: #111827 !important;
             }
-            .print-text-light {
-              color: #57606a !important;
+
+            .bg-\[\#0d1117\], .bg-\[\#161b22\], .bg-black, .bg-\[\#11161d\], .print-bg-light {
+              background: #f8fafc !important;
+              background-color: #f8fafc !important;
+              border-color: #e2e8f0 !important;
+              color: #374151 !important;
+              box-shadow: none !important;
             }
-            .print-border {
-              border-color: #d0d7de !important;
+
+            div.bg-\[\#0d1117\], div.bg-\[\#161b22\] {
+              background-color: #ffffff !important;
+              border: 1px solid #e2e8f0 !important;
+              color: #374151 !important;
             }
-            .print-bg-light {
-              background-color: #f6f8fa !important;
+
+            .border, .border-t, .border-b, .border-r, .border-l, 
+            .border-\[\#30363d\], .divide-\[\#30363d\], .border-b-\[\#30363d\], .border-t-\[\#30363d\] {
+              border-color: #e2e8f0 !important;
             }
-            .break-after-page {
-              break-after: page;
+
+            h1, h2, h3, h4, h5, h6, strong, b {
+              color: #111827 !important;
+              font-weight: 700 !important;
             }
+
+            .text-white, .text-\[\#e6edf3\], .text-\[\#c9d1d9\], .text-\[\#f0f6fc\], .text-gray-100, .text-gray-200 {
+              color: #1f2937 !important;
+            }
+
+            .text-\[\#8b949e\], .text-gray-400 {
+              color: #4b5563 !important;
+            }
+
+            .text-\[\#58a6ff\], .text-blue-400, .text-blue-500 {
+              color: #2563eb !important;
+              font-weight: 600 !important;
+            }
+
+            .text-\[\#3fb950\], .text-green-500, .text-green-400 {
+              color: #10b981 !important;
+              font-weight: 600 !important;
+            }
+
+            .text-\[\#da3633\], .text-red-500, .text-red-400 {
+              color: #ef4444 !important;
+            }
+
+            table {
+              width: 100% !important;
+              border-collapse: collapse !important;
+              margin-top: 1rem !important;
+              margin-bottom: 1rem !important;
+            }
+
+            th, thead tr {
+              background-color: #f1f5f9 !important;
+              background: #f1f5f9 !important;
+              color: #0f172a !important;
+              font-weight: 600 !important;
+              border-bottom: 2px solid #cbd5e1 !important;
+            }
+
+            td {
+              border-bottom: 1px solid #e2e8f0 !important;
+              color: #334155 !important;
+            }
+
+            .break-inside-avoid, .print\:break-inside-avoid, .grid, blockquote, pre, table, tr {
+              break-inside: avoid !important;
+              page-break-inside: avoid !important;
+            }
+
+            .break-after-page, .break-before-page {
+              page-break-after: always !important;
+              break-after: page !important;
+            }
+
             .print-header {
-              position: fixed;
-              top: 0;
-              left: 0;
-              right: 0;
-              text-align: right;
-              font-size: 10px;
-              color: #8b949e;
-              border-bottom: 1px solid #d0d7de;
-              padding-bottom: 4px;
-              display: block !important;
+              position: fixed !important;
+              top: 0 !important;
+              left: 0 !important;
+              right: 0 !important;
+              font-size: 9px !important;
+              font-weight: 500 !important;
+              color: #64748b !important;
+              border-bottom: 1px solid #e2e8f0 !important;
+              padding-bottom: 4px !important;
+              display: flex !important;
+              justify-content: space-between !important;
+              align-items: center !important;
+              z-index: 9999 !important;
             }
             .print-footer {
-              position: fixed;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              text-align: center;
-              font-size: 10px;
-              color: #8b949e;
-              border-top: 1px solid #d0d7de;
-              padding-top: 4px;
+              position: fixed !important;
+              bottom: 0 !important;
+              left: 0 !important;
+              right: 0 !important;
+              font-size: 9px !important;
+              font-weight: 500 !important;
+              color: #64748b !important;
+              border-top: 1px solid #e2e8f0 !important;
+              padding-top: 4px !important;
+              display: flex !important;
+              justify-content: space-between !important;
+              align-items: center !important;
+              z-index: 9999 !important;
+            }
+
+            .print-watermark {
+              position: fixed !important;
+              top: 50% !important;
+              left: 50% !important;
+              transform: translate(-50%, -50%) rotate(-45deg) !important;
+              font-size: 7.5rem !important;
+              font-weight: 800 !important;
+              color: rgba(37, 99, 235, 0.035) !important;
+              z-index: -1000 !important;
+              pointer-events: none !important;
+              white-space: nowrap !important;
               display: block !important;
+              letter-spacing: 0.1em !important;
             }
           }
         `}
       </style>
       
-      <div className="hidden print:block print-header">
-        {t('Fabric Master | Microsoft Fabric Capacity Assessment')}
+      <div className="hidden print:block print-watermark">
+        FABRIC MASTER
       </div>
-      <div className="hidden print:block print-footer">
-        {t('Generated using Fabric Master | fabric.dattasable.com | Created by Datta Sable')}
+
+      <div className="hidden print:flex print-header">
+        <span>{t('Fabric Master | Microsoft Fabric Capacity Sizing Report')}</span>
+        <span>{reportDetails.companyName ? `${reportDetails.companyName}` : ''}</span>
+      </div>
+      <div className="hidden print:flex print-footer">
+        <span>fabric.dattasable.com | Prepared by {reportDetails.consultantName || 'Fabric Master'}</span>
+        <span>{t('Confidential Executive Report')}</span>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 md:p-10 flex justify-center bg-[#0d1117] print:p-0 print:overflow-visible print:bg-white w-full">
         <div className="max-w-7xl w-full space-y-8">
           
           {/* Cover Page for Print */}
-          <div className="hidden print:flex flex-col items-center justify-center h-[90vh] break-after-page w-full p-10 text-center relative print-text-dark">
-            <h1 className="text-4xl sm:text-5xl font-display font-bold mb-12 text-[#24292f]">Microsoft Fabric<br/>Capacity Assessment</h1>
+          <div className="hidden print:flex flex-col justify-between h-[95vh] break-after-page w-full p-16 text-left relative print-text-dark border-l-[16px] border-[#2563EB] bg-white">
+            <div>
+              <p className="text-sm font-semibold tracking-widest text-[#2563EB] uppercase mb-4">Fabric Master Executive Report</p>
+              <h1 className="text-5xl font-display font-extrabold text-[#111827] leading-tight mb-4">
+                Microsoft Fabric<br/>Capacity Assessment
+              </h1>
+              <p className="text-lg text-[#4b5563] max-w-2xl font-light">
+                Enterprise sizing recommendation, architectural alignment, and long-term financial projection for Power BI, Synapse Real-Time Analytics, and Data Engineering workloads.
+              </p>
+            </div>
             
-            {reportDetails.companyName && (
-              <div className="mb-12">
-                <p className="text-lg text-[#57606a] uppercase tracking-wider mb-2 font-semibold">{t('Prepared for')}</p>
-                <p className="text-3xl font-semibold">{reportDetails.companyName}</p>
-                {reportDetails.projectName && <p className="text-xl text-[#57606a] mt-2">{reportDetails.projectName}</p>}
-                {reportDetails.environment && <p className="text-lg text-[#57606a] mt-1">{reportDetails.environment} {t('Environment')}</p>}
+            <div className="space-y-8 my-auto">
+              {reportDetails.companyName && (
+                <div className="border-l-2 border-[#2563EB] pl-4">
+                  <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1 font-semibold">{t('Prepared for')}</p>
+                  <p className="text-3xl font-bold text-[#111827]">{reportDetails.companyName}</p>
+                  {reportDetails.projectName && <p className="text-lg text-[#4b5563] mt-1">{reportDetails.projectName}</p>}
+                  {reportDetails.environment && <p className="text-md text-[#4b5563] font-medium mt-0.5">{reportDetails.environment} {t('Environment')}</p>}
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-8 border-t border-[#e2e8f0] pt-8">
+                <div>
+                  <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1 font-semibold">{t('Prepared by')}</p>
+                  <p className="text-lg font-bold text-[#111827]">{reportDetails.consultantName || 'Fabric Master'}</p>
+                  <p className="text-xs text-[#6b7280]">fabric.dattasable.com</p>
+                </div>
+                <div>
+                  <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1 font-semibold">{t('Assessment Date')}</p>
+                  <p className="text-lg font-bold text-[#111827]">{today}</p>
+                </div>
               </div>
-            )}
-
-            <div className="mb-12">
-              <p className="text-lg text-[#57606a] uppercase tracking-wider mb-2 font-semibold">{t('Prepared by')}</p>
-              <p className="text-2xl font-semibold">{reportDetails.consultantName || 'Fabric Master'}</p>
             </div>
 
-            <div className="mb-12">
-              <p className="text-lg text-[#57606a] uppercase tracking-wider mb-2 font-semibold">{t('Assessment Date')}</p>
-              <p className="text-xl font-medium">{today}</p>
-            </div>
-
-            <div className="absolute bottom-10 w-full text-center">
-              <p className="text-[#57606a] font-medium text-lg">Created by Datta Sable</p>
-              <p className="text-[#0969da] font-medium mt-1">https://fabric.dattasable.com</p>
+            <div className="flex items-center justify-between border-t border-[#e2e8f0] pt-6 text-xs text-[#9ca3af]">
+              <span>Created by Datta Sable</span>
+              <span className="text-[#2563EB] font-medium">https://fabric.dattasable.com</span>
             </div>
           </div>
           
@@ -762,6 +906,61 @@ export function Dashboard() {
           </div>
         </div>
       </div>
+
+      {showIframeModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm print:hidden">
+          <div className="bg-[#161b22] border border-[#30363d] rounded-2xl max-w-md w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+            <button 
+              onClick={() => setShowIframeModal(false)}
+              className="absolute top-4 right-4 text-[#8b949e] hover:text-[#e6edf3] transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="p-3 bg-[#1f6feb]/10 text-[#58a6ff] rounded-full">
+                <FileText className="w-8 h-8" />
+              </div>
+              
+              <h3 className="text-xl font-bold text-[#e6edf3] tracking-tight">
+                {t('Export Sizing Report')}
+              </h3>
+              
+              <p className="text-sm text-[#8b949e] leading-relaxed">
+                {t("Browser security policies prevent PDF generation inside embedded preview frames. To generate your polished executive-ready capacity assessment, please open the application in a new tab.")}
+              </p>
+
+              <div className="w-full bg-[#0d1117] border border-[#30363d] rounded-xl p-4 text-left space-y-2">
+                <p className="text-xs font-semibold text-[#58a6ff] uppercase tracking-wider">{t('Why this is better')}:</p>
+                <ul className="text-xs text-[#c9d1d9] space-y-1.5 list-disc pl-4 font-normal leading-relaxed">
+                  <li>{t('High-fidelity Microsoft-style PDF layout')}</li>
+                  <li>{t('Durable data preservation via auto-saved state')}</li>
+                  <li>{t('Formatted clean margins, watermark, & footers')}</li>
+                </ul>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 w-full pt-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowIframeModal(false)}
+                  className="w-full sm:order-1"
+                >
+                  {t('Cancel')}
+                </Button>
+                <a 
+                  href={window.location.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center rounded-xl font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 duration-200 bg-[#1f6feb] text-white hover:bg-[#388bfd] h-10 px-4 text-sm sm:order-2"
+                  onClick={() => setShowIframeModal(false)}
+                >
+                  {t('Open in New Tab')}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
