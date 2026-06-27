@@ -86,7 +86,7 @@ export function Landing() {
           </div>
 
           {/* Personal Branding Mini-Section */}
-          <div className="mt-6 md:mt-8 flex flex-col items-center justify-center space-y-2 border border-[#30363d] bg-[#161b22]/80 backdrop-blur-sm rounded-3xl md:rounded-full px-4 md:px-6 py-3 w-full sm:w-auto text-center">
+          <div className="mt-6 md:mt-8 flex flex-col items-center justify-center space-y-2 border border-[#30363d] bg-[#161b22]/80 backdrop-blur-sm rounded-md px-4 md:px-6 py-3 w-full sm:w-auto text-center">
             <div className="flex items-center justify-center space-x-2 text-sm text-[#8b949e]">
               <span>{t("Created by")}</span>
               <a
