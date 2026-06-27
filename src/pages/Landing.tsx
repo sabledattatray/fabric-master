@@ -49,7 +49,7 @@ export function Landing() {
       />
 
       {/* Hero Section */}
-      <section className="relative w-full flex flex-col items-center justify-center py-24 md:py-32 px-4 border-b border-[#30363d] min-h-[calc(100vh-4rem)] overflow-hidden">
+      <section className="relative w-full flex flex-col items-center px-4 border-b border-[#30363d] min-h-[calc(100vh-4rem)] overflow-hidden">
         <div className="absolute inset-0 bg-black z-0">
           <img
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
@@ -60,7 +60,7 @@ export function Landing() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0d1117] opacity-90"></div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8 max-w-4xl w-full mt-4 md:mt-0 font-hero my-auto">
+        <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8 max-w-4xl w-full pt-16 pb-16 md:pt-24 md:pb-24 font-hero flex-1 justify-center">
           <div className="space-y-4 md:space-y-6 text-center">
             <h1 className="text-[32px] sm:text-[40px] md:text-[56px] font-display font-bold tracking-tight text-white drop-shadow-lg leading-tight px-2">
               {t("The Open-Source Microsoft Fabric Toolkit")}

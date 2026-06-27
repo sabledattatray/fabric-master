@@ -113,6 +113,12 @@ export function Dashboard() {
       />
       <style>
         {`
+          .print-header {
+            display: none !important;
+          }
+          .print-footer {
+            display: none !important;
+          }
           @media print {
             @page {
               margin: 15mm;
@@ -147,7 +153,7 @@ export function Dashboard() {
               color: #8b949e;
               border-bottom: 1px solid #d0d7de;
               padding-bottom: 4px;
-              display: none;
+              display: block !important;
             }
             .print-footer {
               position: fixed;
@@ -159,21 +165,16 @@ export function Dashboard() {
               color: #8b949e;
               border-top: 1px solid #d0d7de;
               padding-top: 4px;
-              display: none;
-            }
-          }
-          @media print {
-            .print-header, .print-footer {
-              display: block;
+              display: block !important;
             }
           }
         `}
       </style>
       
-      <div className="print-header">
+      <div className="hidden print:block print-header">
         {t('Fabric Master | Microsoft Fabric Capacity Assessment')}
       </div>
-      <div className="print-footer">
+      <div className="hidden print:block print-footer">
         {t('Generated using Fabric Master | fabric.dattasable.com | Created by Datta Sable')}
       </div>
 

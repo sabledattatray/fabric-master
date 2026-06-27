@@ -85,7 +85,14 @@ export function Footer() {
         
         <button 
           className="absolute right-6 bottom-6 p-2 rounded-full bg-[#21262d] border border-[#30363d] text-[#8b949e] hover:text-[#c9d1d9] hover:bg-[#30363d] transition-colors"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={(e) => {
+            const container = e.currentTarget.closest('.overflow-y-auto');
+            if (container) {
+              container.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
           aria-label="Scroll to top"
         >
           <ChevronUp className="w-5 h-5" />
