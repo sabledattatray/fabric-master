@@ -19,7 +19,7 @@ export function About() {
         
         <div className="mb-12 text-center">
           <img 
-            src="https://avatars.githubusercontent.com/u/sabledattatray?v=4" 
+            src="/og-image.jpg" 
             alt="Datta Sable" 
             className="w-32 h-32 rounded-full border-4 border-[#30363d] mx-auto mb-6 bg-[#161b22] object-cover"
           />

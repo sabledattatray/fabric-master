@@ -18,7 +18,7 @@ export function SEO({
   keywords, 
   type = 'website',
   url = 'https://fabric.dattasable.com',
-  image = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
+  image = 'https://fabric.dattasable.com/og-image.jpg',
   schema,
   article = false
 }: SEOProps) {
@@ -97,6 +97,7 @@ export function SEO({
   };
 
   const currentUrl = url !== 'https://fabric.dattasable.com' ? url : (typeof window !== 'undefined' ? window.location.href : url);
+  const finalImage = image.startsWith('http') ? image : `https://fabric.dattasable.com${image.startsWith('/') ? '' : '/'}${image}`;
   
   const schemasToRender: any[] = [websiteSchema, softwareSchema, personSchema, faqSchema];
   if (schema) {
@@ -124,7 +125,7 @@ export function SEO({
       <meta property="og:url" content={currentUrl} />
       <meta property="og:title" content={siteTitle} />
       <meta property="og:description" content={finalDescription} />
-      <meta property="og:image" content={image} />
+      <meta property="og:image" content={finalImage} />
       <meta property="og:site_name" content="Fabric Master" />
 
       {/* Twitter */}
@@ -132,7 +133,7 @@ export function SEO({
       <meta property="twitter:url" content={currentUrl} />
       <meta property="twitter:title" content={siteTitle} />
       <meta property="twitter:description" content={finalDescription} />
-      <meta property="twitter:image" content={image} />
+      <meta property="twitter:image" content={finalImage} />
 
       {/* Structured Data (JSON-LD) */}
       <script type="application/ld+json">
