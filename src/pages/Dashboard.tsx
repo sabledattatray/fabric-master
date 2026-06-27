@@ -357,8 +357,8 @@ export function Dashboard() {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 print:hidden border-b border-[#30363d] pb-6 mb-8">
             <div>
-              <div className="inline-block px-2 py-1 bg-[#238636]/10 text-[#3fb950] text-[10px] font-bold uppercase rounded-xl mb-3 flex items-center w-max border border-[#3fb950]/20">
-                <CheckCircle2 className="w-3 h-3 mr-1" /> {t('Capacity Assessment Complete')}
+              <div className="inline-flex items-center whitespace-nowrap px-2 py-1 bg-[#238636]/10 text-[#3fb950] text-[10px] font-bold uppercase rounded-md mb-3 border border-[#3fb950]/20">
+                <CheckCircle2 className="w-3 h-3 mr-1 flex-shrink-0" /> {t('Capacity Assessment Complete')}
               </div>
               <h1 className="text-4xl font-display font-bold tracking-tight text-[#e6edf3]">{t('Fabric Capacity Consultant')}</h1>
               <p className="text-xl text-[#8b949e] mt-3 font-light">{t('AI-driven analysis and decision support for your Microsoft Fabric investment.')}</p>

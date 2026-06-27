@@ -156,6 +156,15 @@ export function PricingMatrices() {
 
   // Monthly Budget Finder state
   const [budgetInput, setBudgetInput] = useState<number>(5000);
+  const [budgetLocalStr, setBudgetLocalStr] = useState<string>("5000");
+
+  React.useEffect(() => {
+    setBudgetLocalStr((prev) => {
+      if (Number(prev) === budgetInput) return prev;
+      return budgetInput.toString();
+    });
+  }, [budgetInput]);
+
   const [budgetType, setBudgetType] = useState<'PAYG' | 'Reserved'>('PAYG');
 
   // Dynamic calculations for selected SKU
@@ -388,8 +397,20 @@ export function PricingMatrices() {
                     </div>
                     <input
                       type="number"
-                      value={budgetInput}
-                      onChange={(e) => setBudgetInput(Math.max(0, Number(e.target.value)))}
+                      value={budgetLocalStr}
+                      onChange={(e) => {
+                        let valStr = e.target.value;
+                        if (/^0\d+/.test(valStr)) {
+                          valStr = valStr.replace(/^0+/, '');
+                        }
+                        setBudgetLocalStr(valStr);
+                        setBudgetInput(Math.max(0, Number(valStr)));
+                      }}
+                      onBlur={() => {
+                        if (budgetLocalStr === "" || isNaN(Number(budgetLocalStr))) {
+                          setBudgetLocalStr(budgetInput.toString());
+                        }
+                      }}
                       className="bg-[#21262d] border border-[#30363d] text-white font-mono text-sm rounded-lg focus:outline-none focus:border-[#58a6ff] block w-full pl-7 pr-3 py-1.5"
                     />
                   </div>
