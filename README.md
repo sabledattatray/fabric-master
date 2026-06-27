@@ -1,148 +1,391 @@
-<div align="center">
-  <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="Fabric Master Banner" width="100%" height="300" style="object-fit: cover; border-radius: 12px;"/>
-
-  <br />
-  <br />
-
-  <h1>⚡ Fabric Master</h1>
-  <p>
-    <b>The Ultimate AI-driven Microsoft Fabric Capacity Assessment & FinOps Tool</b>
-  </p>
-
-  <p>
-    <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge&color=3fb950" alt="Status">
-    <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge&color=2f81f7" alt="Version">
-    <img src="https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react&color=61DAFB" alt="React">
-    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&color=ea4aaa" alt="License">
-  </p>
-</div>
-
-<br />
-
-## 🌐 Live Application
-
-👉 [https://fabric.dattasable.com](https://fabric.dattasable.com)
-
-Free Microsoft Fabric Capacity Calculator
-
-- Capacity Planning
-- SKU Comparison
-- Pricing Estimator
-- Growth Forecast
-- PDF Reports
-
-## 📖 Overview
-
-**Fabric Master** is an enterprise-grade capacity calculator and optimization engine designed specifically for **Microsoft Fabric**. It takes the guesswork out of sizing your data workloads by utilizing intelligent algorithms to recommend the perfect F-SKU based on your unique Data Factory, Spark, and Power BI requirements.
-
-Whether you're just starting your Fabric journey or trying to optimize an existing architecture, Fabric Master provides detailed FinOps insights, throttling risk analysis, and comprehensive executive reports to ensure you maximize performance while minimizing costs.
-
-## ✨ Key Features
-
-- 🧮 **Precision Capacity Calculator**: Accurately model your workload needs across Data Factory pipelines, Spark compute, and Power BI concurrent users.
-- 💡 **AI-Driven Insights**: Get intelligent recommendations on Pay-As-You-Go vs. Reserved Instance pricing and throttling mitigation strategies.
-- 📊 **Detailed Executive Reports**: Generate and export professional PDF summaries of your capacity health, growth forecasts, and cost-efficiency.
-- 🌍 **Global Support**: Full internationalization (i18n) supporting English, Spanish, Japanese, Portuguese, Chinese, Russian, French, and German.
-- 🚀 **Enterprise Ready**: Designed for scale with predictive analytics and architecture guidance.
-- ⚡ **Serverless Backend**: Built-in Vercel-ready API for performing complex capacity evaluation formulas securely.
-
-## 📸 Screenshots
+# ⚡ Fabric Master
 
 <div align="center">
-  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard Overview" width="800" style="border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);" />
-  <p><i>Intuitive Capacity Calculation Wizard & Dashboard</i></p>
 
-  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" alt="FinOps Reports" width="800" style="border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);" />
-  <p><i>Detailed Financial Summaries & SKU Optimization</i></p>
+### **The Open-Source Microsoft Fabric Capacity Planning Platform**
+
+**Plan Capacity • Estimate Pricing • Compare SKUs • Optimize Costs • Generate Executive Reports**
+
+<p>
+<a href="https://fabric.dattasable.com"><strong>🌐 Live Demo</strong></a> •
+<a href="https://fabric.dattasable.com/documentation"><strong>📚 Documentation</strong></a> •
+<a href="https://github.com/sabledattatray/fabric-master"><strong>⭐ Star on GitHub</strong></a>
+</p>
+
+<p>
+<img src="https://img.shields.io/github/license/sabledattatray/fabric-master?style=for-the-badge" />
+<img src="https://img.shields.io/github/stars/sabledattatray/fabric-master?style=for-the-badge" />
+<img src="https://img.shields.io/github/forks/sabledattatray/fabric-master?style=for-the-badge" />
+<img src="https://img.shields.io/github/last-commit/sabledattatray/fabric-master?style=for-the-badge" />
+<img src="https://img.shields.io/badge/Microsoft-Fabric-742774?style=for-the-badge&logo=microsoft" />
+<img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge" />
+</p>
+
+> ⭐ **If Fabric Master helps you size or optimize your Microsoft Fabric environment, please consider starring this repository.**
+
 </div>
 
-## 🛠️ Tech Stack
+---
 
-- **Frontend**: React 18, TypeScript, Tailwind CSS, Lucide Icons
-- **Routing & State**: React Router, standard Context/Hooks
-- **Internationalization**: `i18next`, `react-i18next`
-- **Backend / API**: Node.js, Express (Dev), Vercel Serverless Functions (Prod)
-- **Validation**: Zod
-- **Build Tool**: Vite
+# 🚀 Live Application
 
-## 🚀 Getting Started
+### 🌐 https://fabric.dattasable.com
 
-### Prerequisites
+Fabric Master is a modern, open-source Microsoft Fabric planning platform designed to help architects, consultants, BI engineers, and enterprises make informed capacity decisions before investing in Microsoft Fabric.
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- npm or yarn
+Unlike simple pricing calculators, Fabric Master performs intelligent workload analysis to recommend the optimal Fabric SKU while estimating costs, forecasting growth, identifying throttling risks, and generating professional executive reports.
 
-### Installation
+---
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/fabric-master.git
-   cd fabric-master
-   ```
+# ✨ Why Fabric Master?
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+Planning Microsoft Fabric capacity is challenging.
 
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
-   *This starts both the Vite frontend and the Express development server concurrently.*
+Questions such as:
 
-4. **Build for production:**
-   ```bash
-   npm run build
-   ```
+* Which Fabric SKU should I purchase?
+* Will F32 be enough?
+* Should I choose Reserved Capacity?
+* How much can I save annually?
+* Will Spark workloads throttle Power BI?
+* When should I upgrade?
 
-## 🌐 Deployment (Vercel)
+normally require manual calculations, Microsoft documentation, and spreadsheet models.
 
-This project is pre-configured for seamless deployment to Vercel. It utilizes `vercel.json` to route `/api/*` requests to Vercel Serverless Functions while serving the React SPA.
+Fabric Master automates this entire process in seconds.
 
-1. Install the Vercel CLI: `npm i -g vercel`
-2. Run `vercel` to link and deploy your project.
+---
 
-## 📡 API Reference
+# 🎯 Features
 
-### `POST /api/v1/capacity-evaluation`
+## 🧮 Capacity Assessment
 
-Evaluates the required Microsoft Fabric Capacity (CU) and provides SKU recommendations based on workload inputs.
+Estimate Capacity Units (CU) using real workload characteristics.
 
-**Request Body:**
-```json
-{
-  "dataFactoryInput": {
-    "monthlyPipelines": 1000,
-    "avgActivities": 5,
-    "dataVolumeGb": 500
-  },
-  "sparkComputeInput": {
-    "totalNodes": 10,
-    "vCoresPerNode": 8,
-    "dailyRuntimeHours": 4
-  },
-  "powerBiInput": {
-    "peakConcurrentUsers": 50,
-    "queryComplexityScale": 1.5
-  }
-}
+* Data Factory Pipelines
+* Spark Compute
+* Power BI
+* Warehouses
+* Lakehouses
+* Interactive Reports
+* Concurrent Users
+
+---
+
+## 💰 Microsoft Fabric Cost Calculator
+
+Estimate:
+
+* Hourly Cost
+* Daily Cost
+* Monthly Cost
+* Annual Cost
+* Reserved Capacity Savings
+
+---
+
+## 📈 Growth Forecast
+
+Predict future capacity requirements.
+
+* 6 Months
+* 1 Year
+* 2 Years
+* Upgrade Timeline
+* Future SKU Recommendation
+
+---
+
+## 🤖 AI Capacity Consultant
+
+Receive intelligent recommendations including:
+
+* Best Fabric SKU
+* Capacity Headroom
+* Performance Analysis
+* Throttling Risk
+* Cost Optimization
+* Reserved Capacity ROI
+* Executive Summary
+
+---
+
+## 📄 Professional PDF Reports
+
+Generate branded enterprise reports containing:
+
+* Executive Summary
+* Capacity Health
+* Pricing Breakdown
+* Growth Forecast
+* AI Insights
+* Methodology
+* Executive Recommendation
+* Company Branding
+* Project Details
+
+Perfect for consultants, enterprise architects, and customer presentations.
+
+---
+
+## ⚡ Additional Tools
+
+Fabric Master includes:
+
+* Capacity Calculator
+* Cost Calculator
+* Reserved Savings Calculator
+* Spark CU Estimator
+* Power BI Capacity Planner
+* Pricing Matrices
+* SKU Comparison Guides
+* Documentation Hub
+
+---
+
+# 🌍 Internationalization
+
+Fabric Master supports multiple languages.
+
+* 🇺🇸 English
+* 🇪🇸 Spanish
+* 🇩🇪 German
+* 🇫🇷 French
+* 🇷🇺 Russian
+* 🇵🇹 Portuguese
+* 🇯🇵 Japanese
+* 🇰🇷 Korean
+* 🇨🇳 Chinese
+
+Built using a scalable internationalization architecture for global teams.
+
+---
+
+# 📸 Screenshots
+
+> Replace these placeholders with actual screenshots from your application.
+
+```
+Homepage
+
+Capacity Calculator
+
+AI Capacity Assessment
+
+Pricing Calculator
+
+Executive PDF Report
+
+Documentation Hub
+
+SKU Comparison
+
+Growth Forecast
 ```
 
-## 🤝 Contributing
+---
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+# 🏗 Built For
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
+Fabric Master is designed for:
+
+* Microsoft Fabric Engineers
+* Data Engineers
+* Analytics Engineers
+* BI Developers
+* Solution Architects
+* Enterprise Architects
+* Microsoft Partners
+* Consulting Companies
+* FinOps Teams
+* CIOs evaluating Microsoft Fabric
+
+---
+
+# 🛠 Technology Stack
+
+## Frontend
+
+* React 18
+* TypeScript
+* Tailwind CSS
+* Vite
+* Lucide Icons
+
+## Backend
+
+* Node.js
+* Express
+* Vercel Serverless Functions
+
+## Validation
+
+* Zod
+
+## Internationalization
+
+* i18next
+* react-i18next
+
+## Deployment
+
+* Vercel
+* Cloudflare
+* GitHub Actions
+
+---
+
+# 🚀 Getting Started
+
+## Prerequisites
+
+* Node.js 18+
+* npm or yarn
+
+## Clone Repository
+
+```bash
+git clone https://github.com/sabledattatray/fabric-master.git
+cd fabric-master
+```
+
+## Install
+
+```bash
+npm install
+```
+
+## Run Development Server
+
+```bash
+npm run dev
+```
+
+## Build Production
+
+```bash
+npm run build
+```
+
+---
+
+# 📡 API
+
+## Capacity Assessment
+
+```
+POST /api/v1/capacity-evaluation
+```
+
+Evaluates workload requirements and recommends the optimal Microsoft Fabric Capacity SKU.
+
+Returns:
+
+* Recommended SKU
+* Estimated Capacity Units
+* Pricing Analysis
+* Reserved Savings
+* Growth Forecast
+* Capacity Health
+* AI Recommendations
+
+---
+
+# 📚 Documentation
+
+Documentation is available at
+
+https://fabric.dattasable.com/documentation
+
+Topics include:
+
+* Getting Started
+* Capacity Units
+* Microsoft Fabric Pricing
+* Spark Optimization
+* Power BI Capacity
+* Reserved Capacity
+* Throttling
+* Architecture
+* Migration Guides
+* FinOps Best Practices
+
+---
+
+# 🛣 Roadmap
+
+Upcoming features include:
+
+* AI Cost Optimization Assistant
+* Capacity History
+* Team Workspaces
+* Saved Assessments
+* Shareable Reports
+* Public Report Links
+* REST API SDK
+* Terraform Integration
+* Azure Cost Management Integration
+* Power BI Embedded Analysis
+* Microsoft Fabric Monitoring Dashboard
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push your branch
 5. Open a Pull Request
 
-## 📄 License
+If you find a bug or have a feature request, please open an Issue.
 
-Distributed under the MIT License. See `LICENSE` for more information.
+---
 
-<p align="center">
-  Made with ❤️ by the Fabric Master Team.
-</p>
+# 📄 License
+
+Distributed under the MIT License.
+
+See the LICENSE file for more information.
+
+---
+
+# 👨💻 About the Author
+
+## Datta Sable
+
+Microsoft Fabric Engineer • Data Platform Architect • Open Source Developer
+
+Building enterprise-grade tools for Microsoft Fabric, Business Intelligence, AI, Data Engineering, and Modern SaaS Platforms.
+
+🌐 Website
+
+https://dattasable.com
+
+🚀 Fabric Master
+
+https://fabric.dattasable.com
+
+💼 LinkedIn
+
+https://linkedin.com/in/dattasable
+
+⭐ GitHub
+
+https://github.com/sabledattatray
+
+---
+
+<div align="center">
+
+## ⭐ Star this repository if Fabric Master helped you.
+
+**Built with ❤️ by Datta Sable**
+
+**Making Microsoft Fabric Capacity Planning easier for everyone.**
+
+🌐 https://fabric.dattasable.com
+
+</div>
