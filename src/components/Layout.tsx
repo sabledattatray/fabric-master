@@ -107,7 +107,7 @@ export function Layout({ children }: LayoutProps) {
             >
               <span className="flex items-center gap-2">
                 <Search className="w-4 h-4 text-[#8b949e] group-hover:text-[#58a6ff] transition-colors" />
-                <span>Search tools, F-SKUs, comparisons, docs...</span>
+                <span>{t("Search tools, F-SKUs, comparisons, docs...")}</span>
               </span>
               <kbd className="px-1.5 py-0.5 rounded bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] font-mono text-[10px] group-hover:border-[#58a6ff] transition-colors">
                 CTRL + K

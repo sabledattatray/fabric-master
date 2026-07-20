@@ -5,6 +5,7 @@ import { FABRIC_SKU_DATA } from "../data/fskus";
 import { COMPARISONS_DATA } from "../data/comparisons";
 import { ARTICLES } from "../data/articles";
 import { LABS_EXPERIMENTS } from "../data/labs";
+import { useTranslation } from "react-i18next";
 
 interface CommandSearchModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface CommandSearchModalProps {
 export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps) {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Close on Escape or shortcut
   useEffect(() => {
@@ -46,14 +48,14 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
 
   // Filter tools
   const tools = [
-    { title: "Capacity Calculator (Wizard)", path: "/wizard", icon: Calculator, desc: "Step-by-step Fabric SKU recommendation engine" },
-    { title: "Cost Calculator & Pricing Estimator", path: "/cost-calculator", icon: DollarSign, desc: "Estimate monthly and annual Fabric expenditure" },
-    { title: "Reserved Savings Estimator", path: "/reserved-savings", icon: DollarSign, desc: "Calculate 1-Year Reserved Instance discounts (~41% off)" },
-    { title: "Spark CU Estimator", path: "/spark-estimator", icon: Zap, desc: "Sizing for Apache Spark node allocation" },
-    { title: "Power BI Capacity Estimator", path: "/power-bi-capacity", icon: Calculator, desc: "Model Power BI user concurrency & Direct Lake load" },
-    { title: "Pricing Matrices", path: "/pricing", icon: DollarSign, desc: "Interactive global region pricing table" },
-    { title: "Fabric Master Labs", path: "/labs", icon: Beaker, desc: "Experimental tools & Build 2026 feature radar" },
-    { title: "About Datta Sable", path: "/about", icon: ShieldCheck, desc: "Creator & Data Platform Architect profile" }
+    { title: t("Capacity Calculator (Wizard)"), path: "/wizard", icon: Calculator, desc: t("Step-by-step Fabric SKU recommendation engine") },
+    { title: t("Cost Calculator & Pricing Estimator"), path: "/cost-calculator", icon: DollarSign, desc: t("Estimate monthly and annual Fabric expenditure") },
+    { title: t("Reserved Savings Estimator"), path: "/reserved-savings", icon: DollarSign, desc: t("Calculate 1-Year Reserved Instance discounts (~41% off)") },
+    { title: t("Spark CU Estimator"), path: "/spark-estimator", icon: Zap, desc: t("Sizing for Apache Spark node allocation") },
+    { title: t("Power BI Capacity Estimator"), path: "/power-bi-capacity", icon: Calculator, desc: t("Model Power BI user concurrency & Direct Lake load") },
+    { title: t("Pricing Matrices"), path: "/pricing", icon: DollarSign, desc: t("Interactive global region pricing table") },
+    { title: t("Fabric Master Labs"), path: "/labs", icon: Beaker, desc: t("Experimental tools & Build 2026 feature radar") },
+    { title: t("About Datta Sable"), path: "/about", icon: ShieldCheck, desc: t("Creator & Data Platform Architect profile") }
   ].filter(t => t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q));
 
   // Filter SKUs
@@ -100,7 +102,7 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search tools, F-SKUs, comparisons, docs, labs... (ESC to close)"
+            placeholder={t("Search tools, F-SKUs, comparisons, docs, labs... (ESC to close)")}
             className="w-full bg-transparent text-[#e6edf3] placeholder-[#8b949e] text-base focus:outline-none"
             autoFocus
           />

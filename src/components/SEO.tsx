@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 interface SEOProps {
   title?: string;
@@ -26,14 +27,25 @@ export function SEO({
   schema,
   article = false
 }: SEOProps) {
-  const defaultTitle = "Fabric Master | The Open Source Microsoft Fabric Engineering Platform";
-  const siteTitle = title ? `${title} | Fabric Master` : defaultTitle;
+  const { t, i18n } = useTranslation();
+
+  const defaultTitle = t("Fabric Master | The Open Source Microsoft Fabric Engineering Platform");
+  const translatedTitle = title ? t(title) : "";
+  const siteTitle = title ? `${translatedTitle} | Fabric Master` : defaultTitle;
   
-  const defaultDescription = "Fabric Master by Datta Sable is the complete open-source platform for Microsoft Fabric capacity planning, FinOps, architecture design, pricing estimation, migration planning, and performance optimization.";
-  const finalDescription = description || defaultDescription;
+  const defaultDescription = t("Fabric Master by Datta Sable is the complete open-source platform for Microsoft Fabric capacity planning, FinOps, architecture design, pricing estimation, migration planning, and performance optimization.");
+  const finalDescription = description ? t(description) : defaultDescription;
   
   const currentUrl = url !== 'https://fabric.dattasable.com' ? url : (typeof window !== 'undefined' ? window.location.href : url);
   const finalImage = image.startsWith('http') ? image : `https://fabric.dattasable.com${image.startsWith('/') ? '' : '/'}${image}`;
+
+  // Keep document.title reactively updated on language or route change
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = siteTitle;
+      document.documentElement.lang = i18n.language;
+    }
+  }, [siteTitle, i18n.language]);
 
   // Robots directive calculation
   const finalRobots = noindex 
@@ -117,13 +129,13 @@ export function SEO({
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
+        "name": t("Home"),
         "item": "https://fabric.dattasable.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": title || "Platform",
+        "name": translatedTitle || t("Platform"),
         "item": currentUrl
       }
     ]
@@ -135,26 +147,26 @@ export function SEO({
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What is Microsoft Fabric Capacity?",
+        "name": t("What is Microsoft Fabric Capacity?"),
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Microsoft Fabric Capacity is the underlying compute power that runs all your workloads, from Data Factory pipelines to Power BI reports. You purchase a pool of compute resources rather than individual services."
+          "text": t("Microsoft Fabric Capacity is the underlying compute power that runs all your workloads, from Data Factory pipelines to Power BI reports. You purchase a pool of compute resources rather than individual services.")
         }
       },
       {
         "@type": "Question",
-        "name": "How do I calculate Microsoft Fabric Cost?",
+        "name": t("How do I calculate Microsoft Fabric Cost?"),
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "You can calculate your Microsoft Fabric cost using the Fabric Master Capacity Calculator. It analyzes your data volume, user concurrency, and data engineering pipelines to recommend the most cost-effective F-SKU."
+          "text": t("You can calculate your Microsoft Fabric cost using the Fabric Master Capacity Calculator. It analyzes your data volume, user concurrency, and data engineering pipelines to recommend the most cost-effective F-SKU.")
         }
       },
       {
         "@type": "Question",
-        "name": "Which Microsoft Fabric SKU unlocks Power BI Free user report viewing?",
+        "name": t("Which Microsoft Fabric SKU unlocks Power BI Free user report viewing?"),
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Microsoft Fabric F64 (64 Capacity Units) is the minimum SKU that enables organizational users holding free Power BI licenses to view reports hosted in Fabric capacities."
+          "text": t("Microsoft Fabric F64 (64 Capacity Units) is the minimum SKU that enables organizational users holding free Power BI licenses to view reports hosted in Fabric capacities.")
         }
       }
     ]
@@ -170,7 +182,7 @@ export function SEO({
   }
 
   const defaultKeywords = "Microsoft Fabric Capacity Calculator, Microsoft Fabric Pricing Calculator, Microsoft Fabric Cost Calculator, Microsoft Fabric Capacity Planning, Microsoft Fabric SKU Calculator, Fabric Capacity Estimator, Power BI Capacity Calculator, Fabric Reserved Capacity, Fabric Pricing, Fabric Cost Optimization, Microsoft Fabric Architecture, OneLake Planning, Fabric FinOps";
-  const finalKeywords = keywords ? `${keywords}, ${defaultKeywords}` : defaultKeywords;
+  const finalKeywords = keywords ? `${t(keywords)}, ${defaultKeywords}` : defaultKeywords;
 
   return (
     <Helmet>
