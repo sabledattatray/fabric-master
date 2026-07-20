@@ -114,8 +114,11 @@ export function Landing() {
               The Engineering Platform for Microsoft Fabric Architects
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white leading-[1.1]">
-              Design, Size, Cost, and Optimize Microsoft Fabric
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] text-[#f0f6fc] leading-[1.12]">
+              Design, Size, Cost, and Optimize{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#58a6ff] via-[#79c0ff] to-[#39c5cf] font-bold">
+                Microsoft Fabric
+              </span>
             </h1>
 
             <p className="text-base sm:text-lg text-[#8b949e] leading-relaxed max-w-2xl font-normal">
