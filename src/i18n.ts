@@ -1343,12 +1343,24 @@ Object.keys(extraTranslations).forEach((lang) => {
   }
 });
 
+const getSavedLanguage = () => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    const saved = localStorage.getItem('fabric_master_lang');
+    if (saved && resources[saved as keyof typeof resources]) {
+      return saved;
+    }
+  }
+  return 'en';
+};
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: "en", // default language
+    lng: getSavedLanguage(),
     fallbackLng: "en",
+    returnNull: false,
+    returnEmptyString: false,
     interpolation: {
       escapeValue: false 
     }
