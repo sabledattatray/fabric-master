@@ -47,6 +47,16 @@ export interface ThrottlingAnalysis {
 export interface EvaluationResponse {
   success: boolean;
   calculatedCuBaseline: number;
+  confidenceScore: number;
+  reasons: string[];
+  upgradeTimeline: string;
+  alternatives: {
+    lowerCostSku: string;
+    lowerCostCu: number;
+    futureReadySku: string;
+    futureReadyCu: number;
+  };
+  assumptions: string[];
   targetSkuRecommendation: SkuRecommendation;
   financialSummary: FinancialSummary;
   throttlingAnalysis: ThrottlingAnalysis;

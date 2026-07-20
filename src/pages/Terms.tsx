@@ -13,6 +13,7 @@ export function Terms() {
         title={t('Terms of Service - Fabric Master')} 
         description={t('Terms of Service and legal agreements for using the Fabric Master capacity planning and sizing report tools.')}
         keywords="Terms of Service, Terms and Conditions, Legal, Fabric Master, Capacity Planner Sizing"
+        noindex={true}
       />
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-6 py-12 md:py-20">

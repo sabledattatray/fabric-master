@@ -19,9 +19,9 @@ export function About() {
         
         <div className="mb-12 text-center">
           <img 
-            src="/og-image.jpg" 
+            src="/images/author.webp" 
             alt="Datta Sable" 
-            className="w-32 h-32 rounded-full border-4 border-[#30363d] mx-auto mb-6 bg-[#161b22] object-cover"
+            className="w-32 h-32 rounded-full border-4 border-[#30363d] mx-auto mb-6 bg-[#161b22] object-cover shadow-xl"
           />
           <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">Datta Sable</h1>
           <p className="text-xl text-[#8b949e] font-light flex items-center justify-center space-x-3 flex-wrap gap-y-2">

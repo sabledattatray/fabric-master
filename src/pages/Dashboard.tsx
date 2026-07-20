@@ -102,6 +102,13 @@ export function Dashboard() {
   const riAnnualSavings = financialSummary.potentialSavingsMonthly * 12;
 
   const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const monthlyPipelines = inputData?.monthlyPipelines || 100;
+  const dfCu = Number(((monthlyPipelines / 730) * 0.5).toFixed(2));
+  const totalNodes = inputData?.sparkNodes || 4;
+  const totalVCores = totalNodes * (inputData?.sparkVCoresPerNode || 8);
+  const sparkCu = Number((totalVCores * 0.5).toFixed(2));
+  const peakConcurrentUsers = inputData?.peakConcurrentUsers || 50;
+  const pbiCu = Number((peakConcurrentUsers * 0.2).toFixed(2));
 
   const costComparisonData = [
     { name: 'PAYG', cost: financialSummary.payAsYouGoMonthlyEstimate, fill: '#8b949e' },
@@ -142,217 +149,365 @@ export function Dashboard() {
         title={`${t('Evaluation Results')} - ${targetSkuRecommendation.costOptimizedSkuName} | Microsoft Fabric Capacity Estimator`}
         description={t("Your AI-driven Microsoft Fabric capacity assessment. See detailed SKU recommendations, financial breakdowns, and throttling analysis.")}
         keywords="Microsoft Fabric Capacity Calculator, Microsoft Fabric Cost Calculator, Microsoft Fabric Cost Estimation Tool, Microsoft Fabric Enterprise Capacity Planning, Microsoft Fabric Capacity Recommendation"
+        noindex={true}
       />
       <style>
         {`
-          .print-header {
-            display: none !important;
-          }
-          .print-footer {
-            display: none !important;
-          }
-          .print-watermark {
+          .print-header, .print-footer, .print-watermark {
             display: none !important;
           }
           @media print {
             @page {
-              margin: 20mm 15mm 20mm 15mm;
-            }
-            body {
-              -webkit-print-color-adjust: exact !important;
-              print-color-adjust: exact !important;
-              background-color: #ffffff !important;
-              color: #111827 !important;
-              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+              margin: 8mm 10mm 8mm 10mm;
+              size: A4 portrait;
             }
             
-            #root, html, body, .flex-1, .overflow-y-auto {
+            *, *::before, *::after {
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+              box-shadow: none !important;
+              text-shadow: none !important;
+            }
+
+            html, body, #root, main, .flex-1, .overflow-y-auto, .hidden.print\:block {
               background: #ffffff !important;
               background-color: #ffffff !important;
-              color: #111827 !important;
-            }
-
-            .bg-\[\#0d1117\], .bg-\[\#161b22\], .bg-black, .bg-\[\#11161d\], .print-bg-light {
-              background: #f8fafc !important;
-              background-color: #f8fafc !important;
-              border-color: #e2e8f0 !important;
-              color: #374151 !important;
-              box-shadow: none !important;
-            }
-
-            div.bg-\[\#0d1117\], div.bg-\[\#161b22\] {
-              background-color: #ffffff !important;
-              border: 1px solid #e2e8f0 !important;
-              color: #374151 !important;
-            }
-
-            .border, .border-t, .border-b, .border-r, .border-l, 
-            .border-\[\#30363d\], .divide-\[\#30363d\], .border-b-\[\#30363d\], .border-t-\[\#30363d\] {
-              border-color: #e2e8f0 !important;
-            }
-
-            h1, h2, h3, h4, h5, h6, strong, b {
-              color: #111827 !important;
-              font-weight: 700 !important;
-            }
-
-            .text-white, .text-\[\#e6edf3\], .text-\[\#c9d1d9\], .text-\[\#f0f6fc\], .text-gray-100, .text-gray-200 {
-              color: #1f2937 !important;
-            }
-
-            .text-\[\#8b949e\], .text-gray-400 {
-              color: #4b5563 !important;
-            }
-
-            .text-\[\#58a6ff\], .text-blue-400, .text-blue-500 {
-              color: #2563eb !important;
-              font-weight: 600 !important;
-            }
-
-            .text-\[\#3fb950\], .text-green-500, .text-green-400 {
-              color: #10b981 !important;
-              font-weight: 600 !important;
-            }
-
-            .text-\[\#da3633\], .text-red-500, .text-red-400 {
-              color: #ef4444 !important;
-            }
-
-            table {
-              width: 100% !important;
-              border-collapse: collapse !important;
-              margin-top: 1rem !important;
-              margin-bottom: 1rem !important;
-            }
-
-            th, thead tr {
-              background-color: #f1f5f9 !important;
-              background: #f1f5f9 !important;
               color: #0f172a !important;
-              font-weight: 600 !important;
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+
+            .print\:hidden {
+              display: none !important;
+            }
+
+            .hidden.print\:block {
+              display: block !important;
+            }
+
+            /* EXACT A4 PAGE HEIGHT BOUNDARIES (STRICTLY PREVENTS 3RD BLANK PAGE) */
+            .print-page-1 {
+              height: 268mm !important;
+              max-height: 268mm !important;
+              box-sizing: border-box !important;
+              overflow: hidden !important;
+              page-break-after: always !important;
+              break-after: page !important;
+            }
+
+            .print-page-2 {
+              height: 268mm !important;
+              max-height: 268mm !important;
+              box-sizing: border-box !important;
+              overflow: hidden !important;
+              page-break-after: avoid !important;
+              break-after: avoid !important;
+            }
+
+            /* FORCE ALL TABLES, ROWS, AND CELLS TO BE CRISP LIGHT MODE WITH DARK SLATE TEXT */
+            table, tbody, tr, td {
+              background-color: #ffffff !important;
+              color: #0f172a !important;
+            }
+
+            thead, th, thead tr, thead th {
+              background-color: #f1f5f9 !important;
+              color: #0f172a !important;
+              font-weight: 700 !important;
               border-bottom: 2px solid #cbd5e1 !important;
             }
 
             td {
               border-bottom: 1px solid #e2e8f0 !important;
-              color: #334155 !important;
+              color: #1e293b !important;
             }
 
-            .break-inside-avoid, .print\:break-inside-avoid, .grid, blockquote, pre, table, tr {
-              break-inside: avoid !important;
-              page-break-inside: avoid !important;
+            /* HIGHLIGHTED ROWS ON LIGHT BACKGROUNDS */
+            tr.bg-sky-50, tr.bg-sky-50 td {
+              background-color: #f0f9ff !important;
+              color: #0369a1 !important;
             }
 
-            .break-after-page, .break-before-page {
-              page-break-after: always !important;
-              break-after: page !important;
+            tr.bg-emerald-50, tr.bg-emerald-50 td {
+              background-color: #f0fdf4 !important;
+              color: #166534 !important;
             }
 
-            .print-header {
-              position: fixed !important;
-              top: 0 !important;
-              left: 0 !important;
-              right: 0 !important;
-              font-size: 9px !important;
-              font-weight: 500 !important;
-              color: #64748b !important;
-              border-bottom: 1px solid #e2e8f0 !important;
-              padding-bottom: 4px !important;
-              display: flex !important;
-              justify-content: space-between !important;
-              align-items: center !important;
-              z-index: 9999 !important;
+            /* EXPLICIT DARK NAVY FOR PRIMARY RECOMMENDATION CARD WITH BRIGHT WHITE TEXT */
+            .bg-slate-900, div.bg-slate-900 {
+              background-color: #0f172a !important;
+              color: #ffffff !important;
             }
-            .print-footer {
-              position: fixed !important;
-              bottom: 0 !important;
-              left: 0 !important;
-              right: 0 !important;
-              font-size: 9px !important;
-              font-weight: 500 !important;
-              color: #64748b !important;
-              border-top: 1px solid #e2e8f0 !important;
-              padding-top: 4px !important;
-              display: flex !important;
-              justify-content: space-between !important;
-              align-items: center !important;
-              z-index: 9999 !important;
+            .bg-slate-900 * {
+              color: #ffffff !important;
             }
-
-            .print-watermark {
-              position: fixed !important;
-              top: 50% !important;
-              left: 50% !important;
-              transform: translate(-50%, -50%) rotate(-45deg) !important;
-              font-size: 7.5rem !important;
-              font-weight: 800 !important;
-              color: rgba(37, 99, 235, 0.035) !important;
-              z-index: -1000 !important;
-              pointer-events: none !important;
-              white-space: nowrap !important;
-              display: block !important;
-              letter-spacing: 0.1em !important;
+            .bg-slate-900 .text-sky-400 {
+              color: #38bdf8 !important;
+            }
+            .bg-slate-900 .text-emerald-400, .bg-slate-900 .text-emerald-300 {
+              color: #4ade80 !important;
+            }
+            .bg-slate-900 .text-slate-300, .bg-slate-900 .text-slate-200 {
+              color: #e2e8f0 !important;
             }
           }
         `}
       </style>
       
-      <div className="hidden print:block print-watermark">
-        FABRIC MASTER
-      </div>
+      {/* Dedicated Executive Light-Mode PDF Document (2 Pages Max, 100% Light Corporate Styling, Zero Blank Pages) */}
+      <div className="hidden print:block w-full text-slate-900 bg-white font-sans text-left leading-tight">
+        
+        {/* Page 1: Executive Briefing & Sizing Analysis */}
+        <div className="print-page-1 flex flex-col justify-between p-6 border-l-[10px] border-[#0284C7] bg-white">
+          <div className="space-y-6">
+            {/* Corporate Top Header */}
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#0284C7] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                  FM
+                </div>
+                <div>
+                  <span className="font-bold text-slate-900 text-base tracking-tight block">Fabric Master</span>
+                  <span className="text-[10px] text-slate-500 font-mono">Microsoft Fabric Capacity Engineering Platform</span>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#0284C7] bg-sky-50 px-3 py-1 rounded-full border border-sky-200">
+                EXECUTIVE BRIEFING REPORT
+              </span>
+            </div>
 
-      <div className="hidden print:flex print-header">
-        <span>{t('Fabric Master | Microsoft Fabric Capacity Sizing Report')}</span>
-        <span>{reportDetails.companyName ? `${reportDetails.companyName}` : ''}</span>
-      </div>
-      <div className="hidden print:flex print-footer">
-        <span>fabric.dattasable.com | Prepared by {reportDetails.consultantName || 'Fabric Master'}</span>
-        <span>{t('Confidential Executive Report')}</span>
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-6 md:p-10 flex justify-center bg-[#0d1117] print:p-0 print:overflow-visible print:bg-white w-full">
-        <div className="max-w-7xl w-full space-y-8">
-          
-          {/* Cover Page for Print */}
-          <div className="hidden print:flex flex-col justify-between h-[95vh] break-after-page w-full p-16 text-left relative print-text-dark border-l-[16px] border-[#2563EB] bg-white">
-            <div>
-              <p className="text-sm font-semibold tracking-widest text-[#2563EB] uppercase mb-4">Fabric Master Executive Report</p>
-              <h1 className="text-5xl font-display font-extrabold text-[#111827] leading-tight mb-4">
-                Microsoft Fabric<br/>Capacity Assessment
+            {/* Document Title */}
+            <div className="space-y-2">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-[#0284C7]">
+                MICROSOFT FABRIC FINOPS & ARCHITECTURE ADVISORY
+              </div>
+              <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+                Capacity Sizing & Cost Optimization Report
               </h1>
-              <p className="text-lg text-[#4b5563] max-w-2xl font-light">
-                Enterprise sizing recommendation, architectural alignment, and long-term financial projection for Power BI, Synapse Real-Time Analytics, and Data Engineering workloads.
+              <p className="text-xs text-slate-600 max-w-2xl leading-relaxed font-normal">
+                An authoritative engineering assessment of Capacity Units (CUs), peak user concurrency, 24-hour background smoothing, and 1-Year Reserved Instance financial forecasts.
               </p>
             </div>
-            
-            <div className="space-y-8 my-auto">
-              {reportDetails.companyName && (
-                <div className="border-l-2 border-[#2563EB] pl-4">
-                  <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1 font-semibold">{t('Prepared for')}</p>
-                  <p className="text-3xl font-bold text-[#111827]">{reportDetails.companyName}</p>
-                  {reportDetails.projectName && <p className="text-lg text-[#4b5563] mt-1">{reportDetails.projectName}</p>}
-                  {reportDetails.environment && <p className="text-md text-[#4b5563] font-medium mt-0.5">{reportDetails.environment} {t('Environment')}</p>}
-                </div>
-              )}
 
-              <div className="grid grid-cols-2 gap-8 border-t border-[#e2e8f0] pt-8">
+            {/* Assessment Metadata Block */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Target Enterprise</div>
+                <div className="text-sm font-bold text-slate-900 mt-0.5">{reportDetails.companyName || 'Enterprise Analytics Platform'}</div>
+                {reportDetails.projectName && <div className="text-[11px] text-slate-600">{reportDetails.projectName}</div>}
+              </div>
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Assessment Environment</div>
+                <div className="text-sm font-bold text-slate-900 mt-0.5">{reportDetails.environment || 'Production'} Ecosystem</div>
+              </div>
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Prepared By</div>
+                <div className="text-sm font-bold text-slate-900 mt-0.5">{reportDetails.consultantName || 'Datta Sable (Microsoft Fabric Engineer)'}</div>
+                <div className="text-[11px] text-[#0284C7] font-semibold">https://fabric.dattasable.com</div>
+              </div>
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Assessment Date</div>
+                <div className="text-sm font-bold text-slate-900 mt-0.5">{today}</div>
+              </div>
+            </div>
+
+            {/* Primary Sizing Recommendation Card (Dark Executive Card with Bright High-Contrast Light Text) */}
+            <div className="bg-slate-900 text-white rounded-xl p-6 space-y-4 shadow-sm border border-slate-800">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <span className="text-[11px] uppercase tracking-widest text-sky-400 font-bold">PRIMARY SIZING RECOMMENDATION</span>
+                <span className="px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold">
+                  {evaluation?.confidenceScore || 92}% Confidence Score
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1 font-semibold">{t('Prepared by')}</p>
-                  <p className="text-lg font-bold text-[#111827]">{reportDetails.consultantName || 'Fabric Master'}</p>
-                  <p className="text-xs text-[#6b7280]">fabric.dattasable.com</p>
+                  <div className="text-[10px] text-slate-300 uppercase font-bold">Recommended Capacity Tier</div>
+                  <div className="text-4xl font-extrabold text-white tracking-tight mt-0.5">{targetSkuRecommendation.costOptimizedSkuName}</div>
+                  <div className="text-xs text-slate-200 font-mono mt-0.5">{cu} Capacity Units (CUs)</div>
                 </div>
-                <div>
-                  <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1 font-semibold">{t('Assessment Date')}</p>
-                  <p className="text-lg font-bold text-[#111827]">{today}</p>
+                <div className="text-right space-y-0.5">
+                  <div className="text-[10px] text-slate-300 uppercase font-bold">Monthly Reserved Commitment</div>
+                  <div className="text-2xl font-bold text-emerald-400 font-mono">${financialSummary.reservedInstanceMonthlyEstimate.toLocaleString()}</div>
+                  <div className="text-[11px] text-emerald-300 font-semibold">Save ${riAnnualSavings.toLocaleString()} annually (~41% Off)</div>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between border-t border-[#e2e8f0] pt-6 text-xs text-[#9ca3af]">
-              <span>Created by Datta Sable</span>
-              <span className="text-[#2563EB] font-medium">https://fabric.dattasable.com</span>
+            {/* Core Sizing Drivers */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-slate-900">Core Sizing Drivers & Rationale</h3>
+              <ul className="space-y-1.5 text-xs text-slate-700">
+                {(evaluation?.reasons || [
+                  `Provides ${cu} Capacity Units (CUs) for ${baseCu} CU baseline workload demand.`,
+                  `Supports interactive Power BI DAX rendering and 24-hour background smoothing.`,
+                  cu >= 64 ? `Unlocks Power BI Free report viewing & Copilot AI assistant.` : `Cost-effective entry tier.`
+                ]).map((reason, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-emerald-700 font-bold">•</span>
+                    <span className="leading-snug">{reason}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Health & FinOps Gauges */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
+                <div className="text-[10px] font-bold uppercase text-slate-500">Capacity Health Score</div>
+                <div className="text-2xl font-extrabold text-[#166534]">{healthScore} / 100</div>
+                <p className="text-[11px] text-slate-600">Headroom buffer preventing burst throttling.</p>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-1">
+                <div className="text-[10px] font-bold uppercase text-slate-500">FinOps Cost Efficiency</div>
+                <div className="text-2xl font-extrabold text-[#0369A1]">{efficiencyScore}%</div>
+                <p className="text-[11px] text-slate-600">Optimal compute allocation with minimal idle waste.</p>
+              </div>
             </div>
           </div>
+
+          <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
+            <span>Fabric Master Sizing Report</span>
+            <span>Page 1 of 2</span>
+          </div>
+        </div>
+
+        {/* Page 2: Workload Breakdown, Financial Comparison & Sign-off */}
+        <div className="print-page-2 flex flex-col justify-between p-6 bg-white">
+          <div className="space-y-6">
+            <div className="border-b border-slate-200 pb-3 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-slate-900">Workload Breakdown & Financial Roadmap</h2>
+              <span className="text-xs text-slate-500 font-mono font-semibold">Page 2 of 2</span>
+            </div>
+
+            {/* Component Workload Demand Matrix */}
+            <div className="space-y-2">
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-slate-900">Component Workload Demand Matrix</h3>
+              <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-100 text-slate-800 font-bold border-b border-slate-300">
+                    <tr>
+                      <th className="p-3">Workload Component</th>
+                      <th className="p-3">Active Footprint</th>
+                      <th className="p-3">Smoothing Protocol</th>
+                      <th className="p-3 text-right">CU Demand</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 text-slate-700">
+                    <tr>
+                      <td className="p-3 font-bold text-slate-900">Data Factory Ingestion</td>
+                      <td className="p-3">{monthlyPipelines} pipelines / month</td>
+                      <td className="p-3">24-Hour Background Smoothing</td>
+                      <td className="p-3 text-right font-mono text-slate-900 font-bold">{dfCu.toFixed(2)} CU</td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 font-bold text-slate-900">Spark Compute Pools</td>
+                      <td className="p-3">{totalNodes} nodes ({totalVCores} vCores)</td>
+                      <td className="p-3">24-Hour Background Smoothing</td>
+                      <td className="p-3 text-right font-mono text-slate-900 font-bold">{sparkCu.toFixed(2)} CU</td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 font-bold text-slate-900">Power BI User Concurrency</td>
+                      <td className="p-3">{peakConcurrentUsers} active concurrent users</td>
+                      <td className="p-3">5-Minute Interactive Window</td>
+                      <td className="p-3 text-right font-mono text-slate-900 font-bold">{pbiCu.toFixed(2)} CU</td>
+                    </tr>
+                    <tr className="bg-sky-50 font-bold text-sky-950">
+                      <td className="p-3" colSpan={3}>Calculated Workload Demand Subtotal</td>
+                      <td className="p-3 text-right font-mono text-[#0369A1]">{baseCu.toFixed(2)} CU</td>
+                    </tr>
+                    <tr className="bg-emerald-50 font-bold text-emerald-950">
+                      <td className="p-3" colSpan={3}>Recommended Capacity Allocation ({targetSkuRecommendation.costOptimizedSkuName})</td>
+                      <td className="p-3 text-right font-mono text-[#166534]">{cu} CU</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Commitment Pricing Matrix */}
+            <div className="space-y-2">
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-slate-900">Commitment Pricing Comparison</h3>
+              <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-100 text-slate-800 font-bold border-b border-slate-300">
+                    <tr>
+                      <th className="p-3">Commitment Option</th>
+                      <th className="p-3">Monthly Cost</th>
+                      <th className="p-3">Annual Cost</th>
+                      <th className="p-3 text-right">Net Savings</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 text-slate-700">
+                    <tr>
+                      <td className="p-3 font-bold text-slate-900">Pay-As-You-Go (Standard)</td>
+                      <td className="p-3 font-mono">${financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}</td>
+                      <td className="p-3 font-mono">${(financialSummary.payAsYouGoMonthlyEstimate * 12).toLocaleString()}</td>
+                      <td className="p-3 text-right text-slate-500 font-medium">Baseline Rate</td>
+                    </tr>
+                    <tr className="bg-emerald-50 font-bold text-emerald-950">
+                      <td className="p-3 font-bold text-emerald-900">1-Year Reserved Instance</td>
+                      <td className="p-3 font-mono text-[#166534]">${financialSummary.reservedInstanceMonthlyEstimate.toLocaleString()}</td>
+                      <td className="p-3 font-mono text-[#166534]">${(financialSummary.reservedInstanceMonthlyEstimate * 12).toLocaleString()}</td>
+                      <td className="p-3 text-right font-mono text-[#166534]">${riAnnualSavings.toLocaleString()} (~41% Off)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Growth Horizon */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-slate-900">2-Year Capacity Growth Horizon</h3>
+              <div className="grid grid-cols-4 gap-3 text-center">
+                <div className="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+                  <div className="text-[10px] text-slate-500 font-semibold">Today</div>
+                  <div className="text-base font-bold text-slate-900 font-mono mt-0.5">{baseCu.toFixed(1)} CU</div>
+                </div>
+                <div className="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+                  <div className="text-[10px] text-slate-500 font-semibold">6 Months</div>
+                  <div className="text-base font-bold text-slate-900 font-mono mt-0.5">{m6.toFixed(1)} CU</div>
+                </div>
+                <div className="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+                  <div className="text-[10px] text-slate-500 font-semibold">1 Year</div>
+                  <div className="text-base font-bold text-slate-900 font-mono mt-0.5">{y1.toFixed(1)} CU</div>
+                </div>
+                <div className="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+                  <div className="text-[10px] text-slate-500 font-semibold">2 Years</div>
+                  <div className="text-base font-bold text-slate-900 font-mono mt-0.5">{y2.toFixed(1)} CU</div>
+                </div>
+              </div>
+              <p className="text-[11px] text-slate-700 leading-snug">
+                <strong>Upgrade Horizon:</strong> {evaluation?.upgradeTimeline || `Projected capacity upgrade to ${nextSkuName || 'larger tier'} around ${upgradeDate}.`}
+              </p>
+            </div>
+
+            {/* Sign-off Box */}
+            <div className="border border-slate-200 rounded-xl p-4 flex items-center justify-between bg-slate-50">
+              <div>
+                <div className="text-[10px] font-bold uppercase text-slate-400">Architectural Advisory Sign-off</div>
+                <div className="text-sm font-bold text-slate-900 mt-0.5">Datta Sable</div>
+                <div className="text-[11px] text-slate-600">Microsoft Fabric Engineer & Data Platform Architect</div>
+              </div>
+              <div className="text-right">
+                <div className="text-[10px] font-bold uppercase text-slate-400">Platform Link</div>
+                <div className="text-[11px] font-bold text-[#0284C7] mt-0.5">https://fabric.dattasable.com</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
+            <span>Fabric Master Sizing Report</span>
+            <span>Page 2 of 2</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-6 md:p-10 flex justify-center bg-[#0d1117] print:hidden w-full">
+        <div className="max-w-7xl w-full space-y-8 print:hidden">
           
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 print:hidden border-b border-[#30363d] pb-6 mb-8">
@@ -363,7 +518,7 @@ export function Dashboard() {
               <h1 className="text-4xl font-display font-bold tracking-tight text-[#e6edf3]">{t('Fabric Capacity Consultant')}</h1>
               <p className="text-xl text-[#8b949e] mt-3 font-light">{t('AI-driven analysis and decision support for your Microsoft Fabric investment.')}</p>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
               <Button variant="outline" onClick={async () => {
                 const encodedData = btoa(JSON.stringify(inputData));
                 const url = `${window.location.origin}/report?data=${encodedData}`;
@@ -391,27 +546,63 @@ export function Dashboard() {
             <div className="lg:col-span-8 space-y-8 print:w-full">
               
               {/* Board Recommendation */}
-              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border print:bg-light">
-                <h3 className="text-lg font-semibold border-b border-[#30363d] pb-2 mb-4 text-[#e6edf3] print-text-dark print-border">{t('Board Recommendation')}</h3>
+              <div className="bg-[#0d1117] border border-[#30363d] rounded-xl p-6 shadow-sm print:shadow-none print:border print:bg-light space-y-6">
+                <div className="flex items-center justify-between border-b border-[#30363d] pb-3 print-border">
+                  <h3 className="text-lg font-semibold text-[#e6edf3] print-text-dark">{t('Board Recommendation')}</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#238636]/20 text-[#3fb950] border border-[#238636]/40">
+                      {evaluation?.confidenceScore || 92}% Confidence Score
+                    </span>
+                    <span className="text-xs px-2 py-1 rounded bg-[#21262d] text-[#8b949e] border border-[#30363d]">
+                      v3.0 Engine
+                    </span>
+                  </div>
+                </div>
+
                 <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="flex-1 space-y-4">
                     <p className="text-[#c9d1d9] print-text-dark leading-relaxed">
-                      {t('Based on projected workload growth over the next two years, Microsoft Fabric')} <strong>{targetSkuRecommendation.costOptimizedSkuName}</strong> {t('provides the optimal balance between performance, scalability, and operational cost.')}
+                      {t('Based on normalized workload formulations across Data Factory, Spark compute, and Power BI interactive rendering, Microsoft Fabric')} <strong>{targetSkuRecommendation.costOptimizedSkuName}</strong> {t('delivers the optimal balance between compute throughput, SLA resilience, and FinOps efficiency.')}
                     </p>
-                    <p className="text-[#c9d1d9] print-text-dark leading-relaxed">
-                      {t('An upgrade to')} <strong>{nextSkuName}</strong> {t('is projected around')} <strong>{upgradeDate}</strong>.
-                    </p>
-                    <div className="mt-4 pt-4 border-t border-[#30363d] print-border">
-                      <p className="text-sm text-[#8b949e] uppercase font-semibold mb-1">{t('Estimated annual savings with Reserved Capacity')}:</p>
-                      <p className="text-2xl font-bold font-mono text-[#3fb950]">${riAnnualSavings.toLocaleString()}</p>
+
+                    {/* Explicit Reasoning List */}
+                    <div className="space-y-2 pt-1">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-[#58a6ff]">Core Sizing Drivers:</div>
+                      <ul className="space-y-1.5 text-xs text-[#c9d1d9]">
+                        {(evaluation?.reasons || [
+                          `Provides ${cu} Capacity Units (CUs) for ${baseCu} CU baseline workload demand.`,
+                          `Supports interactive Power BI DAX rendering and 24-hour background smoothing.`,
+                          cu >= 64 ? `Unlocks Power BI Free report viewing & Copilot AI assistant.` : `Cost-effective entry tier.`
+                        ]).map((reason, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#3fb950] shrink-0 mt-0.5" />
+                            <span>{reason}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-[#30363d] print-border flex flex-wrap items-center justify-between gap-4">
+                      <div>
+                        <p className="text-xs text-[#8b949e] uppercase font-semibold mb-1">{t('Upgrade Horizon')}:</p>
+                        <p className="text-sm font-semibold text-[#e6edf3]">{evaluation?.upgradeTimeline || `Estimated Upgrade Milestone: ${upgradeDate}`}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#8b949e] uppercase font-semibold mb-1">{t('Annual Reserved Savings')}:</p>
+                        <p className="text-xl font-bold font-mono text-[#3fb950]">${riAnnualSavings.toLocaleString()}</p>
+                      </div>
                     </div>
                   </div>
+
                   <div className="w-full md:w-64 bg-[#161b22] border border-[#30363d] rounded-xl p-6 text-center flex flex-col items-center justify-center shrink-0 print:border-2 print-border">
                     <span className="text-xs uppercase tracking-wider text-[#8b949e] font-semibold mb-2 flex items-center">
-                      <Star className="w-4 h-4 mr-1 text-[#d29922] fill-current" /> {t('Recommended')}
+                      <Star className="w-4 h-4 mr-1 text-[#d29922] fill-current" /> {t('Recommended SKU')}
                     </span>
                     <div className="text-5xl font-bold font-mono text-[#e6edf3] print-text-dark tracking-tight">{targetSkuRecommendation.costOptimizedSkuName}</div>
                     <div className="text-sm font-mono text-[#8b949e] mt-2">{cu} <span className="font-sans">{t('Capacity Units')}</span></div>
+                    <div className="mt-3 text-[11px] text-[#3fb950] font-semibold">
+                      ${financialSummary.reservedInstanceMonthlyEstimate.toLocaleString()}/mo Reserved
+                    </div>
                   </div>
                 </div>
               </div>

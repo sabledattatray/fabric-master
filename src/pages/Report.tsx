@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { calculateCapacity } from '../lib/calculator';
+import { SEO } from '../components/SEO';
 
 export function Report() {
   const [searchParams] = useSearchParams();
@@ -28,6 +29,7 @@ export function Report() {
 
   return (
     <div className="min-h-screen bg-[#0d1117] flex items-center justify-center text-[#e6edf3]">
+      <SEO title="Loading Shared Report" noindex={true} />
       Loading report...
     </div>
   );

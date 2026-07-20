@@ -13,6 +13,7 @@ export function Privacy() {
         title={t('Privacy Policy - Fabric Master')} 
         description={t('Privacy policy and data protection guidelines for using the Fabric Master capacity planner.')}
         keywords="Privacy Policy, Data Protection, GDPR, Fabric Master, Capacity Security"
+        noindex={true}
       />
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-6 py-12 md:py-20">

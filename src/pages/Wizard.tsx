@@ -102,9 +102,40 @@ export function Wizard() {
       </aside>
 
       {/* Document Workspace */}
-      <main className="flex-1 overflow-y-auto p-6 md:p-10 flex flex-col bg-[#0d1117] items-center">
-          <div className="w-full max-w-3xl mt-4 flex-1">
-            <h1 className="text-4xl font-display font-bold tracking-tight text-[#e6edf3] border-b border-[#30363d] pb-4 mb-8">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 flex flex-col bg-[#0d1117] items-center">
+          {/* Mobile Top Progress Header */}
+          <div className="w-full max-w-3xl md:hidden mb-6 bg-[#161b22] border border-[#30363d] rounded-2xl p-4 space-y-3">
+            <div className="flex items-center justify-between text-xs font-semibold">
+              <span className="text-[#58a6ff]">Step {currentStep + 1} of {STEPS.length}</span>
+              <span className="text-[#c9d1d9]">{STEPS[currentStep].title}</span>
+            </div>
+            <div className="w-full h-2 bg-[#0d1117] rounded-full overflow-hidden border border-[#30363d]">
+              <div 
+                className="h-full bg-gradient-to-r from-[#1f6feb] to-[#238636] transition-all duration-300"
+                style={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
+              ></div>
+            </div>
+            <div className="grid grid-cols-4 gap-1.5 pt-1">
+              {STEPS.map((s, idx) => (
+                <button
+                  key={s.id}
+                  onClick={() => idx <= currentStep && setCurrentStep(idx)}
+                  className={`text-[10px] py-1 px-1 rounded text-center truncate transition-colors ${
+                    idx === currentStep
+                      ? "bg-[#1f6feb]/20 text-[#58a6ff] border border-[#1f6feb]/40 font-bold"
+                      : idx < currentStep
+                      ? "bg-[#238636]/20 text-[#3fb950] border border-[#238636]/40"
+                      : "bg-[#0d1117] text-[#8b949e] border border-[#30363d]"
+                  }`}
+                >
+                  {s.title}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="w-full max-w-3xl mt-2 flex-1">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-[#e6edf3] border-b border-[#30363d] pb-4 mb-6 sm:mb-8">
               {STEPS[currentStep].title}
             </h1>
             {/* Form Container */}
