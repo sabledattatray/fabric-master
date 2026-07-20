@@ -111,18 +111,18 @@ export function Landing() {
           <div className="lg:col-span-7 space-y-6 text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#58a6ff]/10 border border-[#58a6ff]/30 text-[#58a6ff] text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
-              The Engineering Platform for Microsoft Fabric Architects
+              {t("The Engineering Platform for Microsoft Fabric Architects")}
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] text-[#f0f6fc] leading-[1.12]">
-              Design, Size, Cost, and Optimize{" "}
+              {t("Design, Size, Cost, and Optimize")}{" "}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#58a6ff] via-[#79c0ff] to-[#39c5cf] font-bold">
                 Microsoft Fabric
               </span>
             </h1>
 
             <p className="text-base sm:text-lg text-[#8b949e] leading-relaxed max-w-2xl font-normal">
-              The complete open-source platform for Microsoft Fabric capacity planning, FinOps, architecture design, pricing estimation, migration planning, and performance optimization.
+              {t("The complete open-source platform for Microsoft Fabric capacity planning, FinOps, architecture design, pricing estimation, migration planning, and performance optimization.")}
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
@@ -131,7 +131,7 @@ export function Landing() {
                 className="px-6 py-3.5 bg-[#238636] hover:bg-[#2ea043] text-white font-semibold rounded-xl shadow-lg shadow-green-900/30 transition-all flex items-center gap-2 text-sm sm:text-base cursor-pointer"
               >
                 <Calculator className="w-5 h-5" />
-                Launch Capacity Planner
+                {t("Launch Capacity Planner")}
               </button>
 
               <button
@@ -139,7 +139,7 @@ export function Landing() {
                 className="px-6 py-3.5 bg-[#21262d] hover:bg-[#30363d] text-[#e6edf3] border border-[#30363d] font-semibold rounded-xl transition-all flex items-center gap-2 text-sm sm:text-base cursor-pointer"
               >
                 <BookOpen className="w-5 h-5 text-[#58a6ff]" />
-                Explore Documentation
+                {t("Explore Documentation")}
               </button>
 
               <a
@@ -157,15 +157,15 @@ export function Landing() {
             <div className="pt-6 border-t border-[#30363d] flex flex-wrap items-center gap-6 text-xs text-[#8b949e]">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#3fb950]" />
-                <span>1,250+ Engineers Trust Fabric Master</span>
+                <span>{t("1,250+ Engineers Trust Fabric Master")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#3fb950]" />
-                <span>100% Open Source (MIT License)</span>
+                <span>{t("100% Open Source (MIT License)")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#3fb950]" />
-                <span>Updated for 2026 Microsoft Fabric SLA</span>
+                <span>{t("Updated for 2026 Microsoft Fabric SLA")}</span>
               </div>
             </div>
           </div>
@@ -178,10 +178,10 @@ export function Landing() {
                   <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
                   <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
                   <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
-                  <span className="text-xs font-mono text-[#8b949e] ml-2">Fabric Master Sizing Engine</span>
+                  <span className="text-xs font-mono text-[#8b949e] ml-2">{t("Fabric Master Sizing Engine")}</span>
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded bg-[#238636]/20 text-[#3fb950] border border-[#238636]/40 font-mono">
-                  LIVE ENGINE
+                  {t("LIVE ENGINE")}
                 </span>
               </div>
 
@@ -189,22 +189,22 @@ export function Landing() {
               <div className="space-y-4">
                 <div className="p-4 rounded-xl bg-[#0d1117] border border-[#30363d] flex items-center justify-between">
                   <div>
-                    <div className="text-xs text-[#8b949e]">Calculated Baseline CU</div>
+                    <div className="text-xs text-[#8b949e]">{t("Calculated Baseline CU")}</div>
                     <div className="text-2xl font-bold text-[#58a6ff]">42.80 CUs</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-[#8b949e]">Recommended SKU</div>
+                    <div className="text-xs text-[#8b949e]">{t("Recommended SKU")}</div>
                     <div className="text-2xl font-bold text-[#3fb950]">F64 Capacity</div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="p-3 rounded-xl bg-[#0d1117] border border-[#30363d]">
-                    <div className="text-[11px] text-[#8b949e]">PAYG Monthly</div>
+                    <div className="text-[11px] text-[#8b949e]">{t("PAYG Monthly")}</div>
                     <div className="text-base font-semibold text-[#e6edf3]">$8,409.60</div>
                   </div>
                   <div className="p-3 rounded-xl bg-[#0d1117] border border-[#3fb950]/40">
-                    <div className="text-[11px] text-[#3fb950]">1-Yr Reserved</div>
+                    <div className="text-[11px] text-[#3fb950]">{t("1-Yr Reserved")}</div>
                     <div className="text-base font-semibold text-[#3fb950]">$4,961.66</div>
                   </div>
                 </div>
@@ -212,8 +212,8 @@ export function Landing() {
                 {/* Simulated Utilization Meter */}
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-xs text-[#8b949e]">
-                    <span>Capacity Health Index</span>
-                    <span className="text-[#3fb950] font-semibold">94% Optimal (Safe Buffer)</span>
+                    <span>{t("Capacity Health Index")}</span>
+                    <span className="text-[#3fb950] font-semibold">{t("94% Optimal (Safe Buffer)")}</span>
                   </div>
                   <div className="w-full bg-[#0d1117] h-2.5 rounded-full overflow-hidden border border-[#30363d]">
                     <div className="bg-gradient-to-r from-[#1f6feb] to-[#3fb950] h-full w-[67%] animate-pulse"></div>
@@ -226,7 +226,7 @@ export function Landing() {
                   onClick={() => navigate("/wizard")}
                   className="w-full py-2.5 rounded-xl bg-[#21262d] hover:bg-[#30363d] text-xs font-semibold text-[#e6edf3] border border-[#30363d] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <span>Model Custom Organization Workload</span>
+                  <span>{t("Model Custom Organization Workload")}</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#58a6ff]" />
                 </button>
               </div>
@@ -314,10 +314,10 @@ export function Landing() {
       <section className="py-16 px-6 max-w-7xl mx-auto space-y-10">
         <div className="text-center space-y-3">
           <h2 className="text-3xl md:text-4xl font-display font-bold text-[#f0f6fc]">
-            Core Fabric Engineering & FinOps Tools
+            {t("Core Fabric Engineering & FinOps Tools")}
           </h2>
           <p className="text-sm md:text-base text-[#8b949e] max-w-2xl mx-auto">
-            Comprehensive calculators, pricing estimators, and comparative specs built specifically for Microsoft Fabric architects.
+            {t("Comprehensive calculators, pricing estimators, and comparative specs built specifically for Microsoft Fabric architects.")}
           </p>
         </div>
 
@@ -328,10 +328,10 @@ export function Landing() {
               <Calculator className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-[#e6edf3] group-hover:text-[#58a6ff] transition-colors">
-              Capacity Sizing Wizard
+              {t("Capacity Sizing Wizard")}
             </h3>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              Step-by-step workload evaluation across Data Factory, Spark compute, and Power BI report concurrency.
+              {t("Step-by-step workload evaluation across Data Factory, Spark compute, and Power BI report concurrency.")}
             </p>
           </Link>
 
@@ -341,10 +341,10 @@ export function Landing() {
               <DollarSign className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-[#e6edf3] group-hover:text-[#3fb950] transition-colors">
-              Cost & Pricing Estimator
+              {t("Cost & Pricing Estimator")}
             </h3>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              Translate Capacity Units into precise monthly and annual Pay-As-You-Go financial forecasts.
+              {t("Translate Capacity Units into precise monthly and annual Pay-As-You-Go financial forecasts.")}
             </p>
           </Link>
 
@@ -354,10 +354,10 @@ export function Landing() {
               <DollarSign className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-[#e6edf3] group-hover:text-[#3fb950] transition-colors">
-              Reserved Savings Calculator
+              {t("Reserved Savings Calculator")}
             </h3>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              Calculate exact 1-Year Reserved Instance discounts (~41% off) and annual enterprise budget savings.
+              {t("Calculate exact 1-Year Reserved Instance discounts (~41% off) and annual enterprise budget savings.")}
             </p>
           </Link>
 
@@ -367,10 +367,10 @@ export function Landing() {
               <Zap className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-[#e6edf3] group-hover:text-[#d29922] transition-colors">
-              Spark CU Sizing Estimator
+              {t("Spark CU Sizing Estimator")}
             </h3>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              Size Apache Spark node pools, vCores, and auto-scaling rules to prevent background job throttling.
+              {t("Size Apache Spark node pools, vCores, and auto-scaling rules to prevent background job throttling.")}
             </p>
           </Link>
 
@@ -380,10 +380,10 @@ export function Landing() {
               <BarChart3 className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-[#e6edf3] group-hover:text-[#a371f7] transition-colors">
-              Power BI Capacity Sizing
+              {t("Power BI Capacity Sizing")}
             </h3>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              Analyze concurrent report users, DAX query complexity, and Direct Lake memory footprints.
+              {t("Analyze concurrent report users, DAX query complexity, and Direct Lake memory footprints.")}
             </p>
           </Link>
 
@@ -393,10 +393,10 @@ export function Landing() {
               <DollarSign className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-[#e6edf3] group-hover:text-[#58a6ff] transition-colors">
-              Global Region Pricing Matrix
+              {t("Global Region Pricing Matrix")}
             </h3>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              Compare Microsoft Fabric SKU pricing across global Azure cloud regions in real-time.
+              {t("Compare Microsoft Fabric SKU pricing across global Azure cloud regions in real-time.")}
             </p>
           </Link>
 
@@ -406,10 +406,10 @@ export function Landing() {
               <Sparkles className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-[#e6edf3] group-hover:text-[#3fb950] transition-colors">
-              F64 Flagship Spec Guide
+              {t("F64 Flagship Spec Guide")}
             </h3>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              Deep dive into F64 entitlements: Power BI Free viewer licensing & Microsoft Fabric Copilot AI.
+              {t("Deep dive into F64 entitlements: Power BI Free viewer licensing & Microsoft Fabric Copilot AI.")}
             </p>
           </Link>
 
@@ -419,10 +419,10 @@ export function Landing() {
               <Beaker className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-bold text-[#e6edf3] group-hover:text-[#3fb950] transition-colors">
-              Fabric Master Labs
+              {t("Fabric Master Labs")}
             </h3>
             <p className="text-xs text-[#8b949e] leading-relaxed">
-              Experimental estimators, Direct Lake RAM calculators, and Microsoft Build announcement breakdowns.
+              {t("Experimental estimators, Direct Lake RAM calculators, and Microsoft Build announcement breakdowns.")}
             </p>
           </Link>
         </div>
@@ -433,10 +433,10 @@ export function Landing() {
         <div className="space-y-6">
           <div className="text-center space-y-3">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-[#f0f6fc]">
-              Fabric AI Advisor
+              {t("Fabric AI Advisor")}
             </h2>
             <p className="text-sm text-[#8b949e] max-w-xl mx-auto">
-              Instant AI guidance on Microsoft Fabric SKU choices, pricing optimizations, throttling prevention, and Synapse migrations.
+              {t("Instant AI guidance on Microsoft Fabric SKU choices, pricing optimizations, throttling prevention, and Synapse migrations.")}
             </p>
           </div>
 
