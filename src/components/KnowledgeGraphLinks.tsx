@@ -135,32 +135,45 @@ export function KnowledgeGraphLinks({
                 </Link>
               ))}
 
-              {/* Contextual dattasable.com Learning Path Links */}
+              {/* Contextual dattasable.com Learning Path & Blog Links */}
               <div className="pt-2 space-y-2">
                 <a 
-                  href="https://dattasable.com" 
+                  href="https://dattasable.com/blog/dp-600-vs-dp-700-vs-dp-800-microsoft-fabric-certification-comparison" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="block p-3 rounded-xl bg-[#0d1117] border border-[#a371f7]/40 hover:border-[#a371f7] transition-all group"
                 >
                   <div className="font-semibold text-xs text-[#a371f7] flex items-center justify-between">
-                    <span>DP-600 & DP-700 Certification Deep Dive</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>DP-600 vs DP-700 vs DP-800 Certification Guide</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#a371f7]" />
                   </div>
-                  <div className="text-[11px] text-[#8b949e] mt-1">Read complete Microsoft Fabric exam study guides on dattasable.com</div>
+                  <div className="text-[11px] text-[#8b949e] mt-1">Which Microsoft Fabric certification should you choose? Complete 2026 comparison.</div>
                 </a>
 
                 <a 
-                  href="https://dattasable.com" 
+                  href="https://dattasable.com/blog/microsoft-fabric-architecture-explained-2026" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group"
                 >
                   <div className="font-semibold text-xs text-[#58a6ff] flex items-center justify-between">
-                    <span>OneLake & Medallion Architecture Guide</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Microsoft Fabric Architecture Explained (2026)</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#58a6ff]" />
                   </div>
-                  <div className="text-[11px] text-[#8b949e] mt-1">Enterprise Delta Lake & OneLake shortcut design patterns</div>
+                  <div className="text-[11px] text-[#8b949e] mt-1">OneLake, Medallion Architecture, Direct Lake & CU compute deep dive.</div>
+                </a>
+
+                <a 
+                  href="https://dattasable.com/blog/dp-700-study-guide-2026" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#3fb950] transition-all group"
+                >
+                  <div className="font-semibold text-xs text-[#3fb950] flex items-center justify-between">
+                    <span>DP-700 Study Guide: Fabric Data Engineer</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#3fb950]" />
+                  </div>
+                  <div className="text-[11px] text-[#8b949e] mt-1">Complete preparation roadmap for Microsoft Fabric Data Engineering exam.</div>
                 </a>
               </div>
             </div>

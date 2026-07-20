@@ -58,17 +58,50 @@ export function About() {
              </p>
            </section>
 
-           <section>
-             <h2 className="text-2xl font-bold text-white mb-4 border-b border-[#30363d] pb-2 flex items-center">
-               <Code className="w-6 h-6 mr-3 text-[#3fb950]" /> Experience
-             </h2>
-             <p className="mb-4">
-               As a Data Platform Architect and Microsoft Fabric Engineer, I specialize in designing massive-scale data estates, optimizing compute performance (CUs), and leading migrations from legacy systems (like Azure Synapse) into the Fabric paradigm.
-             </p>
-             <p>
-               My work focuses on ensuring high availability, strict cost governance, and unparalleled performance for analytical workloads.
-             </p>
-           </section>
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4 border-b border-[#30363d] pb-2 flex items-center">
+                <Code className="w-6 h-6 mr-3 text-[#3fb950]" /> Experience & Architecture Guides
+              </h2>
+              <p className="mb-4">
+                As a Data Platform Architect and Microsoft Fabric Engineer, I specialize in designing massive-scale data estates, optimizing compute performance (CUs), and leading migrations from legacy systems (like Azure Synapse) into the Fabric paradigm.
+              </p>
+              <p className="mb-6">
+                My work focuses on ensuring high availability, strict cost governance, and unparalleled performance for analytical workloads.
+              </p>
+
+              {/* Contextual Links to dattasable.com Blog */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <a 
+                  href="https://dattasable.com/blog/dp-600-vs-dp-700-vs-dp-800-microsoft-fabric-certification-comparison" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-4 rounded-xl bg-[#161b22] border border-[#30363d] hover:border-[#a371f7] transition-all group"
+                >
+                  <div className="font-semibold text-sm text-[#a371f7] flex items-center justify-between">
+                    <span>DP-600 vs DP-700 vs DP-800 Guide</span>
+                    <Code className="w-4 h-4 text-[#a371f7]" />
+                  </div>
+                  <div className="text-xs text-[#8b949e] mt-1.5">
+                    Which Fabric certification is right for you? DP-600, DP-700 & DP-800 breakdown.
+                  </div>
+                </a>
+
+                <a 
+                  href="https://dattasable.com/blog/microsoft-fabric-architecture-explained-2026" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-4 rounded-xl bg-[#161b22] border border-[#30363d] hover:border-[#58a6ff] transition-all group"
+                >
+                  <div className="font-semibold text-sm text-[#58a6ff] flex items-center justify-between">
+                    <span>Fabric Architecture Explained</span>
+                    <Database className="w-4 h-4 text-[#58a6ff]" />
+                  </div>
+                  <div className="text-xs text-[#8b949e] mt-1.5">
+                    Deep dive into OneLake, Medallion storage, Direct Lake & Capacity Units.
+                  </div>
+                </a>
+              </div>
+            </section>
 
            <section>
              <h2 className="text-2xl font-bold text-white mb-4 border-b border-[#30363d] pb-2 flex items-center">
