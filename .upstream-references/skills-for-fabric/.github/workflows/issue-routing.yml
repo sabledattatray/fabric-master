@@ -1,0 +1,144 @@
+name: Issue owner routing
+
+# Applies an `area:<slug>` label to each new/edited issue from the required
+# "Owner area / team" dropdown in the issue forms. The ROUTING_MAP option list
+# must match that dropdown in .github/ISSUE_TEMPLATE/ (bug + feature forms).
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+# Serialize per-issue so a slow run for an earlier edit cannot overwrite the
+# label applied by a later edit; the most recent run always applies last.
+concurrency:
+  group: issue-routing-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+env:
+  OWNER_FIELD_LABEL: "Owner area / team"
+  ROUTING_MAP: |
+    [
+      {"option":"Databricks migration","slug":"databricks-migration","label":"area:databricks-migration","color":"c5def5"},
+      {"option":"Synapse / pipeline migration","slug":"synapse-migration","label":"area:synapse-migration","color":"fef2c0"},
+      {"option":"HDInsight migration","slug":"hdinsight-migration","label":"area:hdinsight-migration","color":"bfdadc"},
+      {"option":"Data engineering (Spark / lakehouse / notebooks)","slug":"data-engineering","label":"area:data-engineering","color":"d0e0e3"},
+      {"option":"SQL Data Warehouse","slug":"sqldw","label":"area:sqldw","color":"1d76db"},
+      {"option":"SQL database","slug":"sqldb","label":"area:sqldb","color":"c5def5"},
+      {"option":"Dataflows Gen2","slug":"dataflows","label":"area:dataflows","color":"1d76db"},
+      {"option":"Eventhouse / KQL","slug":"eventhouse","label":"area:eventhouse","color":"e99695"},
+      {"option":"Event Schema Set / Real-Time Intelligence","slug":"eventschemaset","label":"area:eventschemaset","color":"1f6feb"},
+      {"option":"Eventstream / Real-Time Intelligence","slug":"eventstream","label":"area:eventstream","color":"b60205"},
+      {"option":"Activator / Reflex","slug":"activator","label":"area:activator","color":"c2e0c6"},
+      {"option":"OneLake Catalog (search / discovery)","slug":"catalog","label":"area:catalog","color":"d93f0b"},
+      {"option":"Power BI semantic models","slug":"powerbi","label":"area:powerbi","color":"1d76db"},
+      {"option":"Ananke / FabricIQ (Power BI data exploration)","slug":"ananke","label":"area:ananke","color":"006b75"},
+      {"option":"Power BI Reports","slug":"powerbi-report","label":"area:powerbi-report","color":"d4c5f9"},
+      {"option":"Fabric IQ / Ontology","slug":"fabriciq","label":"area:fabriciq","color":"0969da"},
+      {"option":"Fabric CI/CD","slug":"cicd","label":"area:cicd","color":"1f6feb"},
+      {"option":"Azure Monitor into Fabric","slug":"azmon","label":"area:azmon","color":"0e8a16"},
+      {"option":"Fabric cost estimation","slug":"cost-estimation","label":"area:cost-estimation","color":"c2e0c6"},
+      {"option":"Infrastructure / repo / CI / general (or not sure)","slug":"platform","label":"area:platform","color":"fef2c0"}
+    ]
+
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply owner area label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const map = JSON.parse(process.env.ROUTING_MAP);
+            const fieldLabel = process.env.OWNER_FIELD_LABEL;
+            const body = context.payload.issue.body || "";
+
+            // Issue forms render a dropdown answer as: "### <label>\n\n<value>".
+            const escaped = fieldLabel.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
+            const re = new RegExp("###\\s*" + escaped + "\\s*\\n+\\s*([^\\n]+)");
+            const match = body.match(re);
+            const selected = match ? match[1].trim() : "";
+            const entry = map.find((e) => e.option === selected);
+
+            const target = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+            };
+
+            if (!entry) {
+              // Only issues filed through the form carry the owner-field heading.
+              // Leave pre-existing issues and API / gh-created issues untouched so
+              // publishing this workflow does not retro-tag old public issues.
+              const hasOwnerHeading = new RegExp("###\\s*" + escaped).test(body);
+              if (!hasOwnerHeading) {
+                core.info("No owner field present; leaving the issue untouched.");
+                return;
+              }
+              // A form issue with an unrecognized/blank selection: flag for manual
+              // triage, unless it is already routed or already flagged.
+              const existing = await github.paginate(
+                github.rest.issues.listLabelsOnIssue,
+                { ...target, per_page: 100 }
+              );
+              const alreadyMarked = existing.some(
+                (l) => l.name.startsWith("area:") || l.name === "needs-triage"
+              );
+              if (alreadyMarked) return;
+              try {
+                await github.rest.issues.createLabel({
+                  owner: target.owner,
+                  repo: target.repo,
+                  name: "needs-triage",
+                  color: "ededed",
+                  description: "Awaiting owner triage",
+                });
+              } catch (err) {
+                if (err.status !== 422) throw err; // 422 = label already exists
+              }
+              await github.rest.issues.addLabels({ ...target, labels: ["needs-triage"] });
+              return;
+            }
+
+            // Create the area label on first use; if it already exists (422), keep it as-is.
+            try {
+              await github.rest.issues.createLabel({
+                owner: target.owner,
+                repo: target.repo,
+                name: entry.label,
+                color: entry.color,
+                description: "Owner: " + entry.option,
+              });
+            } catch (err) {
+              if (err.status !== 422) throw err; // 422 = label already exists
+            }
+
+            // A valid owner is now selected: drop any stale area:* label (the
+            // selection changed on an edit) and clear the needs-triage flag.
+            const current = await github.paginate(
+              github.rest.issues.listLabelsOnIssue,
+              { ...target, per_page: 100 }
+            );
+            for (const lab of current) {
+              const staleArea = lab.name.startsWith("area:") && lab.name !== entry.label;
+              if (staleArea || lab.name === "needs-triage") {
+                try {
+                  await github.rest.issues.removeLabel({ ...target, name: lab.name });
+                } catch (err) {
+                  if (err.status !== 404) throw err; // already removed by a concurrent run
+                }
+              }
+            }
+
+            await github.rest.issues.addLabels({ ...target, labels: [entry.label] });
+
+            if (context.payload.action === "opened") {
+              await github.rest.issues.createComment({
+                ...target,
+                body:
+                  "Thanks! Routed to **" + entry.label + "** (" + entry.option + "). " +
+                  "If that is not right, edit the issue and change the **" + fieldLabel + "** field.",
+              });
+            }

@@ -1,0 +1,84 @@
+name: Feature request
+description: Suggest an idea, improvement, or new skill for Fabric Skills
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement to **Fabric Skills**.
+
+  - type: dropdown
+    id: owner
+    attributes:
+      label: Owner area / team
+      description: |
+        Which Fabric area or team should own this request? Pick the closest match.
+        If you are not sure, choose the last option (the general / infrastructure bucket).
+        A bot applies the matching `area:*` label so the right team is notified.
+      options:
+        - Databricks migration
+        - Synapse / pipeline migration
+        - HDInsight migration
+        - Data engineering (Spark / lakehouse / notebooks)
+        - SQL Data Warehouse
+        - SQL database
+        - Dataflows Gen2
+        - Eventhouse / KQL
+        - Event Schema Set / Real-Time Intelligence
+        - Eventstream / Real-Time Intelligence
+        - Activator / Reflex
+        - OneLake Catalog (search / discovery)
+        - Power BI semantic models
+        - Ananke / FabricIQ (Power BI data exploration)
+        - Power BI Reports
+        - Fabric IQ / Ontology
+        - Fabric CI/CD
+        - Azure Monitor into Fabric
+        - Fabric cost estimation
+        - Infrastructure / repo / CI / general (or not sure)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the use case or the problem this feature would address.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe how you envision this working.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe any alternative solutions or workarounds you have considered.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Any other relevant information, examples, or screenshots.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I searched existing issues and this is not a duplicate
+          required: true
+        - label: I selected the correct owner area above
+          required: true

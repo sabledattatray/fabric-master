@@ -26,6 +26,10 @@ import { Labs } from "./pages/Labs";
 import { Report } from "./pages/Report";
 import { Terms } from "./pages/Terms";
 import { Privacy } from "./pages/Privacy";
+import { ArchitecturePlanner } from "./pages/ArchitecturePlanner";
+import { OneLakeVisualizer } from "./pages/OneLakeVisualizer";
+import { AIAdvisor } from "./pages/AIAdvisor";
+import { ResourcesOpenSource } from "./pages/ResourcesOpenSource";
 
 export default function App() {
   const { i18n } = useTranslation();
@@ -58,6 +62,10 @@ export default function App() {
               <Route path="/report" element={<Report />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy" element={<Privacy />} />
+              <Route path="/architecture/planner" element={<ArchitecturePlanner />} />
+              <Route path="/architecture/onelake" element={<OneLakeVisualizer />} />
+              <Route path="/ai-advisor" element={<AIAdvisor />} />
+              <Route path="/resources/open-source" element={<ResourcesOpenSource />} />
             </Routes>
           </Layout>
         </Router>

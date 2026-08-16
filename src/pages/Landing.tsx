@@ -115,14 +115,14 @@ export function Landing() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] text-[#f0f6fc] leading-[1.12]">
-              {t("Design, Size, Cost, and Optimize")}{" "}
+              {t("Engineering, Architecture & FinOps for")}{" "}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#58a6ff] via-[#79c0ff] to-[#39c5cf] font-bold">
                 Microsoft Fabric
               </span>
             </h1>
 
             <p className="text-base sm:text-lg text-[#8b949e] leading-relaxed max-w-2xl font-normal">
-              {t("The complete open-source platform for Microsoft Fabric capacity planning, FinOps, architecture design, pricing estimation, migration planning, and performance optimization.")}
+              {t("Plan, design, optimize and operate Microsoft Fabric environments with interactive architecture planning, capacity estimation, FinOps analysis, performance guidance, governance patterns and AI-assisted engineering recommendations.")}
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">

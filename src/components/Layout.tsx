@@ -47,36 +47,46 @@ export function Layout({ children }: LayoutProps) {
 
   const navigationGroups = [
     {
+      title: t("Fabric Master"),
+      items: [
+        { name: t("Home"), href: "/", icon: Home },
+      ],
+    },
+    {
       title: t("Planning"),
       items: [
-        { name: t("Home Platform"), href: "/", icon: Home },
         { name: t("Capacity Calculator"), href: "/wizard", icon: Calculator },
         { name: t("Cost Estimator"), href: "/cost-calculator", icon: DollarSign },
-      ],
-    },
-    {
-      title: t("Performance & FinOps"),
-      items: [
-        { name: t("Reserved Savings"), href: "/reserved-savings", icon: DollarSign },
         { name: t("Spark CU Estimator"), href: "/spark-estimator", icon: Zap },
         { name: t("Power BI Capacity"), href: "/power-bi-capacity", icon: Calculator },
-        { name: t("Global Pricing Matrix"), href: "/pricing", icon: DollarSign },
       ],
     },
     {
-      title: t("SKU & Architecture"),
+      title: t("Architecture"),
       items: [
-        { name: t("F64 Enterprise Capacity"), href: "/fsku/f64", icon: Sparkles },
-        { name: t("F32 vs F64 Comparison"), href: "/compare/f32-vs-f64", icon: GitCompare },
-        { name: t("Power BI Premium vs Fabric"), href: "/compare/power-bi-premium-vs-fabric", icon: GitCompare },
+        { name: t("Architecture Planner"), href: "/architecture/planner", icon: Sparkles },
+        { name: t("OneLake Visualizer"), href: "/architecture/onelake", icon: GitCompare },
       ],
     },
     {
-      title: t("Knowledge & Community"),
+      title: t("FinOps"),
+      items: [
+        { name: t("F-SKU Comparison"), href: "/fsku-comparisons", icon: GitCompare },
+        { name: t("Reserved Savings"), href: "/reserved-savings", icon: DollarSign },
+      ],
+    },
+    {
+      title: t("Operations & Expertise"),
+      items: [
+        { name: t("AI Advisor"), href: "/ai-advisor", icon: Bot },
+        { name: t("Labs & Experiments"), href: "/labs", icon: Beaker },
+      ],
+    },
+    {
+      title: t("Knowledge"),
       items: [
         { name: t("Documentation Hub"), href: "/docs", icon: BookOpen },
-        { name: t("Fabric Master Labs"), href: "/labs", icon: Beaker },
-        { name: t("About Datta Sable"), href: "/about", icon: Users },
+        { name: t("Open Source"), href: "/resources/open-source", icon: Github },
       ],
     },
   ];
