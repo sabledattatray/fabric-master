@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: Fabric Skills documentation
-    url: https://github.com/microsoft/skills-for-fabric#readme
-    about: Review the README and troubleshooting guidance before filing an issue.
-  - name: Report a security vulnerability
-    url: https://github.com/microsoft/skills-for-fabric/blob/main/SECURITY.md
-    about: For security vulnerabilities, report privately via SECURITY.md instead of opening a public issue.
