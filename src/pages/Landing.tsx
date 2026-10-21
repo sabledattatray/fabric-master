@@ -161,7 +161,7 @@ export function Landing() {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#3fb950]" />
-                <span>{t("100% Open Source (MIT License)")}</span>
+                <span>{t("Source available on GitHub")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#3fb950]" />

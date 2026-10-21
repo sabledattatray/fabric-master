@@ -1,4 +1,5 @@
 import React from "react";
+import { PlanningAssumptions } from "../components/PlanningAssumptions";
 import { SEO } from "../components/SEO";
 import { DollarSign, ArrowRight, TrendingDown, Calculator, CheckCircle2, HelpCircle, ShieldCheck, Clock, Award, Layers } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -165,7 +166,7 @@ export function ReservedSavings() {
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#3fb950] shrink-0" />
-                <span>Locking in guaranteed 41% cost savings for predictable budgets.</span>
+                <span>Compare a reservation commitment with expected usage; actual savings depend on the applicable offer and utilization.</span>
               </li>
             </ul>
           </div>
@@ -213,6 +214,7 @@ export function ReservedSavings() {
         </div>
       </div>
 
+      <PlanningAssumptions />
       <KnowledgeGraphLinks />
 
       <Footer />

@@ -24,7 +24,7 @@ export function Privacy() {
           </div>
           <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">{t('Privacy Policy')}</h1>
           <p className="text-lg text-[#8b949e]">
-            {t('Last updated: June 2026')}
+            {t('Last updated: 21 October 2026')}
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export function Privacy() {
           <section className="bg-[#161b22] border border-[#30363d] rounded-2xl p-6 md:p-8">
             <h2 className="text-xl md:text-2xl font-bold text-white mb-4 flex items-center">
               <Shield className="w-5 h-5 mr-3 text-[#58a6ff]" />
-              {t('1. 100% Client-Side Architecture')}
+              {t('1. Browser processing and hosting')}
             </h2>
             <p className="mb-4">
               {t('At Fabric Master, we prioritize your architectural privacy. All parameters, workload metrics, company names, and consultant notes you enter in our sizing wizard are processed strictly inside your local browser sandbox.')}
@@ -48,10 +48,10 @@ export function Privacy() {
               {t('2. Local Storage Persistence')}
             </h2>
             <p>
-              {t('To preserve your progress and allow high-fidelity PDF report generation, the wizard data and capacity calculations are stored securely in your web browser\'s localStorage.')}
+              {t('To preserve your progress and allow high-fidelity PDF report generation, the wizard data and capacity calculations are stored in your web browser\'s localStorage.')}
             </p>
             <p>
-              {t('This data stays on your machine and can be cleared at any time by wiping your browser cache or resetting your app preferences.')}
+              {t('Local storage is not an encrypted vault. Other people with access to your browser profile may be able to read it. Clear site data in browser settings or reset app preferences to remove saved scenarios. Avoid confidential inputs on shared devices.')}
             </p>
           </section>
 
@@ -61,17 +61,17 @@ export function Privacy() {
               {t('3. Third-Party Analytics & Cookies')}
             </h2>
             <p>
-              {t('We do not employ aggressive ad trackers. We may use simple, privacy-friendly analytics cookies or storage keys solely to understand general application usage patterns (e.g. popular SKU lookups) and ensure high-availability routing for our open-source tools.')}
+              {t('This release does not load advertising or optional analytics tags. Browser storage is used for app preferences and saved scenarios. Hosting services receive ordinary request data, including IP addresses, browser headers, and requested URLs, to deliver and protect the site. Links to Microsoft, GitHub, email, and other services take you to their own privacy practices.')}
             </p>
           </section>
 
           <section className="space-y-6">
             <h2 className="text-xl md:text-2xl font-bold text-white border-b border-[#30363d] pb-2 flex items-center">
               <Lock className="w-5 h-5 mr-3 text-[#f85149]" />
-              {t('4. Policy Changes')}
+              {t('4. Contact and policy changes')}
             </h2>
             <p>
-              {t('We reserve the right to update this policy as the Microsoft Fabric API surfaces and our open-source sizing toolkit evolve. Any changes will be posted immediately on this page with an updated timestamp.')}
+              {t('Contact Datta Sable at info@dattasable.com for privacy questions or requests about information you have sent to us. Do not include confidential workload data in an initial support request. Policy changes will be posted here with an updated review date.')}
             </p>
           </section>
         </div>
