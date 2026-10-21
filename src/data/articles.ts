@@ -1,12 +1,15 @@
+import { ARTICLE_REVISIONS } from './article-revisions';
+
 export interface Article {
   id: string;
   title: string;
   description: string;
   category: string;
   content: string;
+  referenceOnly?: boolean;
 }
 
-export const ARTICLES: Article[] = [
+const SOURCE_ARTICLES: Article[] = [
   {
     id: "getting-started-fabric-master",
     title: "Getting Started with Fabric Master",
@@ -183,3 +186,8 @@ export const ARTICLES: Article[] = [
     content: "## F2 vs F64\n\nThe F2 is the absolute minimum entry point, perfect for learning and small proofs-of-concept. However, it lacks Power BI Free user distribution and Copilot features. F64 is the true enterprise starting point."
   }
 ];
+
+export const ARTICLES: Article[] = SOURCE_ARTICLES.map(article => {
+  const revision = ARTICLE_REVISIONS[article.id];
+  return revision && article.content === revision.original ? { ...article, title: revision.title, description: revision.description, content: revision.content, referenceOnly: revision.referenceOnly ?? false } : article;
+});

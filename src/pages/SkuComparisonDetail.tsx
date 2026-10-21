@@ -1,3 +1,4 @@
+import { PlanningAssumptions } from '../components/PlanningAssumptions';
 import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { COMPARISONS_DATA } from "../data/comparisons";
@@ -42,6 +43,7 @@ export function SkuComparisonDetail() {
         url={`https://fabric.dattasable.com/compare/${comparison.slug}`}
         schema={[faqSchema]}
       />
+      <PlanningAssumptions />
 
       <div className="flex-1 w-full max-w-5xl mx-auto p-6 md:p-12 space-y-12">
         {/* Breadcrumb */}

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 interface SEOProps {
@@ -28,6 +29,7 @@ export function SEO({
   article = false
 }: SEOProps) {
   const { t, i18n } = useTranslation();
+  const location = useLocation();
 
   const defaultTitle = t("Fabric Master | The Open Source Microsoft Fabric Engineering Platform");
   const translatedTitle = title ? t(title) : "";
@@ -36,7 +38,7 @@ export function SEO({
   const defaultDescription = t("Fabric Master by Datta Sable is the complete open-source platform for Microsoft Fabric capacity planning, FinOps, architecture design, pricing estimation, migration planning, and performance optimization.");
   const finalDescription = description ? t(description) : defaultDescription;
   
-  const currentUrl = url !== 'https://fabric.dattasable.com' ? url : (typeof window !== 'undefined' ? window.location.href : url);
+  const currentUrl = new URL(location.pathname, 'https://fabric.dattasable.com').href;
   const finalImage = image.startsWith('http') ? image : `https://fabric.dattasable.com${image.startsWith('/') ? '' : '/'}${image}`;
 
   // Keep document.title reactively updated on language or route change
@@ -85,11 +87,6 @@ export function SEO({
       "priceCurrency": "USD"
     },
     "description": finalDescription,
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "1250"
-    },
     "author": {
       "@type": "Person",
       "name": "Datta Sable",
@@ -172,7 +169,7 @@ export function SEO({
     ]
   };
 
-  const schemasToRender: any[] = [websiteSchema, organizationSchema, softwareSchema, personSchema, breadcrumbSchema, faqSchema];
+  const schemasToRender: any[] = [websiteSchema, organizationSchema, softwareSchema, personSchema, breadcrumbSchema];
   if (schema) {
     if (Array.isArray(schema)) {
       schemasToRender.push(...schema);

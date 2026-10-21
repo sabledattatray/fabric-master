@@ -1,3 +1,4 @@
+import { PlanningAssumptions } from '../components/PlanningAssumptions';
 import React, { useState } from "react";
 import { SEO } from "../components/SEO";
 import { DollarSign, ArrowRight, Calculator, CheckCircle2, HelpCircle, ShieldCheck, Clock, Layers, Sparkles } from "lucide-react";
@@ -58,6 +59,7 @@ export function CostCalculator() {
         url="https://fabric.dattasable.com/cost-calculator"
         schema={[faqSchema]}
       />
+      <PlanningAssumptions />
 
       <div className="flex-1 w-full max-w-5xl mx-auto p-6 md:p-12 space-y-12">
         {/* Header & Metadata */}

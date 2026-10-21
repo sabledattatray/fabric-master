@@ -19,43 +19,32 @@ export function calculateCapacity(data: any): EvaluationResponse {
   try {
     // 1. Validate payload via Zod
     const payload = WorkloadCalculationSchema.parse(data);
-    
+
     // 2. Perform Mathematical Workload Formulation
     // Data Factory component
-    const dfCu = (payload.dataFactoryInput.monthlyPipelines / 730) 
-      * payload.dataFactoryInput.avgActivities * 0.005 
+    const dfCu = (payload.dataFactoryInput.monthlyPipelines / 730)
+      * payload.dataFactoryInput.avgActivities * 0.005
       + (payload.dataFactoryInput.dataVolumeGb * 0.002);
 
     // Spark component
-    const sparkCu = payload.sparkComputeInput.totalNodes 
-      * payload.sparkComputeInput.vCoresPerNode 
+    const sparkCu = payload.sparkComputeInput.totalNodes
+      * payload.sparkComputeInput.vCoresPerNode
       * (payload.sparkComputeInput.dailyRuntimeHours / 24) * 0.5;
 
     // Power BI component
-    const pbiCu = payload.powerBiInput.peakConcurrentUsers 
+    const pbiCu = payload.powerBiInput.peakConcurrentUsers
       * (payload.powerBiInput.queryComplexityScale * 0.2);
 
     const calculatedCuBaseline = dfCu + sparkCu + pbiCu;
 
     // 3. Determine SKUs
     const requiredSafeCu = calculatedCuBaseline * 1.5; // 50% buffer
-    let optimizedIndex = 0;
-    let safeIndex = 0;
-
-    for (let i = 0; i < FABRIC_SKUS.length; i++) {
-      if (FABRIC_SKUS[i].cu >= calculatedCuBaseline && FABRIC_SKUS[optimizedIndex].cu < calculatedCuBaseline) {
-        optimizedIndex = i;
-      }
-      if (FABRIC_SKUS[i].cu >= requiredSafeCu && FABRIC_SKUS[safeIndex].cu < requiredSafeCu) {
-        safeIndex = i;
-      }
-    }
-
-    // Cap at max SKU if required
-    if (calculatedCuBaseline > 2048) {
-      optimizedIndex = FABRIC_SKUS.length - 1;
-      safeIndex = FABRIC_SKUS.length - 1;
-    }
+    const tierIndex = (demand: number) => {
+      const found = FABRIC_SKUS.findIndex(sku => sku.cu >= demand);
+      return found < 0 ? FABRIC_SKUS.length - 1 : found;
+    };
+    const optimizedIndex = tierIndex(calculatedCuBaseline);
+    const safeIndex = tierIndex(requiredSafeCu);
 
     const optimizedSku = FABRIC_SKUS[optimizedIndex];
     const safeSku = FABRIC_SKUS[safeIndex];
@@ -74,29 +63,30 @@ export function calculateCapacity(data: any): EvaluationResponse {
     const potentialSavingsMonthly = payAsYouGoMonthlyEstimate - reservedInstanceMonthlyEstimate;
 
     // 5. Throttling Analysis (heuristic based on buffer)
-    const bufferPercent = ((optimizedSku.cu - calculatedCuBaseline) / calculatedCuBaseline) * 100;
+    const bufferPercent = calculatedCuBaseline > 0 ? ((optimizedSku.cu - calculatedCuBaseline) / calculatedCuBaseline) * 100 : 0;
     const optimizedTierRiskPercentage = Math.max(0, Math.min(100, Math.round(50 - (bufferPercent * 2))));
 
     // 6. Enterprise Recommendation Details
     const confidenceScore = Math.min(96, Math.max(85, Math.round(92 + (bufferPercent > 20 ? 4 : -2))));
-    
+
     const reasons = [
       `Provides ${optimizedSku.cu} Capacity Units (CUs) to comfortably process ${calculatedCuBaseline.toFixed(1)} baseline CU workload demand.`,
-      payload.powerBiInput.peakConcurrentUsers > 50 
-        ? `Handles peak concurrency of ${payload.powerBiInput.peakConcurrentUsers} Power BI users.` 
+      payload.powerBiInput.peakConcurrentUsers > 50
+        ? `Handles peak concurrency of ${payload.powerBiInput.peakConcurrentUsers} Power BI users.`
         : `Sufficient compute headroom for background Data Factory and Spark ETL jobs.`,
-      optimizedSku.cu >= 64 
-        ? `Unlocks organizational Power BI Free user report viewing and Microsoft Fabric Copilot features.` 
+      optimizedSku.cu >= 64
+        ? `Can support qualifying organizational Power BI Free viewers with appropriate access. Copilot eligibility is checked separately.`
         : `Cost-effective entry tier for small-to-medium team operations.`
     ];
 
     // Forecast upgrade timeline (assuming 25% annual data growth)
     const growthCuYear1 = calculatedCuBaseline * 1.25;
-    const upgradeTimeline = growthCuYear1 > optimizedSku.cu 
-      ? "Estimated Upgrade Milestone: Q1 2027 (Within 12 Months)" 
+    const upgradeTimeline = growthCuYear1 > optimizedSku.cu
+      ? "Estimated Upgrade Milestone: Q1 2027 (Within 12 Months)"
       : "Estimated Upgrade Milestone: Q2 2028 (2+ Years Capacity Headroom)";
 
     const assumptions = [
+      "Heuristic planning outputs: confidence and risk scores are not measured probabilities, guarantees, or a Microsoft quote.",
       "Microsoft Fabric PAYG baseline pricing at $0.18/CU/hour (US East / West region standard).",
       "1-Year Reserved Capacity pricing calculated with standard ~41% commitment discount.",
       "Background job (Spark / Data Factory) smoothing window of 24 hours.",
@@ -136,8 +126,8 @@ export function calculateCapacity(data: any): EvaluationResponse {
       },
     };
   } catch (error: any) {
-    return { 
-      success: false, 
+    return {
+      success: false,
       calculatedCuBaseline: 0,
       confidenceScore: 0,
       reasons: [],
@@ -147,7 +137,7 @@ export function calculateCapacity(data: any): EvaluationResponse {
       targetSkuRecommendation: { safeSkuName: '', safeSkuCu: 0, costOptimizedSkuName: '', costOptimizedSkuCu: 0 },
       financialSummary: { payAsYouGoHourlyCost: 0, payAsYouGoMonthlyEstimate: 0, reservedInstanceHourlyCost: 0, reservedInstanceMonthlyEstimate: 0, potentialSavingsMonthly: 0 },
       throttlingAnalysis: { optimizedTierRiskPercentage: 0, mitigationSmoothingHours: 24 },
-      error: error.message 
+      error: error.message
     };
   }
 }

@@ -1,7 +1,8 @@
 import fs from 'fs';
 
 const articlesFile = fs.readFileSync('src/data/articles.ts', 'utf8');
-const docIds = [...articlesFile.matchAll(/id:\s*"([^"]+)"/g)].map(m => m[1]);
+const referenceIds = new Set(["what-is-microsoft-fabric-capacity","what-is-a-capacity-unit","what-is-throttling","how-reserved-capacity-works","enterprise-sizing-guide","common-mistakes","f2-vs-f4","f8-vs-f16","f32-vs-f64","f64-vs-f128","f128-vs-f256","power-bi-premium-vs-fabric","f2-vs-f64"]);
+const docIds = [...articlesFile.matchAll(/id:\s*"([^"]+)"/g)].map(m => m[1]).filter(id => !referenceIds.has(id));
 
 const fskusFile = fs.readFileSync('src/data/fskus.ts', 'utf8');
 const skuSlugs = [...fskusFile.matchAll(/slug:\s*"([^"]+)"/g)].map(m => m[1]);
@@ -9,7 +10,7 @@ const skuSlugs = [...fskusFile.matchAll(/slug:\s*"([^"]+)"/g)].map(m => m[1]);
 const comparisonsFile = fs.readFileSync('src/data/comparisons.ts', 'utf8');
 const comparisonSlugs = [...comparisonsFile.matchAll(/slug:\s*"([^"]+)"/g)].map(m => m[1]);
 
-const today = new Date().toISOString().split('T')[0];
+// Do not invent modification dates on every build.
 
 // Category A & B Indexable Static Routes Only (Excludes Category C & D utility/experimental noindex routes)
 const indexableStaticRoutes = [
@@ -34,7 +35,6 @@ for (const route of indexableStaticRoutes) {
   const path = route.url ? `/${route.url}` : '';
   sitemap += `  <url>
     <loc>https://fabric.dattasable.com${path}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>${route.changefreq}</changefreq>
     <priority>${route.priority}</priority>
   </url>
@@ -45,7 +45,6 @@ for (const route of indexableStaticRoutes) {
 for (const slug of skuSlugs) {
   sitemap += `  <url>
     <loc>https://fabric.dattasable.com/fsku/${slug}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -56,7 +55,6 @@ for (const slug of skuSlugs) {
 for (const slug of comparisonSlugs) {
   sitemap += `  <url>
     <loc>https://fabric.dattasable.com/compare/${slug}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -67,7 +65,6 @@ for (const slug of comparisonSlugs) {
 for (const id of docIds) {
   sitemap += `  <url>
     <loc>https://fabric.dattasable.com/docs/${id}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

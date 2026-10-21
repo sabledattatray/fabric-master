@@ -9,3 +9,6 @@ coverage/
 
 .upstream-references/
 upstream-references/
+
+# Temporary server-rendering bundle
+.prerender/

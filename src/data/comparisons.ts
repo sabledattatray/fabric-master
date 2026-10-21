@@ -31,7 +31,7 @@ export const COMPARISONS_DATA: ComparisonData[] = [
       { feature: "Pay-As-You-Go Monthly Cost", leftValue: "$4,204.80 / mo", rightValue: "$8,409.60 / mo", winner: "left" },
       { feature: "Reserved Instance Monthly Cost", leftValue: "$2,480.83 / mo", rightValue: "$4,961.66 / mo", winner: "left" },
       { feature: "Power BI Free User Distribution", leftValue: "No (Pro/PPU Required)", rightValue: "Yes (Unlimited Free Viewers)", winner: "right" },
-      { feature: "Microsoft Fabric Copilot AI", leftValue: "No", rightValue: "Yes (Native Copilot Enabled)", winner: "right" },
+      { feature: "Copilot capacity eligibility", leftValue: "Subject to tenant and region", rightValue: "Subject to tenant and region", winner: "neutral" },
       { feature: "Burst Capacity", leftValue: "256 CUs", rightValue: "512 CUs", winner: "right" },
       { feature: "Equivalent Power BI Premium Tier", leftValue: "P1/2 Equivalent", rightValue: "P1 Equivalent", winner: "right" }
     ],
@@ -42,22 +42,22 @@ export const COMPARISONS_DATA: ComparisonData[] = [
       },
       {
         title: "Microsoft Fabric Copilot Features",
-        detail: "Copilot AI capabilities for automated DAX generation, Data Factory pipeline creation, and Spark notebook assistance are exclusively unlocked at F64 and above."
+        detail: "Copilot can qualify on paid F2 or higher with current region, tenant, permission, and feature requirements. F64 is a separate organizational free-viewer licensing threshold."
       },
       {
         title: "Raw Compute Throughput",
-        detail: "F64 offers 64 Capacity Units, doubling the background and interactive processing throughput compared to F32. This enables smoother Direct Lake report rendering and faster Spark batch execution."
+        detail: "F64 has twice the nominal CUs of F32. Actual throughput and response time depend on the workload and must be measured; they are not guaranteed to scale proportionally."
       }
     ],
-    recommendation: "Choose F32 if you are running developer/test environments or small production workloads where all consumers already hold Power BI Pro licenses. Upgrade to F64 if you need to serve reports to free Power BI users or leverage Copilot AI assistance.",
+    recommendation: "Choose F32 if you are running developer/test environments or small production workloads where all consumers already hold Power BI Pro licenses. Evaluate F64 when qualifying organizational free-license Power BI viewing is required. Check Copilot eligibility separately.",
     faqs: [
       {
         question: "Is F64 more cost-effective than buying 100 Power BI Pro licenses?",
-        answer: "Yes! 100 Power BI Pro licenses cost around $1,000/month. If your capacity needs are growing, the $4,961/mo Reserved rate for F64 provides both compute power AND eliminates Pro license requirements for thousands of internal report viewers."
+        answer: "Not automatically. Compare the same workload and period using current regional capacity prices, qualifying viewer counts, author licenses, storage, and reservation terms."
       },
       {
         question: "Can I upgrade seamlessly from F32 to F64?",
-        answer: "Yes, Microsoft Fabric capacity resizing takes less than a minute in the Azure Portal without data loss or downtime."
+        answer: "Confirm current resizing behavior and limitations with Microsoft, plan the change window, and verify active workloads. This page does not guarantee timing or zero interruption."
       }
     ]
   },
@@ -74,13 +74,12 @@ export const COMPARISONS_DATA: ComparisonData[] = [
       { feature: "Reserved Instance Monthly Cost", leftValue: "$4,961.66 / mo", rightValue: "$9,923.33 / mo", winner: "left" },
       { feature: "Power BI Free Viewer Access", leftValue: "Yes", rightValue: "Yes", winner: "neutral" },
       { feature: "Copilot AI Enabled", leftValue: "Yes", rightValue: "Yes", winner: "neutral" },
-      { feature: "Max Burst Capacity", leftValue: "512 CUs", rightValue: "1,024 CUs", winner: "right" },
       { feature: "Power BI Premium Equivalence", leftValue: "P1", rightValue: "P2", winner: "right" }
     ],
     keyDifferences: [
       {
         title: "Concurrency & Throttle Prevention",
-        detail: "F128 provides double the burst capacity (1024 CU), preventing throttling during morning peak hours when hundreds of report queries execute simultaneously alongside heavy Spark ETL schedules."
+        detail: "F128 provides more nominal compute than F64. Evaluate it using the actual reporting and background workload overlap; a larger tier does not guarantee that throttling cannot occur."
       },
       {
         title: "Spark Batch Parallelism",

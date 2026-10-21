@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, MemoryRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { WizardProvider } from "./context/WizardContext";
@@ -31,7 +31,11 @@ import { OneLakeVisualizer } from "./pages/OneLakeVisualizer";
 import { AIAdvisor } from "./pages/AIAdvisor";
 import { ResourcesOpenSource } from "./pages/ResourcesOpenSource";
 
-export default function App() {
+function RouteContainer({ initialPath, children }: { initialPath?: string; children: React.ReactNode }) {
+  return initialPath ? <MemoryRouter initialEntries={[initialPath]}>{children}</MemoryRouter> : <Router>{children}</Router>;
+}
+
+export default function App({ initialPath, helmetContext }: { initialPath?: string; helmetContext?: any } = {}) {
   const { i18n } = useTranslation();
 
   useEffect(() => {
@@ -39,9 +43,9 @@ export default function App() {
   }, [i18n.language]);
 
   return (
-    <HelmetProvider>
+    <HelmetProvider context={helmetContext}>
       <WizardProvider>
-        <Router>
+        <RouteContainer initialPath={initialPath}>
           <Layout>
             <Routes>
               <Route path="/" element={<Landing />} />
@@ -68,7 +72,7 @@ export default function App() {
               <Route path="/resources/open-source" element={<ResourcesOpenSource />} />
             </Routes>
           </Layout>
-        </Router>
+        </RouteContainer>
       </WizardProvider>
     </HelmetProvider>
   );

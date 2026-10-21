@@ -1,11 +1,12 @@
+import { PlanningAssumptions } from '../components/PlanningAssumptions';
 import React from "react";
 import { useParams, Link, Navigate } from "react-router-dom";
 import { FABRIC_SKU_DATA } from "../data/fskus";
 import { SEO } from "../components/SEO";
 import { Footer } from "../components/Footer";
 import { KnowledgeGraphLinks } from "../components/KnowledgeGraphLinks";
-import { 
-  CheckCircle2, DollarSign, Zap, ShieldCheck, ArrowRight, Calculator, 
+import {
+  CheckCircle2, DollarSign, Zap, ShieldCheck, ArrowRight, Calculator,
   Sparkles, HelpCircle, Layers, Award
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -63,8 +64,9 @@ export function FskuDetailPage() {
         description={`Complete specification guide for Microsoft Fabric ${skuInfo.name} (${skuInfo.cu} CUs). Pay-As-You-Go ($${skuInfo.monthlyPayg}/mo) vs 1-Year Reserved ($${skuInfo.monthlyReserved}/mo), Power BI Free user distribution, and Copilot support.`}
         keywords={`Microsoft Fabric ${skuInfo.name}, Fabric ${skuInfo.name} Price, Fabric ${skuInfo.name} Specs, Fabric ${skuInfo.cu} CU, Microsoft Fabric ${skuInfo.name} Capacity`}
         url={`https://fabric.dattasable.com/fsku/${skuInfo.slug}`}
-        schema={[productSchema, faqSchema]}
+        schema={[faqSchema]}
       />
+      <PlanningAssumptions />
 
       <div className="flex-1 w-full max-w-5xl mx-auto p-6 md:p-12 space-y-12">
         {/* Breadcrumb */}
@@ -164,8 +166,8 @@ export function FskuDetailPage() {
               <div>
                 <div className="font-semibold text-sm text-[#e6edf3]">Power BI Free License Viewer Access</div>
                 <div className="text-xs text-[#8b949e] mt-1">
-                  {skuInfo.powerBiFreeUsers 
-                    ? "UNLOCKED: Organizational users with free Power BI licenses can view content hosted in this capacity." 
+                  {skuInfo.powerBiFreeUsers
+                    ? "UNLOCKED: Organizational users with free Power BI licenses can view content hosted in this capacity."
                     : "LOCKED: Users require individual Power BI Pro or PPU licenses to view reports on this capacity."}
                 </div>
               </div>
@@ -176,9 +178,9 @@ export function FskuDetailPage() {
               <div>
                 <div className="font-semibold text-sm text-[#e6edf3]">Microsoft Fabric Copilot AI Assistant</div>
                 <div className="text-xs text-[#8b949e] mt-1">
-                  {skuInfo.copilotSupport 
-                    ? "UNLOCKED: Built-in Copilot AI features enabled for notebooks, DAX generation, and report insights." 
-                    : "LOCKED: Copilot AI features require upgrading to F64 or higher."}
+                  {skuInfo.copilotSupport
+                    ? "ELIGIBLE CAPACITY: Verify tenant settings, region, permissions, and feature requirements."
+                    : "Verify the current Microsoft eligibility requirements."}
                 </div>
               </div>
             </div>
@@ -188,7 +190,7 @@ export function FskuDetailPage() {
               <div>
                 <div className="font-semibold text-sm text-[#e6edf3]">Max Burst Compute Limit</div>
                 <div className="text-xs text-[#8b949e] mt-1">
-                  Up to {skuInfo.maxBurstCu} CUs allowed during short burst spikes under 24-hour background smoothing.
+                  Bursting and smoothing depend on workload and service rules. Use actual Capacity Metrics; this page does not establish a guaranteed maximum burst.
                 </div>
               </div>
             </div>

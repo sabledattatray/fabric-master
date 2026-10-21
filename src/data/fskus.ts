@@ -23,7 +23,7 @@ export const FABRIC_SKU_DATA: FabricSkuInfo[] = [
     monthlyPayg: 262.80,
     monthlyReserved: 155.05,
     powerBiFreeUsers: false,
-    copilotSupport: false,
+    copilotSupport: true,
     recommendedFor: ["Small Proof of Concept (PoC)", "Development Environments", "Lightweight Data Factory Pipelines"],
     maxBurstCu: 16,
     description: "The entry-level Microsoft Fabric SKU providing 2 Capacity Units. Ideal for small proof-of-concept testing, lightweight pipeline testing, and learning Fabric.",
@@ -40,7 +40,7 @@ export const FABRIC_SKU_DATA: FabricSkuInfo[] = [
       },
       {
         question: "Is Copilot available on F2?",
-        answer: "No, Microsoft Fabric Copilot features require F64 or higher capacities."
+        answer: "Paid F2 or higher can qualify for Copilot, subject to current tenant, region, permissions, and feature requirements."
       }
     ]
   },
@@ -52,7 +52,7 @@ export const FABRIC_SKU_DATA: FabricSkuInfo[] = [
     monthlyPayg: 525.60,
     monthlyReserved: 310.10,
     powerBiFreeUsers: false,
-    copilotSupport: false,
+    copilotSupport: true,
     recommendedFor: ["Dev/Test Workspaces", "Small Team ETL Pipelines", "Basic Lakehouse Datasets"],
     maxBurstCu: 32,
     description: "F4 delivers 4 Capacity Units, doubling compute power for small engineering teams developing ETL pipelines and modest Lakehouse setups.",
@@ -77,7 +77,7 @@ export const FABRIC_SKU_DATA: FabricSkuInfo[] = [
     monthlyPayg: 1051.20,
     monthlyReserved: 620.21,
     powerBiFreeUsers: false,
-    copilotSupport: false,
+    copilotSupport: true,
     recommendedFor: ["Medium Dev Environments", "Departmental Pipelines", "Small Data Science Models"],
     maxBurstCu: 64,
     description: "F8 provides 8 CUs, serving as a solid foundation for departmental workloads and medium-sized Spark notebook transformations.",
@@ -102,7 +102,7 @@ export const FABRIC_SKU_DATA: FabricSkuInfo[] = [
     monthlyPayg: 2102.40,
     monthlyReserved: 1240.42,
     powerBiFreeUsers: false,
-    copilotSupport: false,
+    copilotSupport: true,
     recommendedFor: ["Mid-sized Business Production", "Frequent Spark Jobs", "SQL Data Warehouse Workloads"],
     maxBurstCu: 128,
     description: "F16 delivers 16 CUs, suited for mid-sized business production environments requiring reliable throughput across Data Engineering and SQL Warehousing.",
@@ -127,7 +127,7 @@ export const FABRIC_SKU_DATA: FabricSkuInfo[] = [
     monthlyPayg: 4204.80,
     monthlyReserved: 2480.83,
     powerBiFreeUsers: false,
-    copilotSupport: false,
+    copilotSupport: true,
     recommendedFor: ["Production Workloads", "Multi-team Engineering", "Heavy SQL Data Warehouse Queries"],
     maxBurstCu: 256,
     description: "F32 offers 32 CUs of compute power, capable of supporting heavy data processing, concurrent SQL warehousing, and multi-team collaboration.",
@@ -140,7 +140,7 @@ export const FABRIC_SKU_DATA: FabricSkuInfo[] = [
     faqs: [
       {
         question: "Why upgrade from F32 to F64?",
-        answer: "F64 unlocks free Power BI content distribution to organization users and adds Microsoft Fabric Copilot capabilities."
+        answer: "F64 supports qualifying organizational free-license Power BI viewers with appropriate access. Copilot eligibility is separate and can start at paid F2."
       }
     ]
   },

@@ -23,21 +23,20 @@ export function ArticlePage() {
       "headline": t(article.title),
       "description": t(article.description),
       "author": {
-        "@type": "Organization",
-        "name": "Fabric Master Team"
+        "@type": "Person",
+        "name": "Datta Sable"
       },
       "publisher": {
         "@type": "Organization",
         "name": "Fabric Master",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://fabric-master.vercel.app/favicon.svg"
+          "url": "https://fabric.dattasable.com/favicon.svg"
         }
       },
-      "datePublished": new Date().toISOString().split('T')[0],
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": `https://fabric-master.vercel.app/docs/${articleId}`
+        "@id": `https://fabric.dattasable.com/docs/${articleId}`
       }
     };
   }, [article, t, articleId]);
@@ -54,7 +53,8 @@ export function ArticlePage() {
         keywords={`Microsoft Fabric, ${article.category}, Capacity, Fabric Master, ${t(article.title)}`}
         type="article"
         article={true}
-        url={`https://fabric-master.vercel.app/docs/${articleId}`}
+        noindex={article.referenceOnly === true}
+        url={`https://fabric.dattasable.com/docs/${articleId}`}
         schema={articleSchema}
       />
       <div className="w-full max-w-4xl p-6 md:p-10 flex-1">

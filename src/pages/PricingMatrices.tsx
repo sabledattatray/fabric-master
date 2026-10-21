@@ -1,3 +1,4 @@
+import { PlanningAssumptions } from '../components/PlanningAssumptions';
 import React, { useState, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
@@ -52,7 +53,7 @@ const SKU_DETAILS: Record<string, { typicalUse: string; description: string; fea
   F2: {
     typicalUse: "Learning, proof of concepts, development, and personal sandboxes",
     description: "Ideal for small development projects, prototyping ETL flows, or training sessions without production-level workload needs.",
-    features: ["Max 2 Capacity Units", "No Copilot access", "Direct Lake limits apply", "Requires Power BI Pro for report distribution"]
+    features: ["Max 2 Capacity Units", "Verify current Copilot region and tenant requirements", "Direct Lake limits apply", "Requires Power BI Pro for report distribution"]
   },
   F4: {
     typicalUse: "Small test environments and entry-level pipelines",
@@ -76,7 +77,7 @@ const SKU_DETAILS: Record<string, { typicalUse: string; description: string; fea
   },
   F64: {
     typicalUse: "Production-grade enterprise BI, direct lake reporting, and mixed production workloads",
-    description: "This is the critical entry-point SKU. It enables Power BI Copilot, Microsoft Fabric tenant-wide usage, and allows users to share reports without requiring individuals to have Power BI Pro licenses.",
+    description: "F64 supports qualifying organizational free-license Power BI viewers with appropriate access. Copilot eligibility is separate and can start at paid F2 with current tenant and region requirements.",
     features: ["Max 64 Capacity Units", "Power BI Copilot & AI enabled", "Free report distribution to all consumers", "Full Direct Lake performance benefit"]
   },
   F128: {
@@ -288,6 +289,7 @@ export function PricingMatrices() {
         description={t("Compare current Microsoft Fabric pricing across every F-SKU. Instantly estimate Pay-As-You-Go costs, Reserved Capacity savings, and monthly infrastructure expenses.")} 
         keywords="Microsoft Fabric Pricing Calculator, Microsoft Fabric Cost, Microsoft Fabric Capacity Units, Microsoft Fabric CU, Microsoft Fabric F64 pricing, Microsoft Fabric Reserved Instance, Microsoft Fabric PAYG"
       />
+      <PlanningAssumptions />
       
       <div className="flex-1 w-full p-4 md:p-8 max-w-7xl mx-auto flex flex-col gap-8">
         
@@ -824,7 +826,7 @@ export function PricingMatrices() {
                 <span>{t('Production BI & Ingestion')}</span>
               </div>
               <p className="text-xs text-[#8b949e] leading-relaxed">
-                {t('Optimal for small to medium businesses or department-scale analytics. F64 is the critical "Entry Enterprise" tier where Power BI consumption does not require Pro licenses, and Power BI Copilot is enabled.')}
+                {t('Choose capacity using workload evidence. F64 is relevant to qualifying organizational free-license Power BI viewing; paid F2 or higher may qualify for Copilot with the required tenant settings and region.')}
               </p>
             </div>
 

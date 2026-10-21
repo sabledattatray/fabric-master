@@ -38,7 +38,7 @@ export function Privacy() {
               {t('At Fabric Master, we prioritize your architectural privacy. All parameters, workload metrics, company names, and consultant notes you enter in our sizing wizard are processed strictly inside your local browser sandbox.')}
             </p>
             <p>
-              {t('We do not run backend databases that collect your telemetry, and we never transmit your private enterprise infrastructure details to external servers.')}
+              {t('The browser sizing flow and the public API have different transmission boundaries. API requests are sent to the hosting service, which also receives ordinary HTTP request details. External AI and support services have their own data handling. Do not submit confidential inputs to an external service without authorization.')}
             </p>
           </section>
 
