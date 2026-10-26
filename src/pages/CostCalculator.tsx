@@ -33,7 +33,7 @@ export function CostCalculator() {
     },
     {
       q: "What is OneLake storage pricing?",
-      a: "OneLake storage is billed separately at standard ADLS Gen2 rates (~$0.023 per GB/month for hot storage), with no额外 charge for Delta Parquet formatting."
+      a: "OneLake storage is billed separately at standard ADLS Gen2 rates (~$0.023 per GB/month for hot storage), with no extra charge for Delta Parquet formatting."
     }
   ];
 
@@ -71,11 +71,12 @@ export function CostCalculator() {
             </div>
             <div className="flex items-center gap-3 text-xs text-[#8b949e]">
               <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-[#d29922]" />
-                Updated July 2026
+                <Clock className="w-3.5 h-3.5 text-[#3fb950]" />
+                Verified October 2026
               </span>
               <span>•</span>
-              <span className="font-mono text-[#e6edf3]">v3.0 Engine</span>
+              <span className="font-mono text-[#e6edf3]">v4.0 Engine</span>
+
             </div>
           </div>
 

@@ -59,19 +59,31 @@ export function Footer() {
 
         </div>
 
-        {/* Legal */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between text-xs text-[#8b949e] pt-8 border-t border-[#30363d]/50">
+        {/* Independent Product Disclaimer */}
+        <div className="pt-8 border-t border-[#30363d] text-xs text-[#8b949e] space-y-2">
+          <p className="font-semibold text-[#c9d1d9] tracking-wide uppercase text-[11px]">
+            {t('Independent Engineering & FinOps Workbench')}
+          </p>
+          <p className="leading-relaxed max-w-4xl">
+            {t('Fabric Master is an independent open-source planning tool developed by Datta Sable and the community. It is not affiliated with, sponsored by, or endorsed by Microsoft Corporation. Microsoft, Microsoft Fabric, Power BI, Azure, Synapse, OneLake, and Data Factory are trademarks of the Microsoft group of companies. All estimates are model-based preliminary calculations for engineering decision guidance and do not constitute an official commercial offer or SLA guarantee.')}
+          </p>
+        </div>
+
+        {/* Legal and Attribution */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between text-xs text-[#8b949e] pt-6 border-t border-[#30363d]/50 mt-6">
           <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 mb-4 md:mb-0">
-            <span className="font-semibold">{t('Legal')}</span>
+            <span className="font-semibold text-[#c9d1d9]">{t('Governance')}</span>
             <div className="flex flex-wrap gap-x-4 gap-y-2 items-center">
-              <span>© {new Date().getFullYear()} Fabric Master</span>
+              <span>© {new Date().getFullYear()} Fabric Master v4.0</span>
               <Link to="/terms" className="text-[#58a6ff] hover:underline">{t('Terms')}</Link>
-              <Link to="/privacy" className="text-[#58a6ff] hover:underline">{t('Privacy')}</Link>
+              <Link to="/privacy" className="text-[#58a6ff] hover:underline">{t('Privacy Policy')}</Link>
+              <Link to="/pricing" className="text-[#58a6ff] hover:underline">{t('Pricing Sources')}</Link>
+              <Link to="/about" className="text-[#58a6ff] hover:underline">{t('Methodology & Author')}</Link>
               <Link to="/docs" className="text-[#58a6ff] hover:underline">{t('Documentation')}</Link>
             </div>
           </div>
           <div className="flex items-center">
-            <span className="mr-1 flex items-center">{t('Built with')} <Heart className="w-3 h-3 mx-1 text-red-500 fill-current" /> {t('by')}</span>
+            <span className="mr-1 flex items-center">{t('Crafted with')} <Heart className="w-3 h-3 mx-1 text-red-500 fill-current" /> {t('by')}</span>
             <a 
               href="https://dattasable.com" 
               target="_blank" 

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, MemoryRouter, Routes, Route } from "react-rout
 import { HelmetProvider } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { WizardProvider } from "./context/WizardContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { Layout } from "./components/Layout";
 import { Landing } from "./pages/Landing";
 import { Wizard } from "./pages/Wizard";
@@ -30,6 +31,7 @@ import { ArchitecturePlanner } from "./pages/ArchitecturePlanner";
 import { OneLakeVisualizer } from "./pages/OneLakeVisualizer";
 import { AIAdvisor } from "./pages/AIAdvisor";
 import { ResourcesOpenSource } from "./pages/ResourcesOpenSource";
+import { Workspace } from "./pages/Workspace";
 
 function RouteContainer({ initialPath, children }: { initialPath?: string; children: React.ReactNode }) {
   return initialPath ? <MemoryRouter initialEntries={[initialPath]}>{children}</MemoryRouter> : <Router>{children}</Router>;
@@ -44,9 +46,10 @@ export default function App({ initialPath, helmetContext }: { initialPath?: stri
 
   return (
     <HelmetProvider context={helmetContext}>
-      <WizardProvider>
-        <RouteContainer initialPath={initialPath}>
-          <Layout>
+      <ThemeProvider>
+        <WizardProvider>
+          <RouteContainer initialPath={initialPath}>
+            <Layout>
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/wizard" element={<Wizard />} />
@@ -70,10 +73,12 @@ export default function App({ initialPath, helmetContext }: { initialPath?: stri
               <Route path="/architecture/onelake" element={<OneLakeVisualizer />} />
               <Route path="/ai-advisor" element={<AIAdvisor />} />
               <Route path="/resources/open-source" element={<ResourcesOpenSource />} />
+              <Route path="/workspace" element={<Workspace />} />
             </Routes>
           </Layout>
         </RouteContainer>
       </WizardProvider>
-    </HelmetProvider>
+    </ThemeProvider>
+  </HelmetProvider>
   );
 }

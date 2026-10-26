@@ -1,5 +1,5 @@
 import React from 'react';
-import { Database, GitPullRequest, Code, Coffee, Github, Linkedin, MessageSquare } from 'lucide-react';
+import { Database, GitPullRequest, Code, Coffee, Github, Linkedin, MessageSquare, Shield } from 'lucide-react';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
 import { useTranslation } from 'react-i18next';
@@ -120,9 +120,26 @@ export function About() {
                 <a href="https://github.com/sabledattatray/fabric-master" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-[#58a6ff] hover:underline font-medium">
                   Star on GitHub &rarr;
                 </a>
-             </div>
-           </section>
-        </div>
+              </div>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4 border-b border-[#30363d] pb-2 flex items-center">
+                <Shield className="w-6 h-6 mr-3 text-[#58a6ff]" /> Independent Status & Trust Principles
+              </h2>
+              <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-6 text-sm text-[#8b949e] space-y-3">
+                <p className="font-semibold text-[#f0f6fc]">
+                  Independent Microsoft Fabric Engineering & FinOps Workbench
+                </p>
+                <p>
+                  Fabric Master is an independent open-source initiative and is not affiliated with, endorsed by, or sponsored by Microsoft Corporation. All product names, logos, and brands (including Microsoft, Microsoft Fabric, Power BI, Azure, and Synapse) are property of their respective owners.
+                </p>
+                <p>
+                  All sizing estimations, throttling calculations, and pricing comparisons are deterministic models built from publicly documented Microsoft architecture specifications, official pricing tables, and engineering heuristics. They do not constitute an official commercial offer or binding quote.
+                </p>
+              </div>
+            </section>
+          </div>
 
       </main>
 

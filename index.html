@@ -7,6 +7,21 @@
     <link rel="manifest" href="/site.webmanifest" />
     <title>Fabric Master | Microsoft Fabric Engineering, Architecture & FinOps Platform</title>
     <meta name="description" content="Enterprise-grade Microsoft Fabric Architecture Planning, FinOps Capacity Estimator, OneLake Visualizer, and AI Engineering recommendations." />
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('fabric_master_theme');
+          var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+          if (saved === 'light' || (!saved && prefersLight)) {
+            document.documentElement.classList.add('light');
+            document.documentElement.setAttribute('data-theme', 'light');
+          } else {
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+        } catch(e) {}
+      })();
+    </script>
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />

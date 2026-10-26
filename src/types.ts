@@ -62,3 +62,23 @@ export interface EvaluationResponse {
   throttlingAnalysis: ThrottlingAnalysis;
   error?: string;
 }
+
+export const ScenarioSchema = z.object({
+  id: z.string().min(1).max(128).regex(/^[a-zA-Z0-9_-]+$/, { message: "ID must be alphanumeric, dashes, or underscores" }),
+  schemaVersion: z.literal("4.0").default("4.0"),
+  name: z.string().min(1).max(100).transform(s => s.trim().replace(/<[^>]*>/g, '')),
+  description: z.string().max(500).optional().transform(s => s ? s.trim().replace(/<[^>]*>/g, '') : undefined),
+  createdAt: z.string().datetime({ offset: true }).or(z.string().regex(/^\d{4}-\d{2}-\d{2}T/)),
+  updatedAt: z.string().datetime({ offset: true }).or(z.string().regex(/^\d{4}-\d{2}-\d{2}T/)),
+  region: z.string().min(2).max(32).default("eastus"),
+  currency: z.string().length(3).default("USD"),
+  inputs: WorkloadCalculationSchema,
+  notes: z.string().max(2000).optional().transform(s => s ? s.trim().replace(/<[^>]*>/g, '') : undefined),
+  tags: z.array(z.string().max(30).transform(s => s.trim().replace(/<[^>]*>/g, ''))).max(10).optional().default([]),
+  evidenceLevel: z.enum(["measured", "model_based", "heuristic", "insufficient"]).optional().default("model_based"),
+});
+
+export type Scenario = z.infer<typeof ScenarioSchema> & {
+  evaluation?: EvaluationResponse;
+};
+

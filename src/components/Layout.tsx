@@ -18,6 +18,7 @@ import {
   Bot
 } from "lucide-react";
 import { LanguageSelector } from "./LanguageSelector";
+import { ThemeToggle } from "./ThemeToggle";
 import { FabricMasterLogo } from "./FabricMasterLogo";
 import { CommandSearchModal } from "./CommandSearchModal";
 import { useTranslation } from "react-i18next";
@@ -55,12 +56,14 @@ export function Layout({ children }: LayoutProps) {
     {
       title: t("Planning"),
       items: [
+        { name: t("Engineering Workspace"), href: "/workspace", icon: Sparkles },
         { name: t("Capacity Calculator"), href: "/wizard", icon: Calculator },
         { name: t("Cost Estimator"), href: "/cost-calculator", icon: DollarSign },
         { name: t("Spark CU Estimator"), href: "/spark-estimator", icon: Zap },
         { name: t("Power BI Capacity"), href: "/power-bi-capacity", icon: Calculator },
       ],
     },
+
     {
       title: t("Architecture"),
       items: [
@@ -103,7 +106,7 @@ export function Layout({ children }: LayoutProps) {
             <FabricMasterLogo className="w-7 h-7 md:w-8 md:h-8 text-[#c9d1d9] group-hover:text-[#58a6ff] transition-all duration-300 ease-in-out transform group-hover:scale-105" />
             <span className="font-semibold text-lg md:text-xl tracking-tight group-hover:text-[#58a6ff] transition-colors duration-300 flex items-center gap-2">
               {t("Fabric Master")}
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#58a6ff]/10 text-[#58a6ff] border border-[#58a6ff]/30 font-medium">v3.0</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#58a6ff]/10 text-[#58a6ff] border border-[#58a6ff]/30 font-medium">v4.0</span>
             </span>
           </div>
 
@@ -137,12 +140,21 @@ export function Layout({ children }: LayoutProps) {
           </button>
 
           <Link
+            to="/workspace"
+            className="hidden md:flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg bg-blue-600/10 border border-blue-500/30 text-blue-400 hover:bg-blue-600/20 transition-colors font-semibold"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Workspace</span>
+          </Link>
+
+          <Link
             to="/labs"
             className="hidden md:flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg bg-[#3fb950]/10 border border-[#3fb950]/30 text-[#3fb950] hover:bg-[#3fb950]/20 transition-colors font-medium"
           >
             <Beaker className="w-3.5 h-3.5" />
             <span>Labs</span>
           </Link>
+
 
           <a
             href="https://github.com/sabledattatray/fabric-master"
@@ -153,6 +165,8 @@ export function Layout({ children }: LayoutProps) {
             <Github className="w-3.5 h-3.5" />
             <span>GitHub</span>
           </a>
+
+          <ThemeToggle />
 
           <LanguageSelector />
 
@@ -218,7 +232,7 @@ export function Layout({ children }: LayoutProps) {
             <div className="flex items-center justify-between pb-4 border-b border-[#30363d] mb-4">
               <div className="flex items-center gap-2">
                 <FabricMasterLogo className="w-6 h-6 text-[#58a6ff]" />
-                <span className="font-bold text-white">Fabric Master v3.0</span>
+                <span className="font-bold text-white">Fabric Master v4.0</span>
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
