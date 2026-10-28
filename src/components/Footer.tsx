@@ -1,114 +1,80 @@
-import React from 'react';
-import { ThumbsUp, ThumbsDown, GitPullRequest, Users, MessageSquare, ChevronUp, Heart, Github } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import { FabricMasterLogo } from "./FabricMasterLogo";
 
 export function Footer() {
-  const { t } = useTranslation();
-
   return (
-    <footer className="w-full bg-[#050508] border-t border-[#23273D] pt-12 pb-16 px-6 relative mt-auto print:hidden">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-xl font-semibold text-white mb-8 border-b border-[#23273D] pb-4">{t('Resources & Support')}</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          
-          {/* Did you find what you needed? */}
-          <div>
-            <h3 className="text-base font-semibold text-white mb-4">{t('Was this toolkit helpful?')}</h3>
-            <div className="flex space-x-3 mb-4">
-              <button className="flex items-center px-4 py-1.5 rounded-md bg-[#161826] border border-[#23273D] hover:bg-[#1E2336] transition-colors text-sm font-medium text-[#F4F6FB]">
-                <ThumbsUp className="w-4 h-4 mr-2" /> {t('Yes')}
-              </button>
-              <button className="flex items-center px-4 py-1.5 rounded-md bg-[#161826] border border-[#23273D] hover:bg-[#1E2336] transition-colors text-sm font-medium text-[#F4F6FB]">
-                <ThumbsDown className="w-4 h-4 mr-2" /> {t('No')}
-              </button>
-            </div>
-            <Link to="/about" className="text-sm text-[#58a6ff] hover:underline">{t('About the Author')}</Link>
-          </div>
-
-          {/* Help us make these docs great! */}
-          <div>
-            <h3 className="text-base font-semibold text-white mb-2">{t('Open Source Project')}</h3>
-            <p className="text-sm text-[#9EA7BD] mb-4">
-              {t('Fabric Master is open source and community-driven. Have an improvement? Submit a pull request.')}
-            </p>
-            <a href="https://github.com/sabledattatray/fabric-master" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-1.5 rounded-md bg-[#161826] border border-[#23273D] hover:bg-[#1E2336] transition-colors text-sm font-medium text-[#F4F6FB] mb-4">
-              <GitPullRequest className="w-4 h-4 mr-2" /> {t('Contribute on GitHub')}
-            </a>
-            <br/>
-            <Link to="/docs" className="text-sm text-[#58a6ff] hover:underline">{t('Microsoft Fabric Resources')}</Link>
-          </div>
-
-          {/* Still need help? */}
-          <div>
-            <h3 className="text-base font-semibold text-white mb-4">{t('Connect')}</h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a href="https://github.com/sabledattatray/fabric-master" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#58a6ff] hover:underline">
-                  <Github className="w-4 h-4 mr-2" /> {t('Star on GitHub')}
-                </a>
-              </li>
-              <li>
-                <a href="https://dattasable.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-[#58a6ff] hover:underline">
-                  <MessageSquare className="w-4 h-4 mr-2" /> {t('Contact Datta Sable')}
-                </a>
-              </li>
-            </ul>
-          </div>
-
-        </div>
-
-        {/* Independent Product Disclaimer */}
-        <div className="pt-8 border-t border-[#23273D] text-xs text-[#9EA7BD] space-y-2">
-          <p className="font-semibold text-[#F4F6FB] tracking-wide uppercase text-[11px]">
-            {t('Independent Engineering & FinOps Workbench')}
-          </p>
-          <p className="leading-relaxed max-w-4xl">
-            {t('Fabric Master is an independent open-source planning tool developed by Datta Sable and the community. It is not affiliated with, sponsored by, or endorsed by Microsoft Corporation. Microsoft, Microsoft Fabric, Power BI, Azure, Synapse, OneLake, and Data Factory are trademarks of the Microsoft group of companies. All estimates are model-based preliminary calculations for engineering decision guidance and do not constitute an official commercial offer or SLA guarantee.')}
+    <footer className="product-footer">
+      <div className="footer-top">
+        <div>
+          <Link to="/" className="footer-brand">
+            <FabricMasterLogo className="w-6 h-6" />
+            Fabric Master
+          </Link>
+          <p className="footer-summary">
+            A clearer way to plan, design, and optimize your Microsoft Fabric
+            estate.
           </p>
         </div>
-
-        {/* Legal and Attribution */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between text-xs text-[#9EA7BD] pt-6 border-t border-[#23273D]/50 mt-6">
-          <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 mb-4 md:mb-0">
-            <span className="font-semibold text-[#F4F6FB]">{t('Governance')}</span>
-            <div className="flex flex-wrap gap-x-4 gap-y-2 items-center">
-              <span>© {new Date().getFullYear()} Fabric Master v4.0</span>
-              <Link to="/terms" className="text-[#58a6ff] hover:underline">{t('Terms')}</Link>
-              <Link to="/privacy" className="text-[#58a6ff] hover:underline">{t('Privacy Policy')}</Link>
-              <Link to="/pricing" className="text-[#58a6ff] hover:underline">{t('Pricing Sources')}</Link>
-              <Link to="/about" className="text-[#58a6ff] hover:underline">{t('Methodology & Author')}</Link>
-              <Link to="/docs" className="text-[#58a6ff] hover:underline">{t('Documentation')}</Link>
-            </div>
+        <div className="footer-links">
+          <div>
+            <strong>Platform</strong>
+            <Link to="/workspace">Workspace</Link>
+            <Link to="/wizard">Capacity planning</Link>
+            <Link to="/cost-calculator">Cost intelligence</Link>
           </div>
-          <div className="flex items-center">
-            <span className="mr-1 flex items-center">{t('Crafted with')} <Heart className="w-3 h-3 mx-1 text-red-500 fill-current" /> {t('by')}</span>
-            <a 
-              href="https://dattasable.com" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-[#F4F6FB] font-medium hover:text-[#58a6ff] transition-colors"
+          <div>
+            <strong>Resources</strong>
+            <Link to="/docs">Documentation</Link>
+            <Link to="/pricing">Pricing sources</Link>
+            <Link to="/about">About & methodology</Link>
+          </div>
+          <div>
+            <strong>Community</strong>
+            <a
+              href="https://github.com/sabledattatray/fabric-master"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Datta Sable
+              GitHub ↗
+            </a>
+            <Link to="/resources/open-source">Open source</Link>
+            <a
+              href="https://dattasable.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Datta Sable ↗
             </a>
           </div>
         </div>
-        
-        <button 
-          className="absolute right-6 bottom-6 p-2 rounded-full bg-[#161826] border border-[#23273D] text-[#9EA7BD] hover:text-[#F4F6FB] hover:bg-[#1E2336] transition-colors"
-          onClick={(e) => {
-            const container = e.currentTarget.closest('.overflow-y-auto');
-            if (container) {
-              container.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-          }}
-          aria-label="Scroll to top"
-        >
-          <ChevronUp className="w-5 h-5" />
-        </button>
+      </div>
+      <div className="footer-legal">
+        <p>
+          Fabric Master is an independent, open-source planning tool. It is not
+          affiliated with, sponsored by, or endorsed by Microsoft. Microsoft
+          Fabric, Power BI, Azure, and OneLake are trademarks of Microsoft.
+          Estimates are preliminary planning guidance, not a commercial offer or
+          performance guarantee.
+        </p>
+        <div className="footer-bottom">
+          <span>
+            © {new Date().getFullYear()} Fabric Master. Built with care by
+            Datta Sable.
+          </span>
+          <div>
+            <Link to="/terms">Terms</Link>
+            <Link to="/privacy">Privacy</Link>
+            <a
+              href="https://github.com/sabledattatray/fabric-master"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              MIT License <ArrowUpRight size={10} className="inline" />
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   );

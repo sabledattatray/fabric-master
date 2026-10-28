@@ -68,7 +68,7 @@ export function Wizard() {
   };
 
   return (
-    <div className="h-full flex overflow-hidden">
+    <div className="wizard-page h-full flex overflow-hidden">
       <SEO 
         title={t("Microsoft Fabric Capacity Calculator")} 
         description={t("Estimate your Microsoft Fabric capacity units (CU) and optimize pricing across Power BI, Data Factory, and Spark workloads.")}

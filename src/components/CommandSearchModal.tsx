@@ -1,6 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Calculator, DollarSign, BookOpen, GitCompare, Zap, X, ArrowRight, ShieldCheck, Sparkles, Beaker } from "lucide-react";
+import {
+  Search,
+  Calculator,
+  DollarSign,
+  BookOpen,
+  GitCompare,
+  Zap,
+  X,
+  ArrowRight,
+  ShieldCheck,
+  Sparkles,
+  Beaker,
+} from "lucide-react";
 import { FABRIC_SKU_DATA } from "../data/fskus";
 import { COMPARISONS_DATA } from "../data/comparisons";
 import { ARTICLES } from "../data/articles";
@@ -12,10 +24,42 @@ interface CommandSearchModalProps {
   onClose: () => void;
 }
 
-export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps) {
+export function CommandSearchModal({
+  isOpen,
+  onClose,
+}: CommandSearchModalProps) {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const elements = Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          "input, button, a[href]",
+        ) || [],
+      );
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      }
+      if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    document.addEventListener("keydown", trapFocus);
+    return () => {
+      document.removeEventListener("keydown", trapFocus);
+      previousFocus?.focus();
+    };
+  }, [isOpen]);
 
   // Close on Escape or shortcut
   useEffect(() => {
@@ -48,50 +92,114 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
 
   // Filter tools
   const tools = [
-    { title: t("Capacity Calculator (Wizard)"), path: "/wizard", icon: Calculator, desc: t("Step-by-step Fabric SKU recommendation engine") },
-    { title: t("Cost Calculator & Pricing Estimator"), path: "/cost-calculator", icon: DollarSign, desc: t("Estimate monthly and annual Fabric expenditure") },
-    { title: t("Reserved Savings Estimator"), path: "/reserved-savings", icon: DollarSign, desc: t("Calculate 1-Year Reserved Instance discounts (~41% off)") },
-    { title: t("Spark CU Estimator"), path: "/spark-estimator", icon: Zap, desc: t("Sizing for Apache Spark node allocation") },
-    { title: t("Power BI Capacity Estimator"), path: "/power-bi-capacity", icon: Calculator, desc: t("Model Power BI user concurrency & Direct Lake load") },
-    { title: t("Pricing Matrices"), path: "/pricing", icon: DollarSign, desc: t("Interactive global region pricing table") },
-    { title: t("Fabric Master Labs"), path: "/labs", icon: Beaker, desc: t("Experimental tools & Build 2026 feature radar") },
-    { title: t("About Datta Sable"), path: "/about", icon: ShieldCheck, desc: t("Creator & Data Platform Architect profile") }
-  ].filter(t => t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q));
+    {
+      title: t("Engineering Workspace"),
+      path: "/workspace",
+      icon: Sparkles,
+      desc: t(
+        "Plan capacity, compare scenarios, and explore FinOps in one workspace",
+      ),
+    },
+    {
+      title: t("Capacity Calculator (Wizard)"),
+      path: "/wizard",
+      icon: Calculator,
+      desc: t("Step-by-step Fabric SKU recommendation engine"),
+    },
+    {
+      title: t("Cost Calculator & Pricing Estimator"),
+      path: "/cost-calculator",
+      icon: DollarSign,
+      desc: t("Estimate monthly and annual Fabric expenditure"),
+    },
+    {
+      title: t("Reserved Savings Estimator"),
+      path: "/reserved-savings",
+      icon: DollarSign,
+      desc: t("Calculate 1-Year Reserved Instance discounts (~41% off)"),
+    },
+    {
+      title: t("Spark CU Estimator"),
+      path: "/spark-estimator",
+      icon: Zap,
+      desc: t("Sizing for Apache Spark node allocation"),
+    },
+    {
+      title: t("Power BI Capacity Estimator"),
+      path: "/power-bi-capacity",
+      icon: Calculator,
+      desc: t("Model Power BI user concurrency & Direct Lake load"),
+    },
+    {
+      title: t("Pricing Matrices"),
+      path: "/pricing",
+      icon: DollarSign,
+      desc: t("Interactive global region pricing table"),
+    },
+    {
+      title: t("Fabric Master Labs"),
+      path: "/labs",
+      icon: Beaker,
+      desc: t("Experimental tools & Build 2026 feature radar"),
+    },
+    {
+      title: t("About Datta Sable"),
+      path: "/about",
+      icon: ShieldCheck,
+      desc: t("Creator & Data Platform Architect profile"),
+    },
+  ].filter(
+    (t) =>
+      t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q),
+  );
 
   // Filter SKUs
-  const skus = FABRIC_SKU_DATA.filter(s => 
-    s.name.toLowerCase().includes(q) || 
-    s.description.toLowerCase().includes(q) ||
-    `f${s.cu}`.includes(q)
+  const skus = FABRIC_SKU_DATA.filter(
+    (s) =>
+      s.name.toLowerCase().includes(q) ||
+      s.description.toLowerCase().includes(q) ||
+      `f${s.cu}`.includes(q),
   );
 
   // Filter Comparisons
-  const comparisons = COMPARISONS_DATA.filter(c => 
-    c.title.toLowerCase().includes(q) || 
-    c.leftName.toLowerCase().includes(q) || 
-    c.rightName.toLowerCase().includes(q)
+  const comparisons = COMPARISONS_DATA.filter(
+    (c) =>
+      c.title.toLowerCase().includes(q) ||
+      c.leftName.toLowerCase().includes(q) ||
+      c.rightName.toLowerCase().includes(q),
   );
 
   // Filter Docs
-  const docs = ARTICLES.filter(a => 
-    a.title.toLowerCase().includes(q) || 
-    a.description.toLowerCase().includes(q)
+  const docs = ARTICLES.filter(
+    (a) =>
+      a.title.toLowerCase().includes(q) ||
+      a.description.toLowerCase().includes(q),
   );
 
   // Filter Labs
-  const labs = LABS_EXPERIMENTS.filter(l =>
-    l.title.toLowerCase().includes(q) ||
-    l.description.toLowerCase().includes(q)
+  const labs = LABS_EXPERIMENTS.filter(
+    (l) =>
+      l.title.toLowerCase().includes(q) ||
+      l.description.toLowerCase().includes(q),
   );
 
-  const hasResults = tools.length > 0 || skus.length > 0 || comparisons.length > 0 || docs.length > 0 || labs.length > 0;
+  const hasResults =
+    tools.length > 0 ||
+    skus.length > 0 ||
+    comparisons.length > 0 ||
+    docs.length > 0 ||
+    labs.length > 0;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-24 px-4 bg-black/60 dark:bg-black/70 backdrop-blur-md animate-fadeIn"
       onClick={onClose}
     >
-      <div 
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search Fabric Master"
         className="w-full max-w-2xl bg-white dark:bg-[#0E1018] border border-[#E2E8F0] dark:border-[#23273D] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
@@ -100,13 +208,17 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
           <Search className="w-5 h-5 text-[#64748B] dark:text-[#9EA7BD] mr-3 shrink-0" />
           <input
             type="text"
+            aria-label="Search tools and documentation"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("Search tools, F-SKUs, comparisons, docs, labs... (ESC to close)")}
+            placeholder={t(
+              "Search tools, F-SKUs, comparisons, docs, labs... (ESC to close)",
+            )}
             className="w-full bg-transparent text-[#0F172A] dark:text-[#F4F6FB] placeholder-[#64748B] dark:placeholder-[#9EA7BD] text-base focus:outline-none"
             autoFocus
           />
-          <button 
+          <button
+            aria-label="Close search"
             onClick={onClose}
             className="p-1 rounded-lg hover:bg-[#F1F5F9] dark:hover:bg-[#161826] text-[#64748B] dark:text-[#9EA7BD] hover:text-[#0F172A] dark:hover:text-white transition-colors ml-2"
           >
@@ -118,7 +230,11 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
         <div className="overflow-y-auto p-3 space-y-4 custom-scrollbar">
           {!hasResults && (
             <div className="py-12 text-center text-[#64748B] dark:text-[#9EA7BD]">
-              No results found matching "<span className="text-[#0F172A] dark:text-[#F4F6FB]">{query}</span>".
+              No results found matching "
+              <span className="text-[#0F172A] dark:text-[#F4F6FB]">
+                {query}
+              </span>
+              ".
             </div>
           )}
 
@@ -142,8 +258,12 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                           <Icon className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="font-medium text-sm group-hover:text-blue-600 dark:group-hover:text-[#58a6ff] transition-colors">{t.title}</div>
-                          <div className="text-xs text-[#64748B] dark:text-[#9EA7BD]">{t.desc}</div>
+                          <div className="font-medium text-sm group-hover:text-blue-600 dark:group-hover:text-[#58a6ff] transition-colors">
+                            {t.title}
+                          </div>
+                          <div className="text-xs text-[#64748B] dark:text-[#9EA7BD]">
+                            {t.desc}
+                          </div>
                         </div>
                       </div>
                       <ArrowRight className="w-4 h-4 text-[#64748B] dark:text-[#9EA7BD] group-hover:text-blue-600 dark:group-hover:text-[#58a6ff] opacity-0 group-hover:opacity-100 transition-all" />
@@ -170,9 +290,15 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                     <div>
                       <div className="font-semibold text-sm text-blue-600 dark:text-[#58a6ff] flex items-center gap-2">
                         {s.name} Capacity
-                        {s.powerBiFreeUsers && <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-[#238636]/20 text-[#238636] dark:text-[#3fb950] border border-[#238636]/30 font-normal">PBI Free</span>}
+                        {s.powerBiFreeUsers && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-[#238636]/20 text-[#238636] dark:text-[#3fb950] border border-[#238636]/30 font-normal">
+                            PBI Free
+                          </span>
+                        )}
                       </div>
-                      <div className="text-xs text-[#64748B] dark:text-[#9EA7BD]">${s.monthlyReserved.toLocaleString()}/mo Reserved</div>
+                      <div className="text-xs text-[#64748B] dark:text-[#9EA7BD]">
+                        ${s.monthlyReserved.toLocaleString()}/mo Reserved
+                      </div>
                     </div>
                     <ArrowRight className="w-4 h-4 text-[#64748B] dark:text-[#9EA7BD] group-hover:text-blue-600 dark:group-hover:text-[#58a6ff] opacity-0 group-hover:opacity-100 transition-all" />
                   </button>
@@ -199,8 +325,12 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                         <GitCompare className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-medium text-sm group-hover:text-[#d29922] transition-colors">{c.title}</div>
-                        <div className="text-xs text-[#64748B] dark:text-[#9EA7BD]">{c.subtitle}</div>
+                        <div className="font-medium text-sm group-hover:text-[#d29922] transition-colors">
+                          {c.title}
+                        </div>
+                        <div className="text-xs text-[#64748B] dark:text-[#9EA7BD]">
+                          {c.subtitle}
+                        </div>
                       </div>
                     </div>
                     <ArrowRight className="w-4 h-4 text-[#64748B] dark:text-[#9EA7BD] group-hover:text-[#d29922] opacity-0 group-hover:opacity-100 transition-all" />
@@ -228,8 +358,12 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                         <BookOpen className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-medium text-sm group-hover:text-[#a371f7] transition-colors">{d.title}</div>
-                        <div className="text-xs text-[#64748B] dark:text-[#9EA7BD] line-clamp-1">{d.description}</div>
+                        <div className="font-medium text-sm group-hover:text-[#a371f7] transition-colors">
+                          {d.title}
+                        </div>
+                        <div className="text-xs text-[#64748B] dark:text-[#9EA7BD] line-clamp-1">
+                          {d.description}
+                        </div>
                       </div>
                     </div>
                     <ArrowRight className="w-4 h-4 text-[#64748B] dark:text-[#9EA7BD] group-hover:text-[#a371f7] opacity-0 group-hover:opacity-100 transition-all" />
@@ -249,7 +383,7 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                 {labs.map((l) => (
                   <button
                     key={l.id}
-                    onClick={() => handleSelect('/labs')}
+                    onClick={() => handleSelect("/labs")}
                     className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#F1F5F9] dark:hover:bg-[#161826] text-[#0F172A] dark:text-[#F4F6FB] transition-colors group cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
@@ -257,8 +391,12 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                         <Beaker className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-medium text-sm group-hover:text-[#238636] dark:group-hover:text-[#3fb950] transition-colors">{l.title}</div>
-                        <div className="text-xs text-[#64748B] dark:text-[#9EA7BD] line-clamp-1">{l.description}</div>
+                        <div className="font-medium text-sm group-hover:text-[#238636] dark:group-hover:text-[#3fb950] transition-colors">
+                          {l.title}
+                        </div>
+                        <div className="text-xs text-[#64748B] dark:text-[#9EA7BD] line-clamp-1">
+                          {l.description}
+                        </div>
                       </div>
                     </div>
                     <ArrowRight className="w-4 h-4 text-[#64748B] dark:text-[#9EA7BD] group-hover:text-[#238636] dark:group-hover:text-[#3fb950] opacity-0 group-hover:opacity-100 transition-all" />
@@ -272,7 +410,9 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
         {/* Modal Footer */}
         <div className="px-4 py-2 bg-[#F8FAFC] dark:bg-[#050508] border-t border-[#E2E8F0] dark:border-[#23273D] flex items-center justify-between text-xs text-[#64748B] dark:text-[#9EA7BD]">
           <div className="flex items-center gap-2">
-            <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#161826] border border-[#CBD5E1] dark:border-[#23273D] text-[#475569] dark:text-[#F4F6FB] font-mono text-[10px]">CTRL + K</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#161826] border border-[#CBD5E1] dark:border-[#23273D] text-[#475569] dark:text-[#F4F6FB] font-mono text-[10px]">
+              CTRL + K
+            </kbd>
             <span>to toggle search anywhere</span>
           </div>
           <div>Press ESC to close</div>

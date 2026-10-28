@@ -1,0 +1,620 @@
+:root,
+html.dark {
+  --color-canvas: #101414;
+  --color-surface: #171c1c;
+  --color-surface-elevated: #202626;
+  --color-border: #2b3332;
+  --color-text-primary: #edf3f1;
+  --color-text-secondary: #a1aeaa;
+  --color-text-muted: #82928c;
+  --color-accent-primary: #74e2bd;
+  --color-accent-cyan: #7dc9da;
+  --color-success: #74d8a4;
+  --color-warning: #e7ba72;
+  --color-error: #f18e8e;
+  --color-accent-soft: #1b312a;
+  --color-action: #abefd4;
+  --color-action-text: #102b22;
+  --color-sidebar: #141919;
+  --shadow-card: 0 6px 24px #0000000c;
+  color-scheme: dark;
+}
+html.light {
+  --color-canvas: #f6f8f7;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #eef3f0;
+  --color-border: #dde5e0;
+  --color-text-primary: #1b3029;
+  --color-text-secondary: #566d62;
+  --color-text-muted: #63776e;
+  --color-accent-primary: #14775b;
+  --color-accent-cyan: #28788d;
+  --color-success: #257c4c;
+  --color-warning: #90601d;
+  --color-error: #c74646;
+  --color-accent-soft: #e4f2eb;
+  --color-action: #1a7358;
+  --color-action-text: #ffffff;
+  --color-sidebar: #ffffff;
+  --shadow-card: 0 6px 24px #203e2f06;
+  color-scheme: light;
+}
+
+/* Legacy palette bridge: existing tools inherit the shared semantic tokens. */
+html.dark [class~="bg-[#050508]"] {
+  background-color: var(--color-canvas);
+}
+html.light [class~="bg-[#050508]"] {
+  background-color: var(--color-canvas);
+}
+html.dark [class~="bg-[#080F1D]"] {
+  background-color: var(--color-canvas);
+}
+html.light [class~="bg-[#080F1D]"] {
+  background-color: var(--color-canvas);
+}
+html.dark [class~="bg-[#0E1018]/40"] {
+  background-color: color-mix(in srgb, var(--color-surface) 40%, transparent);
+}
+html.light [class~="bg-[#0E1018]/40"] {
+  background-color: color-mix(in srgb, var(--color-surface) 40%, transparent);
+}
+html.dark [class~="bg-[#0b1329]"] {
+  background-color: var(--color-canvas);
+}
+html.light [class~="bg-[#0b1329]"] {
+  background-color: var(--color-canvas);
+}
+html.dark [class~="bg-[#0d1117]"] {
+  background-color: var(--color-canvas);
+}
+html.light [class~="bg-[#0d1117]"] {
+  background-color: var(--color-canvas);
+}
+html.dark [class~="bg-[#0f172a]"] {
+  background-color: var(--color-canvas);
+}
+html.light [class~="bg-[#0f172a]"] {
+  background-color: var(--color-canvas);
+}
+html.dark [class~="bg-[#11192e]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.light [class~="bg-[#11192e]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.dark [class~="bg-[#161826]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.light [class~="bg-[#161826]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.dark [class~="bg-[#161b22]"] {
+  background-color: var(--color-surface);
+}
+html.light [class~="bg-[#161b22]"] {
+  background-color: var(--color-surface);
+}
+html.dark [class~="bg-[#161b22]/30"] {
+  background-color: color-mix(in srgb, var(--color-surface) 30%, transparent);
+}
+html.light [class~="bg-[#161b22]/30"] {
+  background-color: color-mix(in srgb, var(--color-surface) 30%, transparent);
+}
+html.dark [class~="bg-[#161b22]/50"] {
+  background-color: color-mix(in srgb, var(--color-surface) 50%, transparent);
+}
+html.light [class~="bg-[#161b22]/50"] {
+  background-color: color-mix(in srgb, var(--color-surface) 50%, transparent);
+}
+html.dark [class~="bg-[#161b22]/70"] {
+  background-color: color-mix(in srgb, var(--color-surface) 70%, transparent);
+}
+html.light [class~="bg-[#161b22]/70"] {
+  background-color: color-mix(in srgb, var(--color-surface) 70%, transparent);
+}
+html.dark [class~="bg-[#161b22]/80"] {
+  background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+}
+html.light [class~="bg-[#161b22]/80"] {
+  background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+}
+html.dark [class~="bg-[#161b22]/90"] {
+  background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+}
+html.light [class~="bg-[#161b22]/90"] {
+  background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+}
+html.dark [class~="bg-[#162032]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.light [class~="bg-[#162032]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.dark [class~="bg-[#17263d]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.light [class~="bg-[#17263d]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.dark [class~="bg-[#1f2d47]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.light [class~="bg-[#1f2d47]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.dark [class~="bg-[#1f6feb]"] {
+  background-color: var(--color-accent-primary);
+}
+html.light [class~="bg-[#1f6feb]"] {
+  background-color: var(--color-accent-primary);
+}
+html.dark [class~="bg-[#1f6feb]/10"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 10%,
+    transparent
+  );
+}
+html.light [class~="bg-[#1f6feb]/10"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 10%,
+    transparent
+  );
+}
+html.dark [class~="bg-[#1f6feb]/15"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 15%,
+    transparent
+  );
+}
+html.light [class~="bg-[#1f6feb]/15"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 15%,
+    transparent
+  );
+}
+html.dark [class~="bg-[#1f6feb]/20"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 20%,
+    transparent
+  );
+}
+html.light [class~="bg-[#1f6feb]/20"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 20%,
+    transparent
+  );
+}
+html.dark [class~="bg-[#21262d]"] {
+  background-color: var(--color-border);
+}
+html.light [class~="bg-[#21262d]"] {
+  background-color: var(--color-border);
+}
+html.dark [class~="bg-[#21262d]/30"] {
+  background-color: color-mix(in srgb, var(--color-border) 30%, transparent);
+}
+html.light [class~="bg-[#21262d]/30"] {
+  background-color: color-mix(in srgb, var(--color-border) 30%, transparent);
+}
+html.dark [class~="bg-[#21262d]/40"] {
+  background-color: color-mix(in srgb, var(--color-border) 40%, transparent);
+}
+html.light [class~="bg-[#21262d]/40"] {
+  background-color: color-mix(in srgb, var(--color-border) 40%, transparent);
+}
+html.dark [class~="bg-[#21262d]/50"] {
+  background-color: color-mix(in srgb, var(--color-border) 50%, transparent);
+}
+html.light [class~="bg-[#21262d]/50"] {
+  background-color: color-mix(in srgb, var(--color-border) 50%, transparent);
+}
+html.dark [class~="bg-[#30363d]"] {
+  background-color: var(--color-border);
+}
+html.light [class~="bg-[#30363d]"] {
+  background-color: var(--color-border);
+}
+html.dark [class~="bg-[#388bfd]"] {
+  background-color: var(--color-accent-primary);
+}
+html.light [class~="bg-[#388bfd]"] {
+  background-color: var(--color-accent-primary);
+}
+html.dark [class~="bg-[#3B82F6]"] {
+  background-color: var(--color-accent-primary);
+}
+html.light [class~="bg-[#3B82F6]"] {
+  background-color: var(--color-accent-primary);
+}
+html.dark [class~="bg-[#3b82f6]"] {
+  background-color: var(--color-accent-primary);
+}
+html.light [class~="bg-[#3b82f6]"] {
+  background-color: var(--color-accent-primary);
+}
+html.dark [class~="bg-[#58a6ff]"] {
+  background-color: var(--color-accent-primary);
+}
+html.light [class~="bg-[#58a6ff]"] {
+  background-color: var(--color-accent-primary);
+}
+html.dark [class~="bg-[#58a6ff]/10"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 10%,
+    transparent
+  );
+}
+html.light [class~="bg-[#58a6ff]/10"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 10%,
+    transparent
+  );
+}
+html.dark [class~="bg-[#58a6ff]/20"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 20%,
+    transparent
+  );
+}
+html.light [class~="bg-[#58a6ff]/20"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 20%,
+    transparent
+  );
+}
+html.dark [class~="bg-[#8b949e]/10"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-text-secondary) 10%,
+    transparent
+  );
+}
+html.light [class~="bg-[#8b949e]/10"] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-text-secondary) 10%,
+    transparent
+  );
+}
+html.dark [class~="bg-[#F1F5F9]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.light [class~="bg-[#F1F5F9]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.dark [class~="bg-[#F8FAFC]"] {
+  background-color: var(--color-canvas);
+}
+html.light [class~="bg-[#F8FAFC]"] {
+  background-color: var(--color-canvas);
+}
+html.dark [class~="border-[#1f6feb]"] {
+  border-color: var(--color-accent-primary);
+}
+html.light [class~="border-[#1f6feb]"] {
+  border-color: var(--color-accent-primary);
+}
+html.dark [class~="border-[#1f6feb]/30"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 30%,
+    transparent
+  );
+}
+html.light [class~="border-[#1f6feb]/30"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 30%,
+    transparent
+  );
+}
+html.dark [class~="border-[#1f6feb]/40"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 40%,
+    transparent
+  );
+}
+html.light [class~="border-[#1f6feb]/40"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 40%,
+    transparent
+  );
+}
+html.dark [class~="border-[#21262d]"] {
+  border-color: var(--color-border);
+}
+html.light [class~="border-[#21262d]"] {
+  border-color: var(--color-border);
+}
+html.dark [class~="border-[#23273D]"] {
+  border-color: var(--color-border);
+}
+html.light [class~="border-[#23273D]"] {
+  border-color: var(--color-border);
+}
+html.dark [class~="border-[#23273D]/50"] {
+  border-color: color-mix(in srgb, var(--color-border) 50%, transparent);
+}
+html.light [class~="border-[#23273D]/50"] {
+  border-color: color-mix(in srgb, var(--color-border) 50%, transparent);
+}
+html.dark [class~="border-[#23273D]/60"] {
+  border-color: color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+html.light [class~="border-[#23273D]/60"] {
+  border-color: color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+html.dark [class~="border-[#2b3b53]"] {
+  border-color: var(--color-border);
+}
+html.light [class~="border-[#2b3b53]"] {
+  border-color: var(--color-border);
+}
+html.dark [class~="border-[#30363d]"] {
+  border-color: var(--color-border);
+}
+html.light [class~="border-[#30363d]"] {
+  border-color: var(--color-border);
+}
+html.dark [class~="border-[#30363d]/40"] {
+  border-color: color-mix(in srgb, var(--color-border) 40%, transparent);
+}
+html.light [class~="border-[#30363d]/40"] {
+  border-color: color-mix(in srgb, var(--color-border) 40%, transparent);
+}
+html.dark [class~="border-[#30363d]/60"] {
+  border-color: color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+html.light [class~="border-[#30363d]/60"] {
+  border-color: color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+html.dark [class~="border-[#58a6ff]"] {
+  border-color: var(--color-accent-primary);
+}
+html.light [class~="border-[#58a6ff]"] {
+  border-color: var(--color-accent-primary);
+}
+html.dark [class~="border-[#58a6ff]/30"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 30%,
+    transparent
+  );
+}
+html.light [class~="border-[#58a6ff]/30"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 30%,
+    transparent
+  );
+}
+html.dark [class~="border-[#58a6ff]/40"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 40%,
+    transparent
+  );
+}
+html.light [class~="border-[#58a6ff]/40"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 40%,
+    transparent
+  );
+}
+html.dark [class~="border-[#58a6ff]/50"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 50%,
+    transparent
+  );
+}
+html.light [class~="border-[#58a6ff]/50"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-accent-primary) 50%,
+    transparent
+  );
+}
+html.dark [class~="border-[#8b949e]"] {
+  border-color: var(--color-text-secondary);
+}
+html.light [class~="border-[#8b949e]"] {
+  border-color: var(--color-text-secondary);
+}
+html.dark [class~="border-[#8b949e]/40"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-text-secondary) 40%,
+    transparent
+  );
+}
+html.light [class~="border-[#8b949e]/40"] {
+  border-color: color-mix(
+    in srgb,
+    var(--color-text-secondary) 40%,
+    transparent
+  );
+}
+html.dark [class~="border-[#CBD5E1]"] {
+  border-color: var(--color-border);
+}
+html.light [class~="border-[#CBD5E1]"] {
+  border-color: var(--color-border);
+}
+html.dark [class~="border-[#E2E8F0]"] {
+  border-color: var(--color-border);
+}
+html.light [class~="border-[#E2E8F0]"] {
+  border-color: var(--color-border);
+}
+html.dark [class~="dark:bg-[#050508]"] {
+  background-color: var(--color-canvas);
+}
+html.dark [class~="dark:bg-[#0E1018]"] {
+  background-color: var(--color-surface);
+}
+html.dark [class~="dark:bg-[#0E1018]/40"] {
+  background-color: color-mix(in srgb, var(--color-surface) 40%, transparent);
+}
+html.dark [class~="dark:bg-[#161826]"] {
+  background-color: var(--color-surface-elevated);
+}
+html.dark [class~="dark:border-[#23273D]"] {
+  border-color: var(--color-border);
+}
+html.dark [class~="dark:border-[#23273D]/60"] {
+  border-color: color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+html.dark [class~="dark:text-[#58a6ff]"] {
+  color: var(--color-accent-primary);
+}
+html.dark [class~="dark:text-[#9EA7BD]"] {
+  color: var(--color-text-secondary);
+}
+html.dark [class~="dark:text-[#F4F6FB]"] {
+  color: var(--color-text-primary);
+}
+html.dark [class~="from-[#161b22]"] {
+  --tw-gradient-from: var(--color-surface);
+}
+html.light [class~="from-[#161b22]"] {
+  --tw-gradient-from: var(--color-surface);
+}
+html.dark [class~="from-[#1f6feb]"] {
+  --tw-gradient-from: var(--color-surface);
+}
+html.light [class~="from-[#1f6feb]"] {
+  --tw-gradient-from: var(--color-surface);
+}
+html.light [class~="light:border-[#E2E8F0]"] {
+  border-color: var(--color-border);
+}
+html.light [class~="light:text-[#0F172A]"] {
+  color: var(--color-text-primary);
+}
+html.light [class~="light:text-[#2563EB]"] {
+  color: var(--color-accent-primary);
+}
+html.light [class~="light:text-[#475569]"] {
+  color: var(--color-text-secondary);
+}
+html.light [class~="light:text-[#64748B]"] {
+  color: var(--color-text-muted);
+}
+html.dark [class~="text-[#0F172A]"] {
+  color: var(--color-text-primary);
+}
+html.light [class~="text-[#0F172A]"] {
+  color: var(--color-text-primary);
+}
+html.dark [class~="text-[#1f6feb]"] {
+  color: var(--color-accent-primary);
+}
+html.light [class~="text-[#1f6feb]"] {
+  color: var(--color-accent-primary);
+}
+html.dark [class~="text-[#3B82F6]"] {
+  color: var(--color-accent-primary);
+}
+html.light [class~="text-[#3B82F6]"] {
+  color: var(--color-accent-primary);
+}
+html.dark [class~="text-[#3b82f6]"] {
+  color: var(--color-accent-primary);
+}
+html.light [class~="text-[#3b82f6]"] {
+  color: var(--color-accent-primary);
+}
+html.dark [class~="text-[#475569]"] {
+  color: var(--color-text-secondary);
+}
+html.light [class~="text-[#475569]"] {
+  color: var(--color-text-secondary);
+}
+html.dark [class~="text-[#58a6ff]"] {
+  color: var(--color-accent-primary);
+}
+html.light [class~="text-[#58a6ff]"] {
+  color: var(--color-accent-primary);
+}
+html.dark [class~="text-[#64748B]"] {
+  color: var(--color-text-muted);
+}
+html.light [class~="text-[#64748B]"] {
+  color: var(--color-text-muted);
+}
+html.dark [class~="text-[#8b949e]"] {
+  color: var(--color-text-secondary);
+}
+html.light [class~="text-[#8b949e]"] {
+  color: var(--color-text-secondary);
+}
+html.dark [class~="text-[#9EA7BD]"] {
+  color: var(--color-text-secondary);
+}
+html.light [class~="text-[#9EA7BD]"] {
+  color: var(--color-text-secondary);
+}
+html.dark [class~="text-[#F0F6FC]"] {
+  color: var(--color-text-primary);
+}
+html.light [class~="text-[#F0F6FC]"] {
+  color: var(--color-text-primary);
+}
+html.dark [class~="text-[#F4F6FB]"] {
+  color: var(--color-text-primary);
+}
+html.light [class~="text-[#F4F6FB]"] {
+  color: var(--color-text-primary);
+}
+html.dark [class~="text-[#c9d1d9]"] {
+  color: var(--color-text-primary);
+}
+html.light [class~="text-[#c9d1d9]"] {
+  color: var(--color-text-primary);
+}
+html.dark [class~="text-[#e6edf3]"] {
+  color: var(--color-text-primary);
+}
+html.light [class~="text-[#e6edf3]"] {
+  color: var(--color-text-primary);
+}
+html.dark [class~="text-[#f0f6fc]"] {
+  color: var(--color-text-primary);
+}
+html.light [class~="text-[#f0f6fc]"] {
+  color: var(--color-text-primary);
+}
+html.dark [class~="to-[#0d1117]"] {
+  --tw-gradient-to: var(--color-canvas);
+}
+html.light [class~="to-[#0d1117]"] {
+  --tw-gradient-to: var(--color-canvas);
+}
+html.light .text-white {
+  color: var(--color-text-primary);
+}
+html.light :is(button, a, span, div)[class*="bg-blue-"].text-white,
+html.light :is(button, a, span, div)[class*="bg-green-"].text-white,
+html.light :is(button, a, span, div)[class*="bg-emerald-"].text-white,
+html.light :is(button, a, span, div)[class*="bg-gradient-"].text-white,
+html.light [class~="bg-[#238636]"].text-white,
+html.light [class~="bg-[#1f6feb]"].text-white,
+html.light [class~="bg-[#2563EB]"].text-white,
+html.light [class~="bg-[#3B82F6]"].text-white {
+  color: #fff;
+}

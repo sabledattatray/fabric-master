@@ -334,7 +334,7 @@ export function Workspace() {
 
   return (
 
-    <div className="min-h-screen bg-[#080F1D] text-[#F0F6FC]">
+    <div className="workspace-page min-h-screen bg-[#080F1D] text-[#F0F6FC]">
       <Helmet>
         <title>Unified Engineering Workspace | Fabric Master v4.0</title>
         <meta
@@ -508,7 +508,7 @@ export function Workspace() {
       </header>
 
       {/* Main Workspace Body */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 flex flex-col lg:flex-row gap-8">
+      <div className="workspace-body max-w-7xl mx-auto px-4 sm:px-8 py-8 flex flex-col gap-8">
         {/* Left Navigation Sidebar */}
         <aside className="lg:w-64 shrink-0">
           <nav

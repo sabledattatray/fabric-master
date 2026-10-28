@@ -1,56 +1,140 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ARTICLES } from '../data/articles';
-import { SEO } from '../components/SEO';
-import { Footer } from '../components/Footer';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Search,
+  ArrowUpRight,
+  BookOpen,
+  ArrowRight,
+  Layers,
+} from "lucide-react";
+import { ARTICLES } from "../data/articles";
+import { SEO } from "../components/SEO";
+import { Footer } from "../components/Footer";
+import { useTranslation } from "react-i18next";
+
+const categories = [
+  "All guides",
+  ...new Set(ARTICLES.map((article) => article.category)),
+];
 
 export function Documentation() {
   const { t } = useTranslation();
-
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("All guides");
+  const visibleArticles = ARTICLES.filter(
+    (article) =>
+      (category === "All guides" || category === article.category) &&
+      `${t(article.title)} ${t(article.description)} ${t(article.category)}`
+        .toLowerCase()
+        .includes(query.trim().toLowerCase()),
+  );
   return (
-    <div className="h-full overflow-y-auto flex flex-col bg-[#0d1117] custom-scrollbar">
-      <SEO 
-        title={t("Documentation & Articles")} 
-        description={t("Learn how to optimize your Microsoft Fabric workloads, understand capacity units, and manage your FinOps.")} 
+    <div className="documentation-page">
+      <SEO
+        title={t("Documentation & Articles")}
+        description={t(
+          "Learn how to optimize your Microsoft Fabric workloads, understand capacity units, and manage your FinOps.",
+        )}
         keywords="Microsoft Fabric, Documentation, Articles, FinOps, Capacity Planning"
       />
-
-      <div className="flex-1 p-6 md:p-12 lg:p-16 flex flex-col items-center">
-        <div className="max-w-7xl w-full flex-1">
-          <div className="border-b border-[#30363d] pb-8 mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#f0f6fc]">{t('Documentation')}</h1>
-            <p className="text-lg md:text-xl text-[#8b949e] mt-4 max-w-3xl leading-relaxed">{t('Learn how to optimize your Microsoft Fabric workloads, understand capacity units, and manage your FinOps.')}</p>
+      <div className="knowledge-container">
+        <header className="knowledge-header">
+          <div className="eyebrow">
+            <BookOpen size={14} />
+            THE FABRIC KNOWLEDGE LIBRARY
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
-            {ARTICLES.map((article) => (
-              <Link 
-                key={article.id} 
-                to={`/docs/${article.id}`}
-                className="group flex flex-col h-full bg-[#161b22] border border-[#30363d] rounded-md p-6 hover:border-[#8b949e] hover:bg-[#1c2128] transition-all duration-200"
-              >
-                <div className="mb-4">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wide bg-[#21262d] text-[#8b949e] border border-[#30363d]">
-                    {t(article.category)}
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold text-[#f0f6fc] group-hover:text-[#58a6ff] transition-colors leading-snug mb-3">
-                  {t(article.title)}
-                </h3>
-                <p className="text-[#8b949e] text-sm leading-relaxed flex-1 line-clamp-3">
-                  {t(article.description)}
-                </p>
-              </Link>
-            ))}
+          <h1>
+            {t("Documentation")}
+            <span>A clearer understanding starts here.</span>
+          </h1>
+          <p>
+            {t(
+              "Learn how to optimize your Microsoft Fabric workloads, understand capacity units, and manage your FinOps.",
+            )}
+          </p>
+          <label className="library-search">
+            <Search size={18} />
+            <input
+              aria-label="Search documentation"
+              type="search"
+              placeholder="Find a concept, workload, or guide..."
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <kbd>{ARTICLES.length} guides</kbd>
+          </label>
+        </header>
+        <Link
+          to="/docs/getting-started-fabric-master"
+          className="library-feature"
+        >
+          <span className="library-feature-icon">
+            <Layers size={31} strokeWidth={1.4} />
+          </span>
+          <div>
+            <span className="eyebrow">NEW TO FABRIC MASTER?</span>
+            <h2>Start with a plan you can explain.</h2>
+            <p>Your first capacity estimate, step by step.</p>
           </div>
+          <span className="text-link">
+            Read the getting started guide <ArrowUpRight size={17} />
+          </span>
+        </Link>
+        <div className="library-filters" aria-label="Filter guides by category">
+          {categories.map((item) => (
+            <button
+              key={item}
+              type="button"
+              aria-pressed={category === item}
+              onClick={() => setCategory(item)}
+              className={category === item ? "selected" : ""}
+            >
+              {t(item)}
+            </button>
+          ))}
         </div>
-        
-        <div className="w-full max-w-7xl mx-auto mt-20">
-          <Footer />
+        <div className="library-result-count" role="status">
+          {visibleArticles.length}{" "}
+          {visibleArticles.length === 1 ? "guide" : "guides"}
+          {query && ` matching “${query}”`}
         </div>
+        <div className="library-grid">
+          {visibleArticles.map((article, index) => (
+            <Link
+              key={article.id}
+              to={`/docs/${article.id}`}
+              className="library-card"
+            >
+              <div className="library-card-top">
+                <span>{t(article.category)}</span>
+                <ArrowUpRight size={16} />
+              </div>
+              <h2>{t(article.title)}</h2>
+              <p>{t(article.description)}</p>
+              <span className="library-card-bottom">
+                Read guide <ArrowRight size={14} />
+              </span>
+            </Link>
+          ))}
+        </div>
+        {visibleArticles.length === 0 && (
+          <div className="library-empty">
+            <Search size={28} />
+            <h2>No guides found</h2>
+            <p>Try another search or browse all categories.</p>
+            <button
+              className="premium-button secondary"
+              onClick={() => {
+                setQuery("");
+                setCategory("All guides");
+              }}
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
       </div>
+      <Footer />
     </div>
   );
 }
-

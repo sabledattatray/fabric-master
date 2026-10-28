@@ -7,12 +7,28 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, helperText, type, value, onChange, onBlur, ...props }, ref) => {
+  (
+    {
+      className,
+      label,
+      helperText,
+      type,
+      value,
+      onChange,
+      onBlur,
+      id,
+      ...props
+    },
+    ref,
+  ) => {
+    const generatedId = React.useId();
+    const inputId = id || generatedId;
+    const helperId = `${inputId}-helper`;
     const isNumber = type === "number";
 
     // Initialize local string value to allow seamless deletion (including deleting '0')
     const [inputValue, setInputValue] = React.useState<string>(
-      value !== undefined && value !== null ? value.toString() : ""
+      value !== undefined && value !== null ? value.toString() : "",
     );
 
     React.useEffect(() => {
@@ -33,7 +49,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       if (isNumber) {
         // Strip leading zeros if digits follow (e.g., "0189" becomes "189", but "0" stays "0")
         if (/^0\d+/.test(valStr)) {
-          valStr = valStr.replace(/^0+/, '');
+          valStr = valStr.replace(/^0+/, "");
         }
       }
 
@@ -49,7 +65,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       if (isNumber) {
         if (inputValue === "" || isNaN(Number(inputValue))) {
-          const fallback = value !== undefined && value !== null ? value.toString() : "0";
+          const fallback =
+            value !== undefined && value !== null ? value.toString() : "0";
           setInputValue(fallback);
         }
       }
@@ -61,27 +78,37 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-semibold text-[#e6edf3] mb-1.5">
+          <label
+            htmlFor={inputId}
+            className="block text-sm font-medium text-[#e6edf3] mb-2"
+          >
             {label}
           </label>
         )}
         <input
+          id={inputId}
+          aria-describedby={helperText ? helperId : undefined}
           type={type}
           value={isNumber ? inputValue : value}
           onChange={handleChange}
           onBlur={handleBlur}
           className={cn(
-            "flex h-8 w-full rounded-xl border border-[#30363d] bg-[#0d1117] px-3 py-1.5 text-sm text-[#c9d1d9] placeholder:text-[#8b949e] focus:outline-none focus:bg-[#0d1117] focus:border-[#58a6ff] focus:ring-1 focus:ring-[#58a6ff] disabled:cursor-not-allowed disabled:opacity-50 transition-colors shadow-inner",
-            className
+            "flex h-10 w-full rounded-lg border border-[#30363d] bg-[#0d1117] px-3 py-2 text-sm text-[#c9d1d9] placeholder:text-[#8b949e] disabled:cursor-not-allowed disabled:opacity-50 transition-colors",
+            className,
           )}
           ref={ref}
           {...props}
         />
         {helperText && (
-          <p className="mt-1 text-xs text-[#8b949e]">{helperText}</p>
+          <p
+            id={helperId}
+            className="mt-1.5 text-xs text-[#8b949e] leading-relaxed"
+          >
+            {helperText}
+          </p>
         )}
       </div>
     );
-  }
+  },
 );
 Input.displayName = "Input";

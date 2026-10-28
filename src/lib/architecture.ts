@@ -1,3 +1,4 @@
+import { generateArchitectureSVG } from "./architecture-svg";
 /**
  * Architecture Studio Engine (Fabric Master v4.0 - Phase 6)
  * Interactive visual architecture canvas, reference templates, and validation engine.
@@ -499,49 +500,13 @@ export function exportDiagramAsJSON(diagram: ArchitectureDiagram): void {
 }
 
 export function exportDiagramAsSVG(diagram: ArchitectureDiagram): void {
-  const width = 1000;
-  const height = 600;
-
-  let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
-  <style>
-    .bg { fill: #080F1D; }
-    .card { fill: #11192e; stroke: #21262d; stroke-width: 1.5; rx: 12; }
-    .text-title { fill: #F0F6FC; font-family: sans-serif; font-weight: bold; font-size: 14px; }
-    .text-sub { fill: #8B949E; font-family: sans-serif; font-size: 11px; }
-    .line { stroke: #388bfd; stroke-width: 2; marker-end: url(#arrow); }
-  </style>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#388bfd" />
-    </marker>
-  </defs>
-  <rect width="100%" height="100%" class="bg" />
-  <text x="30" y="40" fill="#388bfd" font-family="sans-serif" font-weight="bold" font-size="18px">${diagram.name}</text>
-  <text x="30" y="65" fill="#8B949E" font-family="sans-serif" font-size="12px">Microsoft Fabric Reference Architecture • Fabric Master v4.0</text>
-`;
-
-  // Render Nodes grouped by tier
-  const tierWidth = (width - 100) / 6;
-  diagram.nodes.forEach((n, idx) => {
-    const x = 50 + (n.tier - 1) * tierWidth;
-    const y = 120 + (idx % 4) * 110;
-    svgContent += `  <g transform="translate(${x}, ${y})">
-    <rect width="130" height="85" class="card" />
-    <text x="10" y="25" class="text-title">${n.label.slice(0, 15)}</text>
-    <text x="10" y="45" class="text-sub">${n.serviceName.slice(0, 18)}</text>
-    <text x="10" y="65" fill="#58a6ff" font-family="sans-serif" font-size="9px">Tier 0${n.tier}</text>
-  </g>\n`;
-  });
-
-  svgContent += `</svg>`;
-
-  const blob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
+  const blob = new Blob([generateArchitectureSVG(diagram)], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-  const downloadAnchor = document.createElement("a");
-  downloadAnchor.setAttribute("href", url);
-  downloadAnchor.setAttribute("download", `${diagram.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}.svg`);
-  document.body.appendChild(downloadAnchor);
-  downloadAnchor.click();
-  downloadAnchor.remove();
-  URL.revokeObjectURL(url);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = `${diagram.name.toLowerCase().replace(/[^a-z0-9]/g, "-")}.svg`;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

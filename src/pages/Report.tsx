@@ -130,19 +130,20 @@ export function Report() {
       {/* Control Top Bar */}
       <div className="border-b border-[#30363d] bg-[#161b22]/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <Link
               to="/workspace"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8b949e] hover:text-white transition"
+              className="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold text-[#8b949e] hover:text-white transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Workspace
             </Link>
             <div className="h-4 w-px bg-[#30363d]"></div>
             <select
+              aria-label="Report scenario"
               value={selectedId}
               onChange={(e) => handleSelectScenario(e.target.value)}
-              className="bg-[#0d1117] border border-[#30363d] rounded-lg px-2.5 py-1 text-xs font-semibold text-white focus:outline-none focus:border-[#58a6ff]"
+              className="min-w-0 max-w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-2.5 py-1 text-xs font-semibold text-white focus:outline-none focus:border-[#58a6ff]"
             >
               {scenarios.map((s) => (
                 <option key={s.id} value={s.id}>
