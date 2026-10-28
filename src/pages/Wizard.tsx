@@ -1,62 +1,64 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Step1DataFactory } from '../components/wizard/Step1DataFactory';
-import { Step2Spark } from '../components/wizard/Step2Spark';
-import { Step3PowerBI } from '../components/wizard/Step3PowerBI';
-import { Step4Existing } from '../components/wizard/Step4Existing';
-import { useWizard } from '../context/WizardContext';
-import { Button } from '../components/ui/Button';
-import { ArrowRight, ArrowLeft, Loader2, Database } from 'lucide-react';
-import { LanguageSelector } from '../components/LanguageSelector';
-import { Footer } from '../components/Footer';
-import { SEO } from '../components/SEO';
-import { useTranslation } from 'react-i18next';
-import { calculateCapacity } from '../lib/calculator';
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Step1DataFactory } from "../components/wizard/Step1DataFactory";
+import { Step2Spark } from "../components/wizard/Step2Spark";
+import { Step3PowerBI } from "../components/wizard/Step3PowerBI";
+import { Step4Existing } from "../components/wizard/Step4Existing";
+import { useWizard } from "../context/WizardContext";
+import { Button } from "../components/ui/Button";
+import { ArrowRight, ArrowLeft, Loader2, Database } from "lucide-react";
+import { LanguageSelector } from "../components/LanguageSelector";
+import { Footer } from "../components/Footer";
+import { SEO } from "../components/SEO";
+import { useTranslation } from "react-i18next";
+import { calculateCapacity } from "../lib/calculator";
 export function Wizard() {
+  const tx = useTranslation().t;
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data } = useWizard();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const STEPS = [
-    { id: 'data-factory', title: t('Data Factory') },
-    { id: 'spark', title: t('Spark') },
-    { id: 'power-bi', title: t('Power BI') },
-    { id: 'existing', title: t('Current Setup') }
+    { id: "data-factory", title: t("Data Factory") },
+    { id: "spark", title: t("Spark") },
+    { id: "power-bi", title: t("Power BI") },
+    { id: "existing", title: t("Current Setup") },
   ];
-
   const handleNext = async () => {
     if (currentStep < STEPS.length - 1) {
-      setCurrentStep(prev => prev + 1);
+      setCurrentStep((prev) => prev + 1);
     } else {
       await handleSubmit();
     }
   };
-
   const handlePrev = () => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+      setCurrentStep((prev) => prev - 1);
     }
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
       // Simulate network delay for UX
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
+      await new Promise((resolve) => setTimeout(resolve, 800));
       const result = calculateCapacity(data);
-      
       if (result.success) {
         try {
-          localStorage.setItem('fabric_master_last_evaluation', JSON.stringify(result));
-          localStorage.setItem('fabric_master_last_input_data', JSON.stringify(data));
+          localStorage.setItem(
+            "fabric_master_last_evaluation",
+            JSON.stringify(result),
+          );
+          localStorage.setItem(
+            "fabric_master_last_input_data",
+            JSON.stringify(data),
+          );
         } catch (storageErr) {
           console.warn("Could not save to localStorage:", storageErr);
         }
-        navigate('/results', { state: { evaluation: result, inputData: data } });
+        navigate("/results", {
+          state: { evaluation: result, inputData: data },
+        });
       } else {
         alert("Failed to calculate capacity: " + result.error);
       }
@@ -66,24 +68,32 @@ export function Wizard() {
       setIsSubmitting(false);
     }
   };
-
   return (
     <div className="wizard-page h-full flex overflow-hidden">
-      <SEO 
-        title={t("Microsoft Fabric Capacity Calculator")} 
-        description={t("Estimate your Microsoft Fabric capacity units (CU) and optimize pricing across Power BI, Data Factory, and Spark workloads.")}
+      <SEO
+        title={t("Microsoft Fabric Capacity Calculator")}
+        description={t(
+          "Estimate your Microsoft Fabric capacity units (CU) and optimize pricing across Power BI, Data Factory, and Spark workloads.",
+        )}
         keywords="Microsoft Fabric Capacity Calculator, Microsoft Fabric Calculator, Microsoft Fabric Capacity Units Calculator, Fabric Capacity Sizing, Microsoft Fabric Workload Calculator, Fabric CU Calculator"
       />
       {/* Sidebar Navigator */}
       <aside className="w-64 border-r border-[#30363d] bg-[#0d1117] flex-col hidden md:flex overflow-y-auto custom-scrollbar shrink-0">
         <div className="p-4">
           <div className="mb-4">
-            <h3 className="text-xs font-semibold text-[#8b949e] uppercase tracking-wider mb-2 px-2">{t('Wizard Steps')}</h3>
+            <h3 className="text-xs font-semibold text-[#8b949e] uppercase tracking-wider mb-2 px-2">
+              {t("Wizard Steps")}
+            </h3>
             <ul className="space-y-1">
               {STEPS.map((step, index) => (
-                <li key={step.id} className={`flex items-center ${index > currentStep ? 'opacity-50' : ''}`}>
-                  <span className={`text-sm rounded-xl px-2 py-1.5 w-full transition-colors ${index === currentStep ? 'font-semibold text-[#58a6ff] bg-[#1f6feb]/10' : (index < currentStep ? 'font-medium text-[#c9d1d9] hover:bg-[#21262d]' : 'text-[#8b949e]')}`}>
-                    {index + 1}. {step.title}
+                <li
+                  key={step.id}
+                  className={`flex items-center ${index > currentStep ? "opacity-50" : ""}`}
+                >
+                  <span
+                    className={`text-sm rounded-xl px-2 py-1.5 w-full transition-colors ${index === currentStep ? "font-semibold text-[#58a6ff] bg-[#1f6feb]/10" : index < currentStep ? "font-medium text-[#c9d1d9] hover:bg-[#21262d]" : "text-[#8b949e]"}`}
+                  >
+                    {index + 1}. {tx(String(step.title ?? ""))}
                   </span>
                 </li>
               ))}
@@ -92,85 +102,106 @@ export function Wizard() {
         </div>
         <div className="mt-auto p-4 border-t border-[#30363d]">
           <div className="flex justify-between items-center mb-2 px-2">
-            <span className="text-xs text-[#8b949e]">{t('Progress')}</span>
-            <span className="text-xs font-semibold text-[#c9d1d9]">{Math.round((currentStep / STEPS.length) * 100)}%</span>
+            <span className="text-xs text-[#8b949e]">{t("Progress")}</span>
+            <span className="text-xs font-semibold text-[#c9d1d9]">
+              {Math.round((currentStep / STEPS.length) * 100)}%
+            </span>
           </div>
-          <div className="w-full h-1.5 bg-[#30363d] rounded-full overflow-hidden mx-2" style={{ width: 'calc(100% - 16px)' }}>
-            <div className="h-full bg-[#238636] transition-all duration-300" style={{ width: `${(currentStep / STEPS.length) * 100}%` }}></div>
+          <div
+            className="w-full h-1.5 bg-[#30363d] rounded-full overflow-hidden mx-2"
+            style={{ width: "calc(100% - 16px)" }}
+          >
+            <div
+              className="h-full bg-[#238636] transition-all duration-300"
+              style={{ width: `${(currentStep / STEPS.length) * 100}%` }}
+            ></div>
           </div>
         </div>
       </aside>
 
       {/* Document Workspace */}
       <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 flex flex-col bg-[#0d1117] items-center">
-          {/* Mobile Top Progress Header */}
-          <div className="w-full max-w-3xl md:hidden mb-6 bg-[#161b22] border border-[#30363d] rounded-2xl p-4 space-y-3">
-            <div className="flex items-center justify-between text-xs font-semibold">
-              <span className="text-[#58a6ff]">Step {currentStep + 1} of {STEPS.length}</span>
-              <span className="text-[#c9d1d9]">{STEPS[currentStep].title}</span>
-            </div>
-            <div className="w-full h-2 bg-[#0d1117] rounded-full overflow-hidden border border-[#30363d]">
-              <div 
-                className="h-full bg-gradient-to-r from-[#1f6feb] to-[#238636] transition-all duration-300"
-                style={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
-              ></div>
-            </div>
-            <div className="grid grid-cols-4 gap-1.5 pt-1">
-              {STEPS.map((s, idx) => (
-                <button
-                  key={s.id}
-                  onClick={() => idx <= currentStep && setCurrentStep(idx)}
-                  className={`text-[10px] py-1 px-1 rounded text-center truncate transition-colors ${
-                    idx === currentStep
-                      ? "bg-[#1f6feb]/20 text-[#58a6ff] border border-[#1f6feb]/40 font-bold"
-                      : idx < currentStep
+        {/* Mobile Top Progress Header */}
+        <div className="w-full max-w-3xl md:hidden mb-6 bg-[#161b22] border border-[#30363d] rounded-2xl p-4 space-y-3">
+          <div className="flex items-center justify-between text-xs font-semibold">
+            <span className="text-[#58a6ff]">
+              {tx("Step") + " "}
+              {currentStep + 1}
+              {" " + tx("of") + " "}
+              {STEPS.length}
+            </span>
+            <span className="text-[#c9d1d9]">
+              {tx(String(STEPS[currentStep].title ?? ""))}
+            </span>
+          </div>
+          <div className="w-full h-2 bg-[#0d1117] rounded-full overflow-hidden border border-[#30363d]">
+            <div
+              className="h-full bg-gradient-to-r from-[#1f6feb] to-[#238636] transition-all duration-300"
+              style={{ width: `${((currentStep + 1) / STEPS.length) * 100}%` }}
+            ></div>
+          </div>
+          <div className="grid grid-cols-4 gap-1.5 pt-1">
+            {STEPS.map((s, idx) => (
+              <button
+                key={s.id}
+                onClick={() => idx <= currentStep && setCurrentStep(idx)}
+                className={`text-[10px] py-1 px-1 rounded text-center truncate transition-colors ${
+                  idx === currentStep
+                    ? "bg-[#1f6feb]/20 text-[#58a6ff] border border-[#1f6feb]/40 font-bold"
+                    : idx < currentStep
                       ? "bg-[#238636]/20 text-[#3fb950] border border-[#238636]/40"
                       : "bg-[#0d1117] text-[#8b949e] border border-[#30363d]"
-                  }`}
-                >
-                  {s.title}
-                </button>
-              ))}
-            </div>
+                }`}
+              >
+                {tx(String(s.title ?? ""))}
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div className="w-full max-w-3xl mt-2 flex-1">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-[#e6edf3] border-b border-[#30363d] pb-4 mb-6 sm:mb-8">
-              {STEPS[currentStep].title}
-            </h1>
-            {/* Form Container */}
-            <div className="space-y-8">
-              {currentStep === 0 && <Step1DataFactory />}
-              {currentStep === 1 && <Step2Spark />}
-              {currentStep === 2 && <Step3PowerBI />}
-              {currentStep === 3 && <Step4Existing />}
-              
-              <div className="mt-12 flex items-center justify-between pt-6">
-                <Button 
-                  variant="outline" 
-                  onClick={handlePrev}
-                  disabled={currentStep === 0 || isSubmitting}
-                >
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  {t('Previous')}
-                </Button>
-                
-                <Button 
-                  onClick={handleNext}
-                  disabled={isSubmitting}
-                  variant={currentStep === STEPS.length - 1 ? 'primary' : 'secondary'}
-                >
-                  {isSubmitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                  {currentStep === STEPS.length - 1 ? t('Calculate') : t('Next')}
-                  {!isSubmitting && currentStep < STEPS.length - 1 && <ArrowRight className="w-4 h-4 ml-2" />}
-                </Button>
-              </div>
+        <div className="w-full max-w-3xl mt-2 flex-1">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight text-[#e6edf3] border-b border-[#30363d] pb-4 mb-6 sm:mb-8">
+            {tx(String(STEPS[currentStep].title ?? ""))}
+          </h1>
+          {/* Form Container */}
+          <div className="space-y-8">
+            {currentStep === 0 && <Step1DataFactory />}
+            {currentStep === 1 && <Step2Spark />}
+            {currentStep === 2 && <Step3PowerBI />}
+            {currentStep === 3 && <Step4Existing />}
+
+            <div className="mt-12 flex items-center justify-between pt-6">
+              <Button
+                variant="outline"
+                onClick={handlePrev}
+                disabled={currentStep === 0 || isSubmitting}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                {t("Previous")}
+              </Button>
+
+              <Button
+                onClick={handleNext}
+                disabled={isSubmitting}
+                variant={
+                  currentStep === STEPS.length - 1 ? "primary" : "secondary"
+                }
+              >
+                {isSubmitting && (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                )}
+                {currentStep === STEPS.length - 1 ? t("Calculate") : t("Next")}
+                {!isSubmitting && currentStep < STEPS.length - 1 && (
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                )}
+              </Button>
             </div>
           </div>
-          <div className="mt-12 w-full max-w-5xl mx-auto">
-            <Footer />
-          </div>
-        </main>
+        </div>
+        <div className="mt-12 w-full max-w-5xl mx-auto">
+          <Footer />
+        </div>
+      </main>
     </div>
   );
 }

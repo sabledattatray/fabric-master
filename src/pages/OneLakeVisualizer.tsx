@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "../components/SEO";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -28,14 +28,12 @@ import type {
   ArchitectureEdge,
 } from "../lib/fabric/architecture/types";
 import "../styles/onelake.css";
-
 type LakeNode = ArchitectureNode & {
   layer: "bronze" | "silver" | "gold" | "serving";
   kind: string;
   purpose: string;
   objects: string[];
 };
-
 const SAMPLE_NODES: LakeNode[] = [
   {
     id: "bronze",
@@ -130,13 +128,12 @@ const TYPE_ICONS = {
   "semantic-model": LayoutDashboard,
   "kql-database": Activity,
 };
-
 function NodeIcon({ node, size = 19 }: { node: LakeNode; size?: number }) {
   const Icon = TYPE_ICONS[node.type as keyof typeof TYPE_ICONS] || Box;
   return <Icon size={size} strokeWidth={1.6} />;
 }
-
 export function OneLakeVisualizer() {
+  const tx = useTranslation().t;
   const { t } = useTranslation();
   const [selectedId, setSelectedId] = useState("silver");
   const [view, setView] = useState<"diagram" | "inventory">("diagram");
@@ -147,7 +144,6 @@ export function OneLakeVisualizer() {
   const connections = SAMPLE_EDGES.filter(
     (edge) => edge.source === selected.id || edge.target === selected.id,
   );
-
   const resetView = () => {
     setSelectedId("silver");
     setView("diagram");
@@ -197,7 +193,7 @@ export function OneLakeVisualizer() {
       className={`ol-node ol-tone-${node.layer} ${selected.id === node.id ? "is-selected" : ""}`}
       onClick={() => setSelectedId(node.id)}
       aria-pressed={selected.id === node.id}
-      aria-label={`Inspect ${node.label}`}
+      aria-label={tx("Inspect {{name}}", { name: tx(node.label) })}
     >
       <span className="ol-node-top">
         <span className="ol-node-icon">
@@ -213,33 +209,21 @@ export function OneLakeVisualizer() {
       </span>
     </button>
   );
-
   return (
     <div className="onelake-page">
-      <Helmet>
-        <title>
-          {t("OneLake Visualizer")} | {t("Fabric Master")}
-        </title>
-        <meta
-          name="description"
-          content={t(
-            "Explore an illustrative Microsoft Fabric OneLake topology, medallion layers, and logical data relationships.",
-          )}
-        />
-        <link
-          rel="canonical"
-          href="https://fabric.dattasable.com/architecture/onelake"
-        />
-      </Helmet>
+      <SEO
+        title="OneLake Visualizer"
+        description="Explore OneLake layers, inspect Fabric items, and follow logical data relationships."
+      />
       <div className="ol-page-heading">
         <div>
           <div className="eyebrow">
             <Waves size={14} />
-            ARCHITECTURE EXPLORER
+            {tx("ARCHITECTURE EXPLORER")}
           </div>
           <h1>
             {t("OneLake Visualizer")}
-            <span>One foundation. A connected view.</span>
+            <span>{tx("One foundation. A connected view.")}</span>
           </h1>
           <p>
             {t(
@@ -249,7 +233,7 @@ export function OneLakeVisualizer() {
         </div>
         <Link to="/architecture/planner" className="premium-button secondary">
           <Layers size={15} />
-          Open architecture planner
+          {tx("Open architecture planner")}
           <ArrowUpRight size={15} />
         </Link>
       </div>
@@ -259,7 +243,8 @@ export function OneLakeVisualizer() {
             <Database size={17} />
           </span>
           <span>
-            <strong>5</strong>Fabric items
+            <strong>5</strong>
+            {tx("Fabric items")}
           </span>
         </div>
         <div>
@@ -267,7 +252,8 @@ export function OneLakeVisualizer() {
             <Layers size={17} />
           </span>
           <span>
-            <strong>4</strong>Logical layers
+            <strong>4</strong>
+            {tx("Logical layers")}
           </span>
         </div>
         <div>
@@ -275,13 +261,15 @@ export function OneLakeVisualizer() {
             <GitBranch size={17} />
           </span>
           <span>
-            <strong>3</strong>Relationships
+            <strong>3</strong>
+            {tx("Relationships")}
           </span>
         </div>
         <div className="ol-sample-notice">
           <span className="ol-sample-dot" />
           <span>
-            Sample architecture<span>Explore freely. No live connection.</span>
+            {tx("Sample architecture")}
+            <span>{tx("Explore freely. No live connection.")}</span>
           </span>
         </div>
       </div>
@@ -289,7 +277,7 @@ export function OneLakeVisualizer() {
       <div className="ol-workbench">
         <section
           className="ol-canvas-panel"
-          aria-label="OneLake topology explorer"
+          aria-label={tx("OneLake topology explorer")}
         >
           <div className="ol-canvas-heading">
             <div>
@@ -297,19 +285,21 @@ export function OneLakeVisualizer() {
                 <Waves size={18} />
               </span>
               <div>
-                <h2>Analytics estate</h2>
+                <h2>{tx("Analytics estate")}</h2>
                 <p>
-                  Medallion architecture <span>/</span> Logical view
+                  {tx("Medallion architecture") + " "}
+                  <span>/</span>
+                  {" " + tx("Logical view")}
                 </p>
               </div>
             </div>
-            <span className="ol-sample-badge">EXAMPLE</span>
+            <span className="ol-sample-badge">{tx("EXAMPLE")}</span>
           </div>
           <div className="ol-toolbar">
             <div
               className="ol-view-tabs"
               role="tablist"
-              aria-label="Topology view"
+              aria-label={tx("Topology view")}
               onKeyDown={handleTabKey}
             >
               <button
@@ -323,7 +313,7 @@ export function OneLakeVisualizer() {
                 onClick={() => setView("diagram")}
               >
                 <Network size={14} />
-                Diagram
+                {tx("Diagram")}
               </button>
               <button
                 ref={inventoryTab}
@@ -336,19 +326,20 @@ export function OneLakeVisualizer() {
                 onClick={() => setView("inventory")}
               >
                 <List size={14} />
-                Inventory<span>5</span>
+                {tx("Inventory")}
+                <span>5</span>
               </button>
             </div>
             <div className="ol-canvas-actions">
               <button
                 type="button"
                 className="ol-reset-button"
-                aria-label="Reset view"
+                aria-label={tx("Reset view")}
                 onClick={resetView}
-                title="Reset view and selection"
+                title={tx("Reset view and selection")}
               >
                 <RotateCcw size={14} />
-                <span>Reset view</span>
+                <span>{tx("Reset view")}</span>
               </button>
               <span className="ol-toolbar-divider" />
               <button
@@ -357,13 +348,16 @@ export function OneLakeVisualizer() {
                 onClick={exportTopology}
               >
                 <FileJson size={14} />
-                <span>Export JSON</span>
+                <span>{tx("Export JSON")}</span>
               </button>
             </div>
           </div>
           <div className="ol-mobile-selection">
             <span>{t(selected.label)}</span>
-            <a href="#onelake-item-inspector">View details <ArrowDown size={13} /></a>
+            <a href="#onelake-item-inspector">
+              {tx("View details") + " "}
+              <ArrowDown size={13} />
+            </a>
           </div>
           {view === "diagram" ? (
             <div
@@ -376,9 +370,9 @@ export function OneLakeVisualizer() {
               <div className="ol-canvas-context">
                 <span>
                   <span className="status-dot" />
-                  ONELAKE / EXAMPLE WORKSPACE
+                  {tx("ONELAKE / EXAMPLE WORKSPACE")}
                 </span>
-                <span>SELECT AN ITEM TO INSPECT</span>
+                <span>{tx("SELECT AN ITEM TO INSPECT")}</span>
               </div>
               <div
                 className={`ol-topology ${showRelationships ? "show-relationships" : ""}`}
@@ -390,8 +384,8 @@ export function OneLakeVisualizer() {
                         <div className="ol-stage-label">
                           <span>{stage.number}</span>
                           <div>
-                            <strong>{stage.title}</strong>
-                            <small>{stage.subtitle}</small>
+                            <strong>{tx(String(stage.title ?? ""))}</strong>
+                            <small>{tx(String(stage.subtitle ?? ""))}</small>
                           </div>
                         </div>
                         {nodeCard(SAMPLE_NODES[index])}
@@ -403,10 +397,10 @@ export function OneLakeVisualizer() {
                         >
                           <span>
                             {index === 0
-                              ? "Transform"
+                              ? tx("Transform")
                               : index === 1
-                                ? "Curate"
-                                : "Serve"}
+                                ? tx("Curate")
+                                : tx("Serve")}
                           </span>
                           <div>
                             <i />
@@ -420,15 +414,15 @@ export function OneLakeVisualizer() {
                 <div className="ol-parallel-lane">
                   <div className="ol-parallel-label">
                     <Activity size={13} />
-                    <span>PARALLEL WORKLOAD</span>
+                    <span>{tx("PARALLEL WORKLOAD")}</span>
                     <span className="ol-lane-rule" />
                   </div>
                   <div className="ol-parallel-content">
                     {nodeCard(SAMPLE_NODES[4])}
                     <p>
-                      Real-time analytics alongside your batch estate.
+                      {tx("Real-time analytics alongside your batch estate.")}
                       <span>
-                        Shown independently; no relationship configured.
+                        {tx("Shown independently; no relationship configured.")}
                       </span>
                     </p>
                   </div>
@@ -439,18 +433,20 @@ export function OneLakeVisualizer() {
                   </span>
                   <div>
                     <strong>OneLake</strong>
-                    <span>A unified view of your Fabric data estate</span>
+                    <span>
+                      {tx("A unified view of your Fabric data estate")}
+                    </span>
                   </div>
                   <span className="ol-foundation-badge">
                     <Layers size={12} />
-                    LOGICAL FOUNDATION
+                    {tx("LOGICAL FOUNDATION")}
                   </span>
                 </div>
               </div>
               <div className="ol-diagram-footer">
                 <span>
                   <MousePointer2 size={13} />
-                  Select an item to explore its role
+                  {tx("Select an item to explore its role")}
                 </span>
                 <label>
                   <input
@@ -460,7 +456,7 @@ export function OneLakeVisualizer() {
                       setShowRelationships(event.target.checked)
                     }
                   />
-                  Show flow labels
+                  {tx("Show flow labels")}
                 </label>
               </div>
             </div>
@@ -473,8 +469,8 @@ export function OneLakeVisualizer() {
               className="ol-inventory-panel"
             >
               <div className="ol-inventory-caption">
-                5 illustrative items{" "}
-                <span>Select a row to inspect its properties.</span>
+                {tx("5 illustrative items")}{" "}
+                <span>{tx("Select a row to inspect its properties.")}</span>
               </div>
               <div className="ol-inventory-list">
                 {SAMPLE_NODES.map((node) => (
@@ -489,11 +485,13 @@ export function OneLakeVisualizer() {
                       <NodeIcon node={node} />
                     </span>
                     <span>
-                      <strong>{node.label}</strong>
-                      <small>{node.kind}</small>
+                      <strong>{tx(String(node.label ?? ""))}</strong>
+                      <small>{tx(String(node.kind ?? ""))}</small>
                     </span>
                     <span className="ol-layer-pill">
-                      {node.id === "realtime" ? "Parallel" : node.layer}
+                      {node.id === "realtime"
+                        ? tx("Parallel")
+                        : tx(String(node.layer ?? ""))}
                     </span>
                     <ChevronRight size={15} />
                   </button>
@@ -504,10 +502,12 @@ export function OneLakeVisualizer() {
           <div className="ol-canvas-bottom">
             <span>
               <ShieldCheck size={13} />
-              Illustrative topology · no live telemetry
+              {tx("Illustrative topology \u00B7 no live telemetry")}
             </span>
             <span>
-              5 items <i />3 relationships
+              {tx("5 items") + " "}
+              <i />
+              {tx("3 relationships")}
             </span>
           </div>
         </section>
@@ -516,10 +516,10 @@ export function OneLakeVisualizer() {
           id="onelake-item-inspector"
           tabIndex={-1}
           className="ol-inspector"
-          aria-label="Selected item details"
+          aria-label={tx("Selected item details")}
         >
           <div className="ol-inspector-heading">
-            <span>ITEM INSPECTOR</span>
+            <span>{tx("ITEM INSPECTOR")}</span>
             <MousePointer2 size={13} />
           </div>
           <div className="ol-inspector-content" aria-live="polite">
@@ -529,40 +529,40 @@ export function OneLakeVisualizer() {
               </span>
               <span className="ol-layer-pill">
                 {selected.id === "realtime"
-                  ? "Parallel workload"
-                  : `${selected.layer} layer`}
+                  ? tx("Parallel workload")
+                  : tx(`${selected.layer} layer`)}
               </span>
               <h2>{t(selected.label)}</h2>
               <span>{t(selected.kind)}</span>
             </div>
             <div className="ol-inspector-section">
-              <h3>ROLE IN YOUR ESTATE</h3>
+              <h3>{tx("ROLE IN YOUR ESTATE")}</h3>
               <p>{t(selected.description || "")}</p>
             </div>
             <dl className="ol-item-properties">
               <div>
-                <dt>Workspace</dt>
-                <dd>Example analytics</dd>
+                <dt>{tx("Workspace")}</dt>
+                <dd>{tx("Example analytics")}</dd>
               </div>
               <div>
-                <dt>Item type</dt>
-                <dd>{selected.kind}</dd>
+                <dt>{tx("Item type")}</dt>
+                <dd>{tx(String(selected.kind ?? ""))}</dd>
               </div>
               <div>
-                <dt>Purpose</dt>
-                <dd>{selected.purpose}</dd>
+                <dt>{tx("Purpose")}</dt>
+                <dd>{tx(String(selected.purpose ?? ""))}</dd>
               </div>
               <div>
-                <dt>Connections</dt>
+                <dt>{tx("Connections")}</dt>
                 <dd>
-                  {connections.length} logical{" "}
-                  {connections.length === 1 ? "relationship" : "relationships"}
+                  {tx("Logical relationships: {{count}}", { count: connections.length })}
                 </dd>
               </div>
             </dl>
             <div className="ol-inspector-section ol-lineage">
               <h3>
-                CONNECTED ITEMS <span>{connections.length}</span>
+                {tx("CONNECTED ITEMS") + " "}
+                <span>{connections.length}</span>
               </h3>
               {connections.length ? (
                 connections.map((edge) => {
@@ -582,8 +582,10 @@ export function OneLakeVisualizer() {
                         <NodeIcon node={neighbor} size={16} />
                       </span>
                       <span>
-                        <small>{incoming ? "UPSTREAM" : "DOWNSTREAM"}</small>
-                        <strong>{neighbor.label}</strong>
+                        <small>
+                          {incoming ? tx("UPSTREAM") : tx("DOWNSTREAM")}
+                        </small>
+                        <strong>{tx(String(neighbor.label ?? ""))}</strong>
                       </span>
                       <ArrowUpRight size={14} />
                     </button>
@@ -591,13 +593,13 @@ export function OneLakeVisualizer() {
                 })
               ) : (
                 <p className="ol-no-connections">
-                  No connections in this example.
+                  {tx("No connections in this example.")}
                 </p>
               )}
             </div>
             <div className="ol-inspector-section ol-object-section">
               <h3>
-                EXAMPLE {selected.id === "semantic" ? "CONTENTS" : "OBJECTS"}
+                {selected.id === "semantic" ? tx("EXAMPLE CONTENTS") : tx("EXAMPLE OBJECTS")}
                 <span>{selected.objects.length}</span>
               </h3>
               {selected.objects.map((object) => (
@@ -610,8 +612,9 @@ export function OneLakeVisualizer() {
             <div className="ol-inspector-note">
               <Info size={14} />
               <p>
-                Example properties for exploration. Connect your design
-                decisions in the architecture planner.
+                {tx(
+                  "Example properties for exploration. Connect your design decisions in the architecture planner.",
+                )}
               </p>
             </div>
           </div>
@@ -622,15 +625,15 @@ export function OneLakeVisualizer() {
           <GitBranch size={20} />
         </span>
         <div>
-          <h2>Follow the flow. Understand the architecture.</h2>
+          <h2>{tx("Follow the flow. Understand the architecture.")}</h2>
           <p>
-            Bronze preserves the source. Silver brings consistency. Gold
-            prepares business-ready data. The semantic layer makes it available
-            for analysis.
+            {tx(
+              "Bronze preserves the source. Silver brings consistency. Gold prepares business-ready data. The semantic layer makes it available for analysis.",
+            )}
           </p>
         </div>
         <Link to="/docs" className="text-link">
-          Explore the guides
+          {tx("Explore the guides")}
           <ArrowUpRight size={15} />
         </Link>
       </div>

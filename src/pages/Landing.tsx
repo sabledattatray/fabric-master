@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -24,7 +25,6 @@ import { Footer } from "../components/Footer";
 import { ARTICLES } from "../data/articles";
 import { SEO } from "../components/SEO";
 import { FABRIC_SKU_DATA } from "../data/fskus";
-
 const tools = [
   {
     number: "01",
@@ -96,27 +96,29 @@ const money = (value: number) =>
     currency: "USD",
     maximumFractionDigits: 0,
   });
-
 export function Landing() {
+  const tx = useTranslation().t;
   const [selectedSku, setSelectedSku] = useState("f64");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const sku = FABRIC_SKU_DATA.find((item) => item.slug === selectedSku)!;
   const demand = Number((sku.cu * 0.67).toFixed(1));
   const savings = (sku.monthlyPayg - sku.monthlyReserved) * 12;
-
   return (
     <div className="landing-page">
       <SEO
-        title="Fabric Master — Microsoft Fabric Engineering Intelligence"
+        title={tx(
+          "Fabric Master \u2014 Microsoft Fabric Engineering Intelligence",
+        )}
         description="A considered approach to Microsoft Fabric. Plan capacity, understand costs, and design your data architecture in one independent engineering workspace."
         keywords="Microsoft Fabric, capacity planning, FinOps, OneLake, architecture, Fabric Master"
         url="https://fabric.dattasable.com/"
       />
       <div className="release-strip">
-        <span className="release-pill">WHAT’S NEW</span>
-        <span>One workspace. Every Fabric decision.</span>
+        <span className="release-pill">{tx("WHAT\u2019S NEW")}</span>
+        <span>{tx("One workspace. Every Fabric decision.")}</span>
         <Link to="/workspace">
-          Explore v4.0 <ArrowRight size={13} />
+          {tx("Explore v4.0") + " "}
+          <ArrowRight size={13} />
         </Link>
       </div>
       <div className="landing-container">
@@ -124,35 +126,38 @@ export function Landing() {
           <div className="hero-copy">
             <div className="eyebrow">
               <span className="status-dot" />
-              THE INDEPENDENT FABRIC WORKBENCH
+              {tx("THE INDEPENDENT FABRIC WORKBENCH")}
             </div>
             <h1 id="hero-title">
-              Great architecture.
+              {tx("Great architecture.")}
               <br />
-              Clear decisions.
+              {tx("Clear decisions.")}
               <br />
-              <span>Built with confidence.</span>
+              <span>{tx("Built with confidence.")}</span>
             </h1>
             <p className="hero-description">
-              Bring clarity to your Microsoft Fabric estate. Plan the right
-              capacity, understand every cost, and design what comes next.
+              {tx(
+                "Bring clarity to your Microsoft Fabric estate. Plan the right capacity, understand every cost, and design what comes next.",
+              )}
             </p>
             <div className="hero-actions">
               <Link to="/workspace" className="premium-button primary">
-                Open workspace <ArrowUpRight size={17} />
+                {tx("Open workspace") + " "}
+                <ArrowUpRight size={17} />
               </Link>
               <Link to="/wizard" className="premium-button secondary">
-                Explore the tools <ArrowRight size={16} />
+                {tx("Explore the tools") + " "}
+                <ArrowRight size={16} />
               </Link>
             </div>
             <div className="hero-reassurance">
               <span>
                 <Check size={13} />
-                Free & open source
+                {tx("Free & open source")}
               </span>
               <span>
                 <Check size={13} />
-                No sign-up required
+                {tx("No sign-up required")}
               </span>
             </div>
           </div>
@@ -162,16 +167,16 @@ export function Landing() {
                 <span className="preview-icon">
                   <Activity size={15} />
                 </span>
-                Capacity overview
+                {tx("Capacity overview")}
               </span>
               <span className="demo-label">
                 <span />
-                LIVE PREVIEW
+                {tx("LIVE PREVIEW")}
               </span>
             </div>
             <div className="preview-meta">
-              <span>Illustrative workload</span>
-              <span>US East · USD</span>
+              <span>{tx("Illustrative workload")}</span>
+              <span>{tx("US East \u00B7 USD")}</span>
             </div>
             <div className="preview-value">
               <div>
@@ -179,17 +184,17 @@ export function Landing() {
                   {demand}
                   <span> / {sku.cu} CU</span>
                 </strong>
-                <small>Estimated compute utilization</small>
+                <small>{tx("Estimated compute utilization")}</small>
               </div>
               <span className="health-pill">
                 <span className="status-dot" />
-                Healthy
+                {tx("Healthy")}
               </span>
             </div>
             <div
               className="capacity-chart"
               role="img"
-              aria-label={`Illustrative utilization chart: baseline demand ${demand} of ${sku.cu} capacity units. Synthetic demonstration data.`}
+              aria-label={tx("Illustrative utilization chart: baseline demand {{demand}} of {{capacity}} capacity units. Synthetic demonstration data.", { demand, capacity: sku.cu })}
             >
               <div className="chart-axis">
                 <span>{sku.cu} CU</span>
@@ -233,10 +238,13 @@ export function Landing() {
               </div>
             </div>
             <div className="preview-tier-row">
-              <span>Explore capacity</span>
-              <span>67% utilized</span>
+              <span>{tx("Explore capacity")}</span>
+              <span>{tx("67% utilized")}</span>
             </div>
-            <div className="sku-segments" aria-label="Preview capacity tier">
+            <div
+              className="sku-segments"
+              aria-label={tx("Preview capacity tier")}
+            >
               {previewSlugs.map((slug) => (
                 <button
                   type="button"
@@ -251,21 +259,21 @@ export function Landing() {
             </div>
             <div className="preview-costs">
               <div>
-                <span>Pay-as-you-go / mo</span>
+                <span>{tx("Pay-as-you-go / mo")}</span>
                 <strong>{money(sku.monthlyPayg)}</strong>
               </div>
               <div>
-                <span>Reserved / mo</span>
+                <span>{tx("Reserved / mo")}</span>
                 <strong>
                   {money(sku.monthlyReserved)}
-                  <small>~41% less</small>
+                  <small>{tx("~41% less")}</small>
                 </strong>
               </div>
             </div>
             <div className="preview-footnote">
               <ShieldCheck size={13} />
-              <span>Synthetic demo · planning estimates only</span>
-              <Link to="/wizard" aria-label="Model your own capacity">
+              <span>{tx("Synthetic demo \u00B7 planning estimates only")}</span>
+              <Link to="/wizard" aria-label={tx("Model your own capacity")}>
                 <ArrowUpRight size={15} />
               </Link>
             </div>
@@ -274,51 +282,58 @@ export function Landing() {
                 <TrendingDown size={18} />
               </span>
               <div>
-                <small>Potential annual savings</small>
+                <small>{tx("Potential annual savings")}</small>
                 <strong>
                   {money(savings)}
-                  <span>with reservation</span>
+                  <span>{tx("with reservation")}</span>
                 </strong>
               </div>
             </div>
           </div>
         </section>
-        <section className="platform-proof" aria-label="Platform at a glance">
+        <section
+          className="platform-proof"
+          aria-label={tx("Platform at a glance")}
+        >
           <div>
             <strong>
-              11<span>tiers</span>
+              11<span>{tx("tiers")}</span>
             </strong>
-            <p>F2 through F2048</p>
+            <p>{tx("F2 through F2048")}</p>
           </div>
           <div>
             <strong>
-              One<span>workspace</span>
+              {tx("One")}
+              <span>{tx("workspace")}</span>
             </strong>
-            <p>From workload to decision</p>
+            <p>{tx("From workload to decision")}</p>
           </div>
           <div>
             <strong>
               {ARTICLES.length}
-              <span>guides</span>
+              <span>{tx("guides")}</span>
             </strong>
-            <p>Engineering knowledge, shared</p>
+            <p>{tx("Engineering knowledge, shared")}</p>
           </div>
           <div>
             <strong>
-              100%<span>transparent</span>
+              100%<span>{tx("transparent")}</span>
             </strong>
-            <p>Explainable sizing models</p>
+            <p>{tx("Explainable sizing models")}</p>
           </div>
         </section>
         <section className="home-section" aria-labelledby="toolkit-title">
           <div className="section-heading">
             <div>
-              <div className="eyebrow">YOUR ENGINEERING TOOLKIT</div>
-              <h2 id="toolkit-title">Every decision, better informed.</h2>
-              <p>Purpose-built tools. One connected way of thinking.</p>
+              <div className="eyebrow">{tx("YOUR ENGINEERING TOOLKIT")}</div>
+              <h2 id="toolkit-title">
+                {tx("Every decision, better informed.")}
+              </h2>
+              <p>{tx("Purpose-built tools. One connected way of thinking.")}</p>
             </div>
             <Link className="text-link" to="/workspace">
-              View workspace <ArrowUpRight size={16} />
+              {tx("View workspace") + " "}
+              <ArrowUpRight size={16} />
             </Link>
           </div>
           <div className="tool-grid">
@@ -334,11 +349,13 @@ export function Landing() {
                   </span>
                   <span className="tool-number">{tool.number} /</span>
                 </div>
-                <span className="tool-category">{tool.category}</span>
-                <h3>{tool.title}</h3>
-                <p>{tool.description}</p>
+                <span className="tool-category">
+                  {tx(String(tool.category ?? ""))}
+                </span>
+                <h3>{tx(String(tool.title ?? ""))}</h3>
+                <p>{tx(String(tool.description ?? ""))}</p>
                 <span className="tool-card-link">
-                  {tool.link}
+                  {tx(String(tool.link ?? ""))}
                   <ArrowUpRight size={16} />
                 </span>
               </Link>
@@ -347,18 +364,20 @@ export function Landing() {
         </section>
         <section className="workflow-section">
           <div className="workflow-intro">
-            <div className="eyebrow">FROM COMPLEXITY TO CLARITY</div>
+            <div className="eyebrow">{tx("FROM COMPLEXITY TO CLARITY")}</div>
             <h2>
-              A clear path from
+              {tx("A clear path from")}
               <br />
-              “what if” to “what’s next.”
+              {tx("\u201Cwhat if\u201D to \u201Cwhat\u2019s next.\u201D")}
             </h2>
             <p>
-              Explore the possibilities before making the commitment. Build a
-              plan your whole team can understand.
+              {tx(
+                "Explore the possibilities before making the commitment. Build a plan your whole team can understand.",
+              )}
             </p>
             <Link to="/wizard" className="text-link">
-              Start your assessment <ArrowRight size={16} />
+              {tx("Start your assessment") + " "}
+              <ArrowRight size={16} />
             </Link>
           </div>
           <div className="workflow-steps">
@@ -387,9 +406,12 @@ export function Landing() {
                   <step.icon size={19} />
                 </span>
                 <div>
-                  <small>STEP 0{i + 1}</small>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
+                  <small>
+                    {tx("STEP 0")}
+                    {i + 1}
+                  </small>
+                  <h3>{tx(String(step.title ?? ""))}</h3>
+                  <p>{tx(step.text)}</p>
                 </div>
                 <ArrowUpRight size={16} />
               </Link>
@@ -400,15 +422,18 @@ export function Landing() {
           <div className="section-heading">
             <div>
               <div className="eyebrow">
-                A LITTLE KNOWLEDGE. A BETTER ARCHITECTURE.
+                {tx("A LITTLE KNOWLEDGE. A BETTER ARCHITECTURE.")}
               </div>
-              <h2 id="guides-title">Built for curious engineers.</h2>
+              <h2 id="guides-title">{tx("Built for curious engineers.")}</h2>
               <p>
-                Practical guidance to turn a good plan into a considered one.
+                {tx(
+                  "Practical guidance to turn a good plan into a considered one.",
+                )}
               </p>
             </div>
             <Link className="text-link" to="/docs">
-              Explore the library <ArrowUpRight size={16} />
+              {tx("Explore the library") + " "}
+              <ArrowUpRight size={16} />
             </Link>
           </div>
           <div className="guide-grid">
@@ -431,17 +456,20 @@ export function Landing() {
                     )}
                   </span>
                   <span className="guide-art-label">
-                    FABRIC FIELDNOTES <span>0{i + 1}</span>
+                    {tx("FABRIC FIELDNOTES") + " "}
+                    <span>0{i + 1}</span>
                   </span>
                 </div>
                 <div className="guide-card-body">
                   <span className="guide-category">
-                    ENGINEERING GUIDE <ArrowUpRight size={14} />
+                    {tx("ENGINEERING GUIDE") + " "}
+                    <ArrowUpRight size={14} />
                   </span>
-                  <h3>{guide.title}</h3>
-                  <p>{guide.description}</p>
+                  <h3>{tx(String(guide.title ?? ""))}</h3>
+                  <p>{tx(String(guide.description ?? ""))}</p>
                   <span className="guide-read">
-                    Read the guide <ArrowRight size={14} />
+                    {tx("Read the guide") + " "}
+                    <ArrowRight size={14} />
                   </span>
                 </div>
               </Link>
@@ -454,55 +482,62 @@ export function Landing() {
               <ShieldCheck size={25} strokeWidth={1.5} />
             </span>
             <div>
-              <div className="eyebrow">TRUST IS IN THE DETAILS</div>
-              <h2>Open by design. Clear by default.</h2>
+              <div className="eyebrow">{tx("TRUST IS IN THE DETAILS")}</div>
+              <h2>{tx("Open by design. Clear by default.")}</h2>
             </div>
           </div>
           <div className="principles-grid">
             <div>
               <Code2 size={20} />
-              <h3>No black boxes</h3>
+              <h3>{tx("No black boxes")}</h3>
               <p>
-                Deterministic calculations with visible assumptions and
-                documented methodology.
+                {tx(
+                  "Deterministic calculations with visible assumptions and documented methodology.",
+                )}
               </p>
             </div>
             <div>
               <BookOpen size={20} />
-              <h3>Grounded in the details</h3>
+              <h3>{tx("Grounded in the details")}</h3>
               <p>
-                Pricing provenance, capacity specifications, and engineering
-                context alongside your results.
+                {tx(
+                  "Pricing provenance, capacity specifications, and engineering context alongside your results.",
+                )}
               </p>
             </div>
             <div>
               <Github size={20} />
-              <h3>Built in the open</h3>
+              <h3>{tx("Built in the open")}</h3>
               <p>
-                Independent, MIT licensed, and community driven. Created by
-                Datta Sable for data teams.
+                {tx(
+                  "Independent, MIT licensed, and community driven. Created by Datta Sable for data teams.",
+                )}
               </p>
             </div>
           </div>
           <div className="principles-footer">
             <span>
-              Planning guidance you can inspect, question, and improve.
+              {tx("Planning guidance you can inspect, question, and improve.")}
             </span>
             <Link to="/about" className="text-link">
-              Our methodology <ArrowUpRight size={14} />
+              {tx("Our methodology") + " "}
+              <ArrowUpRight size={14} />
             </Link>
           </div>
         </section>
         <section className="faq-section">
           <div>
-            <div className="eyebrow">GOOD QUESTIONS. CLEAR ANSWERS.</div>
+            <div className="eyebrow">
+              {tx("GOOD QUESTIONS. CLEAR ANSWERS.")}
+            </div>
             <h2>
-              A few things
+              {tx("A few things")}
               <br />
-              worth knowing.
+              {tx("worth knowing.")}
             </h2>
             <Link to="/docs" className="text-link">
-              Visit the documentation <ArrowUpRight size={15} />
+              {tx("Visit the documentation") + " "}
+              <ArrowUpRight size={15} />
             </Link>
           </div>
           <div className="faq-list">
@@ -518,12 +553,12 @@ export function Landing() {
                     aria-controls={`faq-answer-${i}`}
                     onClick={() => setActiveFaq(activeFaq === i ? null : i)}
                   >
-                    {faq.q}
+                    {tx(String(faq.q ?? ""))}
                     <ChevronDown size={17} />
                   </button>
                 </h3>
                 <div id={`faq-answer-${i}`} hidden={activeFaq !== i}>
-                  <p>{faq.a}</p>
+                  <p>{tx(String(faq.a ?? ""))}</p>
                 </div>
               </div>
             ))}
@@ -533,20 +568,23 @@ export function Landing() {
           <div>
             <div className="eyebrow">
               <Sparkles size={13} />
-              YOUR NEXT GREAT ARCHITECTURE STARTS HERE
+              {tx("YOUR NEXT GREAT ARCHITECTURE STARTS HERE")}
             </div>
             <h2>
-              Build your next decision
+              {tx("Build your next decision")}
               <br />
-              on a clearer foundation.
+              {tx("on a clearer foundation.")}
             </h2>
-            <p>Your workloads. Your assumptions. A plan that makes sense.</p>
+            <p>
+              {tx("Your workloads. Your assumptions. A plan that makes sense.")}
+            </p>
           </div>
           <div>
             <Link to="/workspace" className="premium-button primary">
-              Let’s get to work <ArrowUpRight size={17} />
+              {tx("Let\u2019s get to work") + " "}
+              <ArrowUpRight size={17} />
             </Link>
-            <span>Free to explore. Yours to build on.</span>
+            <span>{tx("Free to explore. Yours to build on.")}</span>
           </div>
         </section>
       </div>

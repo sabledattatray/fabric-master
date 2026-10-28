@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/en",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -157,6 +169,38 @@
       "destination": "/docs/sku-selection-guide/index.html"
     },
     {
+      "source": "/es",
+      "destination": "/es/index.html"
+    },
+    {
+      "source": "/ja",
+      "destination": "/ja/index.html"
+    },
+    {
+      "source": "/pt",
+      "destination": "/pt/index.html"
+    },
+    {
+      "source": "/zh",
+      "destination": "/zh/index.html"
+    },
+    {
+      "source": "/ru",
+      "destination": "/ru/index.html"
+    },
+    {
+      "source": "/fr",
+      "destination": "/fr/index.html"
+    },
+    {
+      "source": "/ko",
+      "destination": "/ko/index.html"
+    },
+    {
+      "source": "/de",
+      "destination": "/de/index.html"
+    },
+    {
       "source": "/docs/what-is-microsoft-fabric-capacity",
       "destination": "/docs/what-is-microsoft-fabric-capacity/index.html"
     },
@@ -215,6 +259,1990 @@
     {
       "source": "/terms",
       "destination": "/terms/index.html"
+    },
+    {
+      "source": "/architecture/planner",
+      "destination": "/architecture/planner/index.html"
+    },
+    {
+      "source": "/architecture/onelake",
+      "destination": "/architecture/onelake/index.html"
+    },
+    {
+      "source": "/workspace",
+      "destination": "/workspace/index.html"
+    },
+    {
+      "source": "/ai-advisor",
+      "destination": "/ai-advisor/index.html"
+    },
+    {
+      "source": "/resources/open-source",
+      "destination": "/resources/open-source/index.html"
+    },
+    {
+      "source": "/report",
+      "destination": "/report/index.html"
+    },
+    {
+      "source": "/results",
+      "destination": "/results/index.html"
+    },
+    {
+      "source": "/labs",
+      "destination": "/labs/index.html"
+    },
+    {
+      "source": "/es/wizard",
+      "destination": "/es/wizard/index.html"
+    },
+    {
+      "source": "/es/cost-calculator",
+      "destination": "/es/cost-calculator/index.html"
+    },
+    {
+      "source": "/es/reserved-savings",
+      "destination": "/es/reserved-savings/index.html"
+    },
+    {
+      "source": "/es/spark-estimator",
+      "destination": "/es/spark-estimator/index.html"
+    },
+    {
+      "source": "/es/power-bi-capacity",
+      "destination": "/es/power-bi-capacity/index.html"
+    },
+    {
+      "source": "/es/pricing",
+      "destination": "/es/pricing/index.html"
+    },
+    {
+      "source": "/es/fsku-comparisons",
+      "destination": "/es/fsku-comparisons/index.html"
+    },
+    {
+      "source": "/es/observability",
+      "destination": "/es/observability/index.html"
+    },
+    {
+      "source": "/es/docs",
+      "destination": "/es/docs/index.html"
+    },
+    {
+      "source": "/es/about",
+      "destination": "/es/about/index.html"
+    },
+    {
+      "source": "/es/fsku/f2",
+      "destination": "/es/fsku/f2/index.html"
+    },
+    {
+      "source": "/es/fsku/f4",
+      "destination": "/es/fsku/f4/index.html"
+    },
+    {
+      "source": "/es/fsku/f8",
+      "destination": "/es/fsku/f8/index.html"
+    },
+    {
+      "source": "/es/fsku/f16",
+      "destination": "/es/fsku/f16/index.html"
+    },
+    {
+      "source": "/es/fsku/f32",
+      "destination": "/es/fsku/f32/index.html"
+    },
+    {
+      "source": "/es/fsku/f64",
+      "destination": "/es/fsku/f64/index.html"
+    },
+    {
+      "source": "/es/fsku/f128",
+      "destination": "/es/fsku/f128/index.html"
+    },
+    {
+      "source": "/es/fsku/f256",
+      "destination": "/es/fsku/f256/index.html"
+    },
+    {
+      "source": "/es/fsku/f512",
+      "destination": "/es/fsku/f512/index.html"
+    },
+    {
+      "source": "/es/fsku/f1024",
+      "destination": "/es/fsku/f1024/index.html"
+    },
+    {
+      "source": "/es/fsku/f2048",
+      "destination": "/es/fsku/f2048/index.html"
+    },
+    {
+      "source": "/es/compare/f32-vs-f64",
+      "destination": "/es/compare/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/es/compare/f64-vs-f128",
+      "destination": "/es/compare/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/es/compare/power-bi-premium-vs-fabric",
+      "destination": "/es/compare/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/es/compare/synapse-vs-fabric",
+      "destination": "/es/compare/synapse-vs-fabric/index.html"
+    },
+    {
+      "source": "/es/compare/warehouse-vs-lakehouse",
+      "destination": "/es/compare/warehouse-vs-lakehouse/index.html"
+    },
+    {
+      "source": "/es/docs/getting-started-fabric-master",
+      "destination": "/es/docs/getting-started-fabric-master/index.html"
+    },
+    {
+      "source": "/es/docs/understanding-fabric-capacities",
+      "destination": "/es/docs/understanding-fabric-capacities/index.html"
+    },
+    {
+      "source": "/es/docs/optimizing-spark-workloads",
+      "destination": "/es/docs/optimizing-spark-workloads/index.html"
+    },
+    {
+      "source": "/es/docs/power-bi-concurrency-limits",
+      "destination": "/es/docs/power-bi-concurrency-limits/index.html"
+    },
+    {
+      "source": "/es/docs/fabric-throttling-mechanisms",
+      "destination": "/es/docs/fabric-throttling-mechanisms/index.html"
+    },
+    {
+      "source": "/es/docs/data-factory-pipeline-costs",
+      "destination": "/es/docs/data-factory-pipeline-costs/index.html"
+    },
+    {
+      "source": "/es/docs/fabric-master-api",
+      "destination": "/es/docs/fabric-master-api/index.html"
+    },
+    {
+      "source": "/es/docs/security-and-governance",
+      "destination": "/es/docs/security-and-governance/index.html"
+    },
+    {
+      "source": "/es/docs/cost-efficiency-strategies",
+      "destination": "/es/docs/cost-efficiency-strategies/index.html"
+    },
+    {
+      "source": "/es/docs/migrating-to-fabric",
+      "destination": "/es/docs/migrating-to-fabric/index.html"
+    },
+    {
+      "source": "/es/docs/payg-vs-reserved",
+      "destination": "/es/docs/payg-vs-reserved/index.html"
+    },
+    {
+      "source": "/es/docs/sku-selection-guide",
+      "destination": "/es/docs/sku-selection-guide/index.html"
+    },
+    {
+      "source": "/es/docs/what-is-microsoft-fabric-capacity",
+      "destination": "/es/docs/what-is-microsoft-fabric-capacity/index.html"
+    },
+    {
+      "source": "/es/docs/what-is-a-capacity-unit",
+      "destination": "/es/docs/what-is-a-capacity-unit/index.html"
+    },
+    {
+      "source": "/es/docs/what-is-throttling",
+      "destination": "/es/docs/what-is-throttling/index.html"
+    },
+    {
+      "source": "/es/docs/how-reserved-capacity-works",
+      "destination": "/es/docs/how-reserved-capacity-works/index.html"
+    },
+    {
+      "source": "/es/docs/enterprise-sizing-guide",
+      "destination": "/es/docs/enterprise-sizing-guide/index.html"
+    },
+    {
+      "source": "/es/docs/common-mistakes",
+      "destination": "/es/docs/common-mistakes/index.html"
+    },
+    {
+      "source": "/es/docs/f2-vs-f4",
+      "destination": "/es/docs/f2-vs-f4/index.html"
+    },
+    {
+      "source": "/es/docs/f8-vs-f16",
+      "destination": "/es/docs/f8-vs-f16/index.html"
+    },
+    {
+      "source": "/es/docs/f32-vs-f64",
+      "destination": "/es/docs/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/es/docs/f64-vs-f128",
+      "destination": "/es/docs/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/es/docs/f128-vs-f256",
+      "destination": "/es/docs/f128-vs-f256/index.html"
+    },
+    {
+      "source": "/es/docs/power-bi-premium-vs-fabric",
+      "destination": "/es/docs/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/es/docs/f2-vs-f64",
+      "destination": "/es/docs/f2-vs-f64/index.html"
+    },
+    {
+      "source": "/es/privacy",
+      "destination": "/es/privacy/index.html"
+    },
+    {
+      "source": "/es/terms",
+      "destination": "/es/terms/index.html"
+    },
+    {
+      "source": "/es/architecture/planner",
+      "destination": "/es/architecture/planner/index.html"
+    },
+    {
+      "source": "/es/architecture/onelake",
+      "destination": "/es/architecture/onelake/index.html"
+    },
+    {
+      "source": "/es/workspace",
+      "destination": "/es/workspace/index.html"
+    },
+    {
+      "source": "/es/ai-advisor",
+      "destination": "/es/ai-advisor/index.html"
+    },
+    {
+      "source": "/es/resources/open-source",
+      "destination": "/es/resources/open-source/index.html"
+    },
+    {
+      "source": "/es/report",
+      "destination": "/es/report/index.html"
+    },
+    {
+      "source": "/es/results",
+      "destination": "/es/results/index.html"
+    },
+    {
+      "source": "/es/labs",
+      "destination": "/es/labs/index.html"
+    },
+    {
+      "source": "/ja/wizard",
+      "destination": "/ja/wizard/index.html"
+    },
+    {
+      "source": "/ja/cost-calculator",
+      "destination": "/ja/cost-calculator/index.html"
+    },
+    {
+      "source": "/ja/reserved-savings",
+      "destination": "/ja/reserved-savings/index.html"
+    },
+    {
+      "source": "/ja/spark-estimator",
+      "destination": "/ja/spark-estimator/index.html"
+    },
+    {
+      "source": "/ja/power-bi-capacity",
+      "destination": "/ja/power-bi-capacity/index.html"
+    },
+    {
+      "source": "/ja/pricing",
+      "destination": "/ja/pricing/index.html"
+    },
+    {
+      "source": "/ja/fsku-comparisons",
+      "destination": "/ja/fsku-comparisons/index.html"
+    },
+    {
+      "source": "/ja/observability",
+      "destination": "/ja/observability/index.html"
+    },
+    {
+      "source": "/ja/docs",
+      "destination": "/ja/docs/index.html"
+    },
+    {
+      "source": "/ja/about",
+      "destination": "/ja/about/index.html"
+    },
+    {
+      "source": "/ja/fsku/f2",
+      "destination": "/ja/fsku/f2/index.html"
+    },
+    {
+      "source": "/ja/fsku/f4",
+      "destination": "/ja/fsku/f4/index.html"
+    },
+    {
+      "source": "/ja/fsku/f8",
+      "destination": "/ja/fsku/f8/index.html"
+    },
+    {
+      "source": "/ja/fsku/f16",
+      "destination": "/ja/fsku/f16/index.html"
+    },
+    {
+      "source": "/ja/fsku/f32",
+      "destination": "/ja/fsku/f32/index.html"
+    },
+    {
+      "source": "/ja/fsku/f64",
+      "destination": "/ja/fsku/f64/index.html"
+    },
+    {
+      "source": "/ja/fsku/f128",
+      "destination": "/ja/fsku/f128/index.html"
+    },
+    {
+      "source": "/ja/fsku/f256",
+      "destination": "/ja/fsku/f256/index.html"
+    },
+    {
+      "source": "/ja/fsku/f512",
+      "destination": "/ja/fsku/f512/index.html"
+    },
+    {
+      "source": "/ja/fsku/f1024",
+      "destination": "/ja/fsku/f1024/index.html"
+    },
+    {
+      "source": "/ja/fsku/f2048",
+      "destination": "/ja/fsku/f2048/index.html"
+    },
+    {
+      "source": "/ja/compare/f32-vs-f64",
+      "destination": "/ja/compare/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/ja/compare/f64-vs-f128",
+      "destination": "/ja/compare/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/ja/compare/power-bi-premium-vs-fabric",
+      "destination": "/ja/compare/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/ja/compare/synapse-vs-fabric",
+      "destination": "/ja/compare/synapse-vs-fabric/index.html"
+    },
+    {
+      "source": "/ja/compare/warehouse-vs-lakehouse",
+      "destination": "/ja/compare/warehouse-vs-lakehouse/index.html"
+    },
+    {
+      "source": "/ja/docs/getting-started-fabric-master",
+      "destination": "/ja/docs/getting-started-fabric-master/index.html"
+    },
+    {
+      "source": "/ja/docs/understanding-fabric-capacities",
+      "destination": "/ja/docs/understanding-fabric-capacities/index.html"
+    },
+    {
+      "source": "/ja/docs/optimizing-spark-workloads",
+      "destination": "/ja/docs/optimizing-spark-workloads/index.html"
+    },
+    {
+      "source": "/ja/docs/power-bi-concurrency-limits",
+      "destination": "/ja/docs/power-bi-concurrency-limits/index.html"
+    },
+    {
+      "source": "/ja/docs/fabric-throttling-mechanisms",
+      "destination": "/ja/docs/fabric-throttling-mechanisms/index.html"
+    },
+    {
+      "source": "/ja/docs/data-factory-pipeline-costs",
+      "destination": "/ja/docs/data-factory-pipeline-costs/index.html"
+    },
+    {
+      "source": "/ja/docs/fabric-master-api",
+      "destination": "/ja/docs/fabric-master-api/index.html"
+    },
+    {
+      "source": "/ja/docs/security-and-governance",
+      "destination": "/ja/docs/security-and-governance/index.html"
+    },
+    {
+      "source": "/ja/docs/cost-efficiency-strategies",
+      "destination": "/ja/docs/cost-efficiency-strategies/index.html"
+    },
+    {
+      "source": "/ja/docs/migrating-to-fabric",
+      "destination": "/ja/docs/migrating-to-fabric/index.html"
+    },
+    {
+      "source": "/ja/docs/payg-vs-reserved",
+      "destination": "/ja/docs/payg-vs-reserved/index.html"
+    },
+    {
+      "source": "/ja/docs/sku-selection-guide",
+      "destination": "/ja/docs/sku-selection-guide/index.html"
+    },
+    {
+      "source": "/ja/docs/what-is-microsoft-fabric-capacity",
+      "destination": "/ja/docs/what-is-microsoft-fabric-capacity/index.html"
+    },
+    {
+      "source": "/ja/docs/what-is-a-capacity-unit",
+      "destination": "/ja/docs/what-is-a-capacity-unit/index.html"
+    },
+    {
+      "source": "/ja/docs/what-is-throttling",
+      "destination": "/ja/docs/what-is-throttling/index.html"
+    },
+    {
+      "source": "/ja/docs/how-reserved-capacity-works",
+      "destination": "/ja/docs/how-reserved-capacity-works/index.html"
+    },
+    {
+      "source": "/ja/docs/enterprise-sizing-guide",
+      "destination": "/ja/docs/enterprise-sizing-guide/index.html"
+    },
+    {
+      "source": "/ja/docs/common-mistakes",
+      "destination": "/ja/docs/common-mistakes/index.html"
+    },
+    {
+      "source": "/ja/docs/f2-vs-f4",
+      "destination": "/ja/docs/f2-vs-f4/index.html"
+    },
+    {
+      "source": "/ja/docs/f8-vs-f16",
+      "destination": "/ja/docs/f8-vs-f16/index.html"
+    },
+    {
+      "source": "/ja/docs/f32-vs-f64",
+      "destination": "/ja/docs/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/ja/docs/f64-vs-f128",
+      "destination": "/ja/docs/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/ja/docs/f128-vs-f256",
+      "destination": "/ja/docs/f128-vs-f256/index.html"
+    },
+    {
+      "source": "/ja/docs/power-bi-premium-vs-fabric",
+      "destination": "/ja/docs/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/ja/docs/f2-vs-f64",
+      "destination": "/ja/docs/f2-vs-f64/index.html"
+    },
+    {
+      "source": "/ja/privacy",
+      "destination": "/ja/privacy/index.html"
+    },
+    {
+      "source": "/ja/terms",
+      "destination": "/ja/terms/index.html"
+    },
+    {
+      "source": "/ja/architecture/planner",
+      "destination": "/ja/architecture/planner/index.html"
+    },
+    {
+      "source": "/ja/architecture/onelake",
+      "destination": "/ja/architecture/onelake/index.html"
+    },
+    {
+      "source": "/ja/workspace",
+      "destination": "/ja/workspace/index.html"
+    },
+    {
+      "source": "/ja/ai-advisor",
+      "destination": "/ja/ai-advisor/index.html"
+    },
+    {
+      "source": "/ja/resources/open-source",
+      "destination": "/ja/resources/open-source/index.html"
+    },
+    {
+      "source": "/ja/report",
+      "destination": "/ja/report/index.html"
+    },
+    {
+      "source": "/ja/results",
+      "destination": "/ja/results/index.html"
+    },
+    {
+      "source": "/ja/labs",
+      "destination": "/ja/labs/index.html"
+    },
+    {
+      "source": "/pt/wizard",
+      "destination": "/pt/wizard/index.html"
+    },
+    {
+      "source": "/pt/cost-calculator",
+      "destination": "/pt/cost-calculator/index.html"
+    },
+    {
+      "source": "/pt/reserved-savings",
+      "destination": "/pt/reserved-savings/index.html"
+    },
+    {
+      "source": "/pt/spark-estimator",
+      "destination": "/pt/spark-estimator/index.html"
+    },
+    {
+      "source": "/pt/power-bi-capacity",
+      "destination": "/pt/power-bi-capacity/index.html"
+    },
+    {
+      "source": "/pt/pricing",
+      "destination": "/pt/pricing/index.html"
+    },
+    {
+      "source": "/pt/fsku-comparisons",
+      "destination": "/pt/fsku-comparisons/index.html"
+    },
+    {
+      "source": "/pt/observability",
+      "destination": "/pt/observability/index.html"
+    },
+    {
+      "source": "/pt/docs",
+      "destination": "/pt/docs/index.html"
+    },
+    {
+      "source": "/pt/about",
+      "destination": "/pt/about/index.html"
+    },
+    {
+      "source": "/pt/fsku/f2",
+      "destination": "/pt/fsku/f2/index.html"
+    },
+    {
+      "source": "/pt/fsku/f4",
+      "destination": "/pt/fsku/f4/index.html"
+    },
+    {
+      "source": "/pt/fsku/f8",
+      "destination": "/pt/fsku/f8/index.html"
+    },
+    {
+      "source": "/pt/fsku/f16",
+      "destination": "/pt/fsku/f16/index.html"
+    },
+    {
+      "source": "/pt/fsku/f32",
+      "destination": "/pt/fsku/f32/index.html"
+    },
+    {
+      "source": "/pt/fsku/f64",
+      "destination": "/pt/fsku/f64/index.html"
+    },
+    {
+      "source": "/pt/fsku/f128",
+      "destination": "/pt/fsku/f128/index.html"
+    },
+    {
+      "source": "/pt/fsku/f256",
+      "destination": "/pt/fsku/f256/index.html"
+    },
+    {
+      "source": "/pt/fsku/f512",
+      "destination": "/pt/fsku/f512/index.html"
+    },
+    {
+      "source": "/pt/fsku/f1024",
+      "destination": "/pt/fsku/f1024/index.html"
+    },
+    {
+      "source": "/pt/fsku/f2048",
+      "destination": "/pt/fsku/f2048/index.html"
+    },
+    {
+      "source": "/pt/compare/f32-vs-f64",
+      "destination": "/pt/compare/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/pt/compare/f64-vs-f128",
+      "destination": "/pt/compare/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/pt/compare/power-bi-premium-vs-fabric",
+      "destination": "/pt/compare/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/pt/compare/synapse-vs-fabric",
+      "destination": "/pt/compare/synapse-vs-fabric/index.html"
+    },
+    {
+      "source": "/pt/compare/warehouse-vs-lakehouse",
+      "destination": "/pt/compare/warehouse-vs-lakehouse/index.html"
+    },
+    {
+      "source": "/pt/docs/getting-started-fabric-master",
+      "destination": "/pt/docs/getting-started-fabric-master/index.html"
+    },
+    {
+      "source": "/pt/docs/understanding-fabric-capacities",
+      "destination": "/pt/docs/understanding-fabric-capacities/index.html"
+    },
+    {
+      "source": "/pt/docs/optimizing-spark-workloads",
+      "destination": "/pt/docs/optimizing-spark-workloads/index.html"
+    },
+    {
+      "source": "/pt/docs/power-bi-concurrency-limits",
+      "destination": "/pt/docs/power-bi-concurrency-limits/index.html"
+    },
+    {
+      "source": "/pt/docs/fabric-throttling-mechanisms",
+      "destination": "/pt/docs/fabric-throttling-mechanisms/index.html"
+    },
+    {
+      "source": "/pt/docs/data-factory-pipeline-costs",
+      "destination": "/pt/docs/data-factory-pipeline-costs/index.html"
+    },
+    {
+      "source": "/pt/docs/fabric-master-api",
+      "destination": "/pt/docs/fabric-master-api/index.html"
+    },
+    {
+      "source": "/pt/docs/security-and-governance",
+      "destination": "/pt/docs/security-and-governance/index.html"
+    },
+    {
+      "source": "/pt/docs/cost-efficiency-strategies",
+      "destination": "/pt/docs/cost-efficiency-strategies/index.html"
+    },
+    {
+      "source": "/pt/docs/migrating-to-fabric",
+      "destination": "/pt/docs/migrating-to-fabric/index.html"
+    },
+    {
+      "source": "/pt/docs/payg-vs-reserved",
+      "destination": "/pt/docs/payg-vs-reserved/index.html"
+    },
+    {
+      "source": "/pt/docs/sku-selection-guide",
+      "destination": "/pt/docs/sku-selection-guide/index.html"
+    },
+    {
+      "source": "/pt/docs/what-is-microsoft-fabric-capacity",
+      "destination": "/pt/docs/what-is-microsoft-fabric-capacity/index.html"
+    },
+    {
+      "source": "/pt/docs/what-is-a-capacity-unit",
+      "destination": "/pt/docs/what-is-a-capacity-unit/index.html"
+    },
+    {
+      "source": "/pt/docs/what-is-throttling",
+      "destination": "/pt/docs/what-is-throttling/index.html"
+    },
+    {
+      "source": "/pt/docs/how-reserved-capacity-works",
+      "destination": "/pt/docs/how-reserved-capacity-works/index.html"
+    },
+    {
+      "source": "/pt/docs/enterprise-sizing-guide",
+      "destination": "/pt/docs/enterprise-sizing-guide/index.html"
+    },
+    {
+      "source": "/pt/docs/common-mistakes",
+      "destination": "/pt/docs/common-mistakes/index.html"
+    },
+    {
+      "source": "/pt/docs/f2-vs-f4",
+      "destination": "/pt/docs/f2-vs-f4/index.html"
+    },
+    {
+      "source": "/pt/docs/f8-vs-f16",
+      "destination": "/pt/docs/f8-vs-f16/index.html"
+    },
+    {
+      "source": "/pt/docs/f32-vs-f64",
+      "destination": "/pt/docs/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/pt/docs/f64-vs-f128",
+      "destination": "/pt/docs/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/pt/docs/f128-vs-f256",
+      "destination": "/pt/docs/f128-vs-f256/index.html"
+    },
+    {
+      "source": "/pt/docs/power-bi-premium-vs-fabric",
+      "destination": "/pt/docs/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/pt/docs/f2-vs-f64",
+      "destination": "/pt/docs/f2-vs-f64/index.html"
+    },
+    {
+      "source": "/pt/privacy",
+      "destination": "/pt/privacy/index.html"
+    },
+    {
+      "source": "/pt/terms",
+      "destination": "/pt/terms/index.html"
+    },
+    {
+      "source": "/pt/architecture/planner",
+      "destination": "/pt/architecture/planner/index.html"
+    },
+    {
+      "source": "/pt/architecture/onelake",
+      "destination": "/pt/architecture/onelake/index.html"
+    },
+    {
+      "source": "/pt/workspace",
+      "destination": "/pt/workspace/index.html"
+    },
+    {
+      "source": "/pt/ai-advisor",
+      "destination": "/pt/ai-advisor/index.html"
+    },
+    {
+      "source": "/pt/resources/open-source",
+      "destination": "/pt/resources/open-source/index.html"
+    },
+    {
+      "source": "/pt/report",
+      "destination": "/pt/report/index.html"
+    },
+    {
+      "source": "/pt/results",
+      "destination": "/pt/results/index.html"
+    },
+    {
+      "source": "/pt/labs",
+      "destination": "/pt/labs/index.html"
+    },
+    {
+      "source": "/zh/wizard",
+      "destination": "/zh/wizard/index.html"
+    },
+    {
+      "source": "/zh/cost-calculator",
+      "destination": "/zh/cost-calculator/index.html"
+    },
+    {
+      "source": "/zh/reserved-savings",
+      "destination": "/zh/reserved-savings/index.html"
+    },
+    {
+      "source": "/zh/spark-estimator",
+      "destination": "/zh/spark-estimator/index.html"
+    },
+    {
+      "source": "/zh/power-bi-capacity",
+      "destination": "/zh/power-bi-capacity/index.html"
+    },
+    {
+      "source": "/zh/pricing",
+      "destination": "/zh/pricing/index.html"
+    },
+    {
+      "source": "/zh/fsku-comparisons",
+      "destination": "/zh/fsku-comparisons/index.html"
+    },
+    {
+      "source": "/zh/observability",
+      "destination": "/zh/observability/index.html"
+    },
+    {
+      "source": "/zh/docs",
+      "destination": "/zh/docs/index.html"
+    },
+    {
+      "source": "/zh/about",
+      "destination": "/zh/about/index.html"
+    },
+    {
+      "source": "/zh/fsku/f2",
+      "destination": "/zh/fsku/f2/index.html"
+    },
+    {
+      "source": "/zh/fsku/f4",
+      "destination": "/zh/fsku/f4/index.html"
+    },
+    {
+      "source": "/zh/fsku/f8",
+      "destination": "/zh/fsku/f8/index.html"
+    },
+    {
+      "source": "/zh/fsku/f16",
+      "destination": "/zh/fsku/f16/index.html"
+    },
+    {
+      "source": "/zh/fsku/f32",
+      "destination": "/zh/fsku/f32/index.html"
+    },
+    {
+      "source": "/zh/fsku/f64",
+      "destination": "/zh/fsku/f64/index.html"
+    },
+    {
+      "source": "/zh/fsku/f128",
+      "destination": "/zh/fsku/f128/index.html"
+    },
+    {
+      "source": "/zh/fsku/f256",
+      "destination": "/zh/fsku/f256/index.html"
+    },
+    {
+      "source": "/zh/fsku/f512",
+      "destination": "/zh/fsku/f512/index.html"
+    },
+    {
+      "source": "/zh/fsku/f1024",
+      "destination": "/zh/fsku/f1024/index.html"
+    },
+    {
+      "source": "/zh/fsku/f2048",
+      "destination": "/zh/fsku/f2048/index.html"
+    },
+    {
+      "source": "/zh/compare/f32-vs-f64",
+      "destination": "/zh/compare/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/zh/compare/f64-vs-f128",
+      "destination": "/zh/compare/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/zh/compare/power-bi-premium-vs-fabric",
+      "destination": "/zh/compare/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/zh/compare/synapse-vs-fabric",
+      "destination": "/zh/compare/synapse-vs-fabric/index.html"
+    },
+    {
+      "source": "/zh/compare/warehouse-vs-lakehouse",
+      "destination": "/zh/compare/warehouse-vs-lakehouse/index.html"
+    },
+    {
+      "source": "/zh/docs/getting-started-fabric-master",
+      "destination": "/zh/docs/getting-started-fabric-master/index.html"
+    },
+    {
+      "source": "/zh/docs/understanding-fabric-capacities",
+      "destination": "/zh/docs/understanding-fabric-capacities/index.html"
+    },
+    {
+      "source": "/zh/docs/optimizing-spark-workloads",
+      "destination": "/zh/docs/optimizing-spark-workloads/index.html"
+    },
+    {
+      "source": "/zh/docs/power-bi-concurrency-limits",
+      "destination": "/zh/docs/power-bi-concurrency-limits/index.html"
+    },
+    {
+      "source": "/zh/docs/fabric-throttling-mechanisms",
+      "destination": "/zh/docs/fabric-throttling-mechanisms/index.html"
+    },
+    {
+      "source": "/zh/docs/data-factory-pipeline-costs",
+      "destination": "/zh/docs/data-factory-pipeline-costs/index.html"
+    },
+    {
+      "source": "/zh/docs/fabric-master-api",
+      "destination": "/zh/docs/fabric-master-api/index.html"
+    },
+    {
+      "source": "/zh/docs/security-and-governance",
+      "destination": "/zh/docs/security-and-governance/index.html"
+    },
+    {
+      "source": "/zh/docs/cost-efficiency-strategies",
+      "destination": "/zh/docs/cost-efficiency-strategies/index.html"
+    },
+    {
+      "source": "/zh/docs/migrating-to-fabric",
+      "destination": "/zh/docs/migrating-to-fabric/index.html"
+    },
+    {
+      "source": "/zh/docs/payg-vs-reserved",
+      "destination": "/zh/docs/payg-vs-reserved/index.html"
+    },
+    {
+      "source": "/zh/docs/sku-selection-guide",
+      "destination": "/zh/docs/sku-selection-guide/index.html"
+    },
+    {
+      "source": "/zh/docs/what-is-microsoft-fabric-capacity",
+      "destination": "/zh/docs/what-is-microsoft-fabric-capacity/index.html"
+    },
+    {
+      "source": "/zh/docs/what-is-a-capacity-unit",
+      "destination": "/zh/docs/what-is-a-capacity-unit/index.html"
+    },
+    {
+      "source": "/zh/docs/what-is-throttling",
+      "destination": "/zh/docs/what-is-throttling/index.html"
+    },
+    {
+      "source": "/zh/docs/how-reserved-capacity-works",
+      "destination": "/zh/docs/how-reserved-capacity-works/index.html"
+    },
+    {
+      "source": "/zh/docs/enterprise-sizing-guide",
+      "destination": "/zh/docs/enterprise-sizing-guide/index.html"
+    },
+    {
+      "source": "/zh/docs/common-mistakes",
+      "destination": "/zh/docs/common-mistakes/index.html"
+    },
+    {
+      "source": "/zh/docs/f2-vs-f4",
+      "destination": "/zh/docs/f2-vs-f4/index.html"
+    },
+    {
+      "source": "/zh/docs/f8-vs-f16",
+      "destination": "/zh/docs/f8-vs-f16/index.html"
+    },
+    {
+      "source": "/zh/docs/f32-vs-f64",
+      "destination": "/zh/docs/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/zh/docs/f64-vs-f128",
+      "destination": "/zh/docs/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/zh/docs/f128-vs-f256",
+      "destination": "/zh/docs/f128-vs-f256/index.html"
+    },
+    {
+      "source": "/zh/docs/power-bi-premium-vs-fabric",
+      "destination": "/zh/docs/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/zh/docs/f2-vs-f64",
+      "destination": "/zh/docs/f2-vs-f64/index.html"
+    },
+    {
+      "source": "/zh/privacy",
+      "destination": "/zh/privacy/index.html"
+    },
+    {
+      "source": "/zh/terms",
+      "destination": "/zh/terms/index.html"
+    },
+    {
+      "source": "/zh/architecture/planner",
+      "destination": "/zh/architecture/planner/index.html"
+    },
+    {
+      "source": "/zh/architecture/onelake",
+      "destination": "/zh/architecture/onelake/index.html"
+    },
+    {
+      "source": "/zh/workspace",
+      "destination": "/zh/workspace/index.html"
+    },
+    {
+      "source": "/zh/ai-advisor",
+      "destination": "/zh/ai-advisor/index.html"
+    },
+    {
+      "source": "/zh/resources/open-source",
+      "destination": "/zh/resources/open-source/index.html"
+    },
+    {
+      "source": "/zh/report",
+      "destination": "/zh/report/index.html"
+    },
+    {
+      "source": "/zh/results",
+      "destination": "/zh/results/index.html"
+    },
+    {
+      "source": "/zh/labs",
+      "destination": "/zh/labs/index.html"
+    },
+    {
+      "source": "/ru/wizard",
+      "destination": "/ru/wizard/index.html"
+    },
+    {
+      "source": "/ru/cost-calculator",
+      "destination": "/ru/cost-calculator/index.html"
+    },
+    {
+      "source": "/ru/reserved-savings",
+      "destination": "/ru/reserved-savings/index.html"
+    },
+    {
+      "source": "/ru/spark-estimator",
+      "destination": "/ru/spark-estimator/index.html"
+    },
+    {
+      "source": "/ru/power-bi-capacity",
+      "destination": "/ru/power-bi-capacity/index.html"
+    },
+    {
+      "source": "/ru/pricing",
+      "destination": "/ru/pricing/index.html"
+    },
+    {
+      "source": "/ru/fsku-comparisons",
+      "destination": "/ru/fsku-comparisons/index.html"
+    },
+    {
+      "source": "/ru/observability",
+      "destination": "/ru/observability/index.html"
+    },
+    {
+      "source": "/ru/docs",
+      "destination": "/ru/docs/index.html"
+    },
+    {
+      "source": "/ru/about",
+      "destination": "/ru/about/index.html"
+    },
+    {
+      "source": "/ru/fsku/f2",
+      "destination": "/ru/fsku/f2/index.html"
+    },
+    {
+      "source": "/ru/fsku/f4",
+      "destination": "/ru/fsku/f4/index.html"
+    },
+    {
+      "source": "/ru/fsku/f8",
+      "destination": "/ru/fsku/f8/index.html"
+    },
+    {
+      "source": "/ru/fsku/f16",
+      "destination": "/ru/fsku/f16/index.html"
+    },
+    {
+      "source": "/ru/fsku/f32",
+      "destination": "/ru/fsku/f32/index.html"
+    },
+    {
+      "source": "/ru/fsku/f64",
+      "destination": "/ru/fsku/f64/index.html"
+    },
+    {
+      "source": "/ru/fsku/f128",
+      "destination": "/ru/fsku/f128/index.html"
+    },
+    {
+      "source": "/ru/fsku/f256",
+      "destination": "/ru/fsku/f256/index.html"
+    },
+    {
+      "source": "/ru/fsku/f512",
+      "destination": "/ru/fsku/f512/index.html"
+    },
+    {
+      "source": "/ru/fsku/f1024",
+      "destination": "/ru/fsku/f1024/index.html"
+    },
+    {
+      "source": "/ru/fsku/f2048",
+      "destination": "/ru/fsku/f2048/index.html"
+    },
+    {
+      "source": "/ru/compare/f32-vs-f64",
+      "destination": "/ru/compare/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/ru/compare/f64-vs-f128",
+      "destination": "/ru/compare/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/ru/compare/power-bi-premium-vs-fabric",
+      "destination": "/ru/compare/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/ru/compare/synapse-vs-fabric",
+      "destination": "/ru/compare/synapse-vs-fabric/index.html"
+    },
+    {
+      "source": "/ru/compare/warehouse-vs-lakehouse",
+      "destination": "/ru/compare/warehouse-vs-lakehouse/index.html"
+    },
+    {
+      "source": "/ru/docs/getting-started-fabric-master",
+      "destination": "/ru/docs/getting-started-fabric-master/index.html"
+    },
+    {
+      "source": "/ru/docs/understanding-fabric-capacities",
+      "destination": "/ru/docs/understanding-fabric-capacities/index.html"
+    },
+    {
+      "source": "/ru/docs/optimizing-spark-workloads",
+      "destination": "/ru/docs/optimizing-spark-workloads/index.html"
+    },
+    {
+      "source": "/ru/docs/power-bi-concurrency-limits",
+      "destination": "/ru/docs/power-bi-concurrency-limits/index.html"
+    },
+    {
+      "source": "/ru/docs/fabric-throttling-mechanisms",
+      "destination": "/ru/docs/fabric-throttling-mechanisms/index.html"
+    },
+    {
+      "source": "/ru/docs/data-factory-pipeline-costs",
+      "destination": "/ru/docs/data-factory-pipeline-costs/index.html"
+    },
+    {
+      "source": "/ru/docs/fabric-master-api",
+      "destination": "/ru/docs/fabric-master-api/index.html"
+    },
+    {
+      "source": "/ru/docs/security-and-governance",
+      "destination": "/ru/docs/security-and-governance/index.html"
+    },
+    {
+      "source": "/ru/docs/cost-efficiency-strategies",
+      "destination": "/ru/docs/cost-efficiency-strategies/index.html"
+    },
+    {
+      "source": "/ru/docs/migrating-to-fabric",
+      "destination": "/ru/docs/migrating-to-fabric/index.html"
+    },
+    {
+      "source": "/ru/docs/payg-vs-reserved",
+      "destination": "/ru/docs/payg-vs-reserved/index.html"
+    },
+    {
+      "source": "/ru/docs/sku-selection-guide",
+      "destination": "/ru/docs/sku-selection-guide/index.html"
+    },
+    {
+      "source": "/ru/docs/what-is-microsoft-fabric-capacity",
+      "destination": "/ru/docs/what-is-microsoft-fabric-capacity/index.html"
+    },
+    {
+      "source": "/ru/docs/what-is-a-capacity-unit",
+      "destination": "/ru/docs/what-is-a-capacity-unit/index.html"
+    },
+    {
+      "source": "/ru/docs/what-is-throttling",
+      "destination": "/ru/docs/what-is-throttling/index.html"
+    },
+    {
+      "source": "/ru/docs/how-reserved-capacity-works",
+      "destination": "/ru/docs/how-reserved-capacity-works/index.html"
+    },
+    {
+      "source": "/ru/docs/enterprise-sizing-guide",
+      "destination": "/ru/docs/enterprise-sizing-guide/index.html"
+    },
+    {
+      "source": "/ru/docs/common-mistakes",
+      "destination": "/ru/docs/common-mistakes/index.html"
+    },
+    {
+      "source": "/ru/docs/f2-vs-f4",
+      "destination": "/ru/docs/f2-vs-f4/index.html"
+    },
+    {
+      "source": "/ru/docs/f8-vs-f16",
+      "destination": "/ru/docs/f8-vs-f16/index.html"
+    },
+    {
+      "source": "/ru/docs/f32-vs-f64",
+      "destination": "/ru/docs/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/ru/docs/f64-vs-f128",
+      "destination": "/ru/docs/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/ru/docs/f128-vs-f256",
+      "destination": "/ru/docs/f128-vs-f256/index.html"
+    },
+    {
+      "source": "/ru/docs/power-bi-premium-vs-fabric",
+      "destination": "/ru/docs/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/ru/docs/f2-vs-f64",
+      "destination": "/ru/docs/f2-vs-f64/index.html"
+    },
+    {
+      "source": "/ru/privacy",
+      "destination": "/ru/privacy/index.html"
+    },
+    {
+      "source": "/ru/terms",
+      "destination": "/ru/terms/index.html"
+    },
+    {
+      "source": "/ru/architecture/planner",
+      "destination": "/ru/architecture/planner/index.html"
+    },
+    {
+      "source": "/ru/architecture/onelake",
+      "destination": "/ru/architecture/onelake/index.html"
+    },
+    {
+      "source": "/ru/workspace",
+      "destination": "/ru/workspace/index.html"
+    },
+    {
+      "source": "/ru/ai-advisor",
+      "destination": "/ru/ai-advisor/index.html"
+    },
+    {
+      "source": "/ru/resources/open-source",
+      "destination": "/ru/resources/open-source/index.html"
+    },
+    {
+      "source": "/ru/report",
+      "destination": "/ru/report/index.html"
+    },
+    {
+      "source": "/ru/results",
+      "destination": "/ru/results/index.html"
+    },
+    {
+      "source": "/ru/labs",
+      "destination": "/ru/labs/index.html"
+    },
+    {
+      "source": "/fr/wizard",
+      "destination": "/fr/wizard/index.html"
+    },
+    {
+      "source": "/fr/cost-calculator",
+      "destination": "/fr/cost-calculator/index.html"
+    },
+    {
+      "source": "/fr/reserved-savings",
+      "destination": "/fr/reserved-savings/index.html"
+    },
+    {
+      "source": "/fr/spark-estimator",
+      "destination": "/fr/spark-estimator/index.html"
+    },
+    {
+      "source": "/fr/power-bi-capacity",
+      "destination": "/fr/power-bi-capacity/index.html"
+    },
+    {
+      "source": "/fr/pricing",
+      "destination": "/fr/pricing/index.html"
+    },
+    {
+      "source": "/fr/fsku-comparisons",
+      "destination": "/fr/fsku-comparisons/index.html"
+    },
+    {
+      "source": "/fr/observability",
+      "destination": "/fr/observability/index.html"
+    },
+    {
+      "source": "/fr/docs",
+      "destination": "/fr/docs/index.html"
+    },
+    {
+      "source": "/fr/about",
+      "destination": "/fr/about/index.html"
+    },
+    {
+      "source": "/fr/fsku/f2",
+      "destination": "/fr/fsku/f2/index.html"
+    },
+    {
+      "source": "/fr/fsku/f4",
+      "destination": "/fr/fsku/f4/index.html"
+    },
+    {
+      "source": "/fr/fsku/f8",
+      "destination": "/fr/fsku/f8/index.html"
+    },
+    {
+      "source": "/fr/fsku/f16",
+      "destination": "/fr/fsku/f16/index.html"
+    },
+    {
+      "source": "/fr/fsku/f32",
+      "destination": "/fr/fsku/f32/index.html"
+    },
+    {
+      "source": "/fr/fsku/f64",
+      "destination": "/fr/fsku/f64/index.html"
+    },
+    {
+      "source": "/fr/fsku/f128",
+      "destination": "/fr/fsku/f128/index.html"
+    },
+    {
+      "source": "/fr/fsku/f256",
+      "destination": "/fr/fsku/f256/index.html"
+    },
+    {
+      "source": "/fr/fsku/f512",
+      "destination": "/fr/fsku/f512/index.html"
+    },
+    {
+      "source": "/fr/fsku/f1024",
+      "destination": "/fr/fsku/f1024/index.html"
+    },
+    {
+      "source": "/fr/fsku/f2048",
+      "destination": "/fr/fsku/f2048/index.html"
+    },
+    {
+      "source": "/fr/compare/f32-vs-f64",
+      "destination": "/fr/compare/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/fr/compare/f64-vs-f128",
+      "destination": "/fr/compare/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/fr/compare/power-bi-premium-vs-fabric",
+      "destination": "/fr/compare/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/fr/compare/synapse-vs-fabric",
+      "destination": "/fr/compare/synapse-vs-fabric/index.html"
+    },
+    {
+      "source": "/fr/compare/warehouse-vs-lakehouse",
+      "destination": "/fr/compare/warehouse-vs-lakehouse/index.html"
+    },
+    {
+      "source": "/fr/docs/getting-started-fabric-master",
+      "destination": "/fr/docs/getting-started-fabric-master/index.html"
+    },
+    {
+      "source": "/fr/docs/understanding-fabric-capacities",
+      "destination": "/fr/docs/understanding-fabric-capacities/index.html"
+    },
+    {
+      "source": "/fr/docs/optimizing-spark-workloads",
+      "destination": "/fr/docs/optimizing-spark-workloads/index.html"
+    },
+    {
+      "source": "/fr/docs/power-bi-concurrency-limits",
+      "destination": "/fr/docs/power-bi-concurrency-limits/index.html"
+    },
+    {
+      "source": "/fr/docs/fabric-throttling-mechanisms",
+      "destination": "/fr/docs/fabric-throttling-mechanisms/index.html"
+    },
+    {
+      "source": "/fr/docs/data-factory-pipeline-costs",
+      "destination": "/fr/docs/data-factory-pipeline-costs/index.html"
+    },
+    {
+      "source": "/fr/docs/fabric-master-api",
+      "destination": "/fr/docs/fabric-master-api/index.html"
+    },
+    {
+      "source": "/fr/docs/security-and-governance",
+      "destination": "/fr/docs/security-and-governance/index.html"
+    },
+    {
+      "source": "/fr/docs/cost-efficiency-strategies",
+      "destination": "/fr/docs/cost-efficiency-strategies/index.html"
+    },
+    {
+      "source": "/fr/docs/migrating-to-fabric",
+      "destination": "/fr/docs/migrating-to-fabric/index.html"
+    },
+    {
+      "source": "/fr/docs/payg-vs-reserved",
+      "destination": "/fr/docs/payg-vs-reserved/index.html"
+    },
+    {
+      "source": "/fr/docs/sku-selection-guide",
+      "destination": "/fr/docs/sku-selection-guide/index.html"
+    },
+    {
+      "source": "/fr/docs/what-is-microsoft-fabric-capacity",
+      "destination": "/fr/docs/what-is-microsoft-fabric-capacity/index.html"
+    },
+    {
+      "source": "/fr/docs/what-is-a-capacity-unit",
+      "destination": "/fr/docs/what-is-a-capacity-unit/index.html"
+    },
+    {
+      "source": "/fr/docs/what-is-throttling",
+      "destination": "/fr/docs/what-is-throttling/index.html"
+    },
+    {
+      "source": "/fr/docs/how-reserved-capacity-works",
+      "destination": "/fr/docs/how-reserved-capacity-works/index.html"
+    },
+    {
+      "source": "/fr/docs/enterprise-sizing-guide",
+      "destination": "/fr/docs/enterprise-sizing-guide/index.html"
+    },
+    {
+      "source": "/fr/docs/common-mistakes",
+      "destination": "/fr/docs/common-mistakes/index.html"
+    },
+    {
+      "source": "/fr/docs/f2-vs-f4",
+      "destination": "/fr/docs/f2-vs-f4/index.html"
+    },
+    {
+      "source": "/fr/docs/f8-vs-f16",
+      "destination": "/fr/docs/f8-vs-f16/index.html"
+    },
+    {
+      "source": "/fr/docs/f32-vs-f64",
+      "destination": "/fr/docs/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/fr/docs/f64-vs-f128",
+      "destination": "/fr/docs/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/fr/docs/f128-vs-f256",
+      "destination": "/fr/docs/f128-vs-f256/index.html"
+    },
+    {
+      "source": "/fr/docs/power-bi-premium-vs-fabric",
+      "destination": "/fr/docs/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/fr/docs/f2-vs-f64",
+      "destination": "/fr/docs/f2-vs-f64/index.html"
+    },
+    {
+      "source": "/fr/privacy",
+      "destination": "/fr/privacy/index.html"
+    },
+    {
+      "source": "/fr/terms",
+      "destination": "/fr/terms/index.html"
+    },
+    {
+      "source": "/fr/architecture/planner",
+      "destination": "/fr/architecture/planner/index.html"
+    },
+    {
+      "source": "/fr/architecture/onelake",
+      "destination": "/fr/architecture/onelake/index.html"
+    },
+    {
+      "source": "/fr/workspace",
+      "destination": "/fr/workspace/index.html"
+    },
+    {
+      "source": "/fr/ai-advisor",
+      "destination": "/fr/ai-advisor/index.html"
+    },
+    {
+      "source": "/fr/resources/open-source",
+      "destination": "/fr/resources/open-source/index.html"
+    },
+    {
+      "source": "/fr/report",
+      "destination": "/fr/report/index.html"
+    },
+    {
+      "source": "/fr/results",
+      "destination": "/fr/results/index.html"
+    },
+    {
+      "source": "/fr/labs",
+      "destination": "/fr/labs/index.html"
+    },
+    {
+      "source": "/ko/wizard",
+      "destination": "/ko/wizard/index.html"
+    },
+    {
+      "source": "/ko/cost-calculator",
+      "destination": "/ko/cost-calculator/index.html"
+    },
+    {
+      "source": "/ko/reserved-savings",
+      "destination": "/ko/reserved-savings/index.html"
+    },
+    {
+      "source": "/ko/spark-estimator",
+      "destination": "/ko/spark-estimator/index.html"
+    },
+    {
+      "source": "/ko/power-bi-capacity",
+      "destination": "/ko/power-bi-capacity/index.html"
+    },
+    {
+      "source": "/ko/pricing",
+      "destination": "/ko/pricing/index.html"
+    },
+    {
+      "source": "/ko/fsku-comparisons",
+      "destination": "/ko/fsku-comparisons/index.html"
+    },
+    {
+      "source": "/ko/observability",
+      "destination": "/ko/observability/index.html"
+    },
+    {
+      "source": "/ko/docs",
+      "destination": "/ko/docs/index.html"
+    },
+    {
+      "source": "/ko/about",
+      "destination": "/ko/about/index.html"
+    },
+    {
+      "source": "/ko/fsku/f2",
+      "destination": "/ko/fsku/f2/index.html"
+    },
+    {
+      "source": "/ko/fsku/f4",
+      "destination": "/ko/fsku/f4/index.html"
+    },
+    {
+      "source": "/ko/fsku/f8",
+      "destination": "/ko/fsku/f8/index.html"
+    },
+    {
+      "source": "/ko/fsku/f16",
+      "destination": "/ko/fsku/f16/index.html"
+    },
+    {
+      "source": "/ko/fsku/f32",
+      "destination": "/ko/fsku/f32/index.html"
+    },
+    {
+      "source": "/ko/fsku/f64",
+      "destination": "/ko/fsku/f64/index.html"
+    },
+    {
+      "source": "/ko/fsku/f128",
+      "destination": "/ko/fsku/f128/index.html"
+    },
+    {
+      "source": "/ko/fsku/f256",
+      "destination": "/ko/fsku/f256/index.html"
+    },
+    {
+      "source": "/ko/fsku/f512",
+      "destination": "/ko/fsku/f512/index.html"
+    },
+    {
+      "source": "/ko/fsku/f1024",
+      "destination": "/ko/fsku/f1024/index.html"
+    },
+    {
+      "source": "/ko/fsku/f2048",
+      "destination": "/ko/fsku/f2048/index.html"
+    },
+    {
+      "source": "/ko/compare/f32-vs-f64",
+      "destination": "/ko/compare/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/ko/compare/f64-vs-f128",
+      "destination": "/ko/compare/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/ko/compare/power-bi-premium-vs-fabric",
+      "destination": "/ko/compare/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/ko/compare/synapse-vs-fabric",
+      "destination": "/ko/compare/synapse-vs-fabric/index.html"
+    },
+    {
+      "source": "/ko/compare/warehouse-vs-lakehouse",
+      "destination": "/ko/compare/warehouse-vs-lakehouse/index.html"
+    },
+    {
+      "source": "/ko/docs/getting-started-fabric-master",
+      "destination": "/ko/docs/getting-started-fabric-master/index.html"
+    },
+    {
+      "source": "/ko/docs/understanding-fabric-capacities",
+      "destination": "/ko/docs/understanding-fabric-capacities/index.html"
+    },
+    {
+      "source": "/ko/docs/optimizing-spark-workloads",
+      "destination": "/ko/docs/optimizing-spark-workloads/index.html"
+    },
+    {
+      "source": "/ko/docs/power-bi-concurrency-limits",
+      "destination": "/ko/docs/power-bi-concurrency-limits/index.html"
+    },
+    {
+      "source": "/ko/docs/fabric-throttling-mechanisms",
+      "destination": "/ko/docs/fabric-throttling-mechanisms/index.html"
+    },
+    {
+      "source": "/ko/docs/data-factory-pipeline-costs",
+      "destination": "/ko/docs/data-factory-pipeline-costs/index.html"
+    },
+    {
+      "source": "/ko/docs/fabric-master-api",
+      "destination": "/ko/docs/fabric-master-api/index.html"
+    },
+    {
+      "source": "/ko/docs/security-and-governance",
+      "destination": "/ko/docs/security-and-governance/index.html"
+    },
+    {
+      "source": "/ko/docs/cost-efficiency-strategies",
+      "destination": "/ko/docs/cost-efficiency-strategies/index.html"
+    },
+    {
+      "source": "/ko/docs/migrating-to-fabric",
+      "destination": "/ko/docs/migrating-to-fabric/index.html"
+    },
+    {
+      "source": "/ko/docs/payg-vs-reserved",
+      "destination": "/ko/docs/payg-vs-reserved/index.html"
+    },
+    {
+      "source": "/ko/docs/sku-selection-guide",
+      "destination": "/ko/docs/sku-selection-guide/index.html"
+    },
+    {
+      "source": "/ko/docs/what-is-microsoft-fabric-capacity",
+      "destination": "/ko/docs/what-is-microsoft-fabric-capacity/index.html"
+    },
+    {
+      "source": "/ko/docs/what-is-a-capacity-unit",
+      "destination": "/ko/docs/what-is-a-capacity-unit/index.html"
+    },
+    {
+      "source": "/ko/docs/what-is-throttling",
+      "destination": "/ko/docs/what-is-throttling/index.html"
+    },
+    {
+      "source": "/ko/docs/how-reserved-capacity-works",
+      "destination": "/ko/docs/how-reserved-capacity-works/index.html"
+    },
+    {
+      "source": "/ko/docs/enterprise-sizing-guide",
+      "destination": "/ko/docs/enterprise-sizing-guide/index.html"
+    },
+    {
+      "source": "/ko/docs/common-mistakes",
+      "destination": "/ko/docs/common-mistakes/index.html"
+    },
+    {
+      "source": "/ko/docs/f2-vs-f4",
+      "destination": "/ko/docs/f2-vs-f4/index.html"
+    },
+    {
+      "source": "/ko/docs/f8-vs-f16",
+      "destination": "/ko/docs/f8-vs-f16/index.html"
+    },
+    {
+      "source": "/ko/docs/f32-vs-f64",
+      "destination": "/ko/docs/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/ko/docs/f64-vs-f128",
+      "destination": "/ko/docs/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/ko/docs/f128-vs-f256",
+      "destination": "/ko/docs/f128-vs-f256/index.html"
+    },
+    {
+      "source": "/ko/docs/power-bi-premium-vs-fabric",
+      "destination": "/ko/docs/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/ko/docs/f2-vs-f64",
+      "destination": "/ko/docs/f2-vs-f64/index.html"
+    },
+    {
+      "source": "/ko/privacy",
+      "destination": "/ko/privacy/index.html"
+    },
+    {
+      "source": "/ko/terms",
+      "destination": "/ko/terms/index.html"
+    },
+    {
+      "source": "/ko/architecture/planner",
+      "destination": "/ko/architecture/planner/index.html"
+    },
+    {
+      "source": "/ko/architecture/onelake",
+      "destination": "/ko/architecture/onelake/index.html"
+    },
+    {
+      "source": "/ko/workspace",
+      "destination": "/ko/workspace/index.html"
+    },
+    {
+      "source": "/ko/ai-advisor",
+      "destination": "/ko/ai-advisor/index.html"
+    },
+    {
+      "source": "/ko/resources/open-source",
+      "destination": "/ko/resources/open-source/index.html"
+    },
+    {
+      "source": "/ko/report",
+      "destination": "/ko/report/index.html"
+    },
+    {
+      "source": "/ko/results",
+      "destination": "/ko/results/index.html"
+    },
+    {
+      "source": "/ko/labs",
+      "destination": "/ko/labs/index.html"
+    },
+    {
+      "source": "/de/wizard",
+      "destination": "/de/wizard/index.html"
+    },
+    {
+      "source": "/de/cost-calculator",
+      "destination": "/de/cost-calculator/index.html"
+    },
+    {
+      "source": "/de/reserved-savings",
+      "destination": "/de/reserved-savings/index.html"
+    },
+    {
+      "source": "/de/spark-estimator",
+      "destination": "/de/spark-estimator/index.html"
+    },
+    {
+      "source": "/de/power-bi-capacity",
+      "destination": "/de/power-bi-capacity/index.html"
+    },
+    {
+      "source": "/de/pricing",
+      "destination": "/de/pricing/index.html"
+    },
+    {
+      "source": "/de/fsku-comparisons",
+      "destination": "/de/fsku-comparisons/index.html"
+    },
+    {
+      "source": "/de/observability",
+      "destination": "/de/observability/index.html"
+    },
+    {
+      "source": "/de/docs",
+      "destination": "/de/docs/index.html"
+    },
+    {
+      "source": "/de/about",
+      "destination": "/de/about/index.html"
+    },
+    {
+      "source": "/de/fsku/f2",
+      "destination": "/de/fsku/f2/index.html"
+    },
+    {
+      "source": "/de/fsku/f4",
+      "destination": "/de/fsku/f4/index.html"
+    },
+    {
+      "source": "/de/fsku/f8",
+      "destination": "/de/fsku/f8/index.html"
+    },
+    {
+      "source": "/de/fsku/f16",
+      "destination": "/de/fsku/f16/index.html"
+    },
+    {
+      "source": "/de/fsku/f32",
+      "destination": "/de/fsku/f32/index.html"
+    },
+    {
+      "source": "/de/fsku/f64",
+      "destination": "/de/fsku/f64/index.html"
+    },
+    {
+      "source": "/de/fsku/f128",
+      "destination": "/de/fsku/f128/index.html"
+    },
+    {
+      "source": "/de/fsku/f256",
+      "destination": "/de/fsku/f256/index.html"
+    },
+    {
+      "source": "/de/fsku/f512",
+      "destination": "/de/fsku/f512/index.html"
+    },
+    {
+      "source": "/de/fsku/f1024",
+      "destination": "/de/fsku/f1024/index.html"
+    },
+    {
+      "source": "/de/fsku/f2048",
+      "destination": "/de/fsku/f2048/index.html"
+    },
+    {
+      "source": "/de/compare/f32-vs-f64",
+      "destination": "/de/compare/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/de/compare/f64-vs-f128",
+      "destination": "/de/compare/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/de/compare/power-bi-premium-vs-fabric",
+      "destination": "/de/compare/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/de/compare/synapse-vs-fabric",
+      "destination": "/de/compare/synapse-vs-fabric/index.html"
+    },
+    {
+      "source": "/de/compare/warehouse-vs-lakehouse",
+      "destination": "/de/compare/warehouse-vs-lakehouse/index.html"
+    },
+    {
+      "source": "/de/docs/getting-started-fabric-master",
+      "destination": "/de/docs/getting-started-fabric-master/index.html"
+    },
+    {
+      "source": "/de/docs/understanding-fabric-capacities",
+      "destination": "/de/docs/understanding-fabric-capacities/index.html"
+    },
+    {
+      "source": "/de/docs/optimizing-spark-workloads",
+      "destination": "/de/docs/optimizing-spark-workloads/index.html"
+    },
+    {
+      "source": "/de/docs/power-bi-concurrency-limits",
+      "destination": "/de/docs/power-bi-concurrency-limits/index.html"
+    },
+    {
+      "source": "/de/docs/fabric-throttling-mechanisms",
+      "destination": "/de/docs/fabric-throttling-mechanisms/index.html"
+    },
+    {
+      "source": "/de/docs/data-factory-pipeline-costs",
+      "destination": "/de/docs/data-factory-pipeline-costs/index.html"
+    },
+    {
+      "source": "/de/docs/fabric-master-api",
+      "destination": "/de/docs/fabric-master-api/index.html"
+    },
+    {
+      "source": "/de/docs/security-and-governance",
+      "destination": "/de/docs/security-and-governance/index.html"
+    },
+    {
+      "source": "/de/docs/cost-efficiency-strategies",
+      "destination": "/de/docs/cost-efficiency-strategies/index.html"
+    },
+    {
+      "source": "/de/docs/migrating-to-fabric",
+      "destination": "/de/docs/migrating-to-fabric/index.html"
+    },
+    {
+      "source": "/de/docs/payg-vs-reserved",
+      "destination": "/de/docs/payg-vs-reserved/index.html"
+    },
+    {
+      "source": "/de/docs/sku-selection-guide",
+      "destination": "/de/docs/sku-selection-guide/index.html"
+    },
+    {
+      "source": "/de/docs/what-is-microsoft-fabric-capacity",
+      "destination": "/de/docs/what-is-microsoft-fabric-capacity/index.html"
+    },
+    {
+      "source": "/de/docs/what-is-a-capacity-unit",
+      "destination": "/de/docs/what-is-a-capacity-unit/index.html"
+    },
+    {
+      "source": "/de/docs/what-is-throttling",
+      "destination": "/de/docs/what-is-throttling/index.html"
+    },
+    {
+      "source": "/de/docs/how-reserved-capacity-works",
+      "destination": "/de/docs/how-reserved-capacity-works/index.html"
+    },
+    {
+      "source": "/de/docs/enterprise-sizing-guide",
+      "destination": "/de/docs/enterprise-sizing-guide/index.html"
+    },
+    {
+      "source": "/de/docs/common-mistakes",
+      "destination": "/de/docs/common-mistakes/index.html"
+    },
+    {
+      "source": "/de/docs/f2-vs-f4",
+      "destination": "/de/docs/f2-vs-f4/index.html"
+    },
+    {
+      "source": "/de/docs/f8-vs-f16",
+      "destination": "/de/docs/f8-vs-f16/index.html"
+    },
+    {
+      "source": "/de/docs/f32-vs-f64",
+      "destination": "/de/docs/f32-vs-f64/index.html"
+    },
+    {
+      "source": "/de/docs/f64-vs-f128",
+      "destination": "/de/docs/f64-vs-f128/index.html"
+    },
+    {
+      "source": "/de/docs/f128-vs-f256",
+      "destination": "/de/docs/f128-vs-f256/index.html"
+    },
+    {
+      "source": "/de/docs/power-bi-premium-vs-fabric",
+      "destination": "/de/docs/power-bi-premium-vs-fabric/index.html"
+    },
+    {
+      "source": "/de/docs/f2-vs-f64",
+      "destination": "/de/docs/f2-vs-f64/index.html"
+    },
+    {
+      "source": "/de/privacy",
+      "destination": "/de/privacy/index.html"
+    },
+    {
+      "source": "/de/terms",
+      "destination": "/de/terms/index.html"
+    },
+    {
+      "source": "/de/architecture/planner",
+      "destination": "/de/architecture/planner/index.html"
+    },
+    {
+      "source": "/de/architecture/onelake",
+      "destination": "/de/architecture/onelake/index.html"
+    },
+    {
+      "source": "/de/workspace",
+      "destination": "/de/workspace/index.html"
+    },
+    {
+      "source": "/de/ai-advisor",
+      "destination": "/de/ai-advisor/index.html"
+    },
+    {
+      "source": "/de/resources/open-source",
+      "destination": "/de/resources/open-source/index.html"
+    },
+    {
+      "source": "/de/report",
+      "destination": "/de/report/index.html"
+    },
+    {
+      "source": "/de/results",
+      "destination": "/de/results/index.html"
+    },
+    {
+      "source": "/de/labs",
+      "destination": "/de/labs/index.html"
     },
     {
       "source": "/((?!.*\\.).*)",

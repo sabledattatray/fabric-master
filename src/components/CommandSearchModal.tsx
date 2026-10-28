@@ -18,21 +18,19 @@ import { COMPARISONS_DATA } from "../data/comparisons";
 import { ARTICLES } from "../data/articles";
 import { LABS_EXPERIMENTS } from "../data/labs";
 import { useTranslation } from "react-i18next";
-
 interface CommandSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
 export function CommandSearchModal({
   isOpen,
   onClose,
 }: CommandSearchModalProps) {
+  const tx = useTranslation().t;
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dialogRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (!isOpen) return;
     const previousFocus = document.activeElement as HTMLElement | null;
@@ -60,7 +58,6 @@ export function CommandSearchModal({
       previousFocus?.focus();
     };
   }, [isOpen]);
-
   // Close on Escape or shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -79,17 +76,13 @@ export function CommandSearchModal({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
-
   if (!isOpen) return null;
-
   const handleSelect = (path: string) => {
     navigate(path);
     onClose();
     setQuery("");
   };
-
   const q = query.toLowerCase().trim();
-
   // Filter tools
   const tools = [
     {
@@ -152,7 +145,6 @@ export function CommandSearchModal({
     (t) =>
       t.title.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q),
   );
-
   // Filter SKUs
   const skus = FABRIC_SKU_DATA.filter(
     (s) =>
@@ -160,7 +152,6 @@ export function CommandSearchModal({
       s.description.toLowerCase().includes(q) ||
       `f${s.cu}`.includes(q),
   );
-
   // Filter Comparisons
   const comparisons = COMPARISONS_DATA.filter(
     (c) =>
@@ -168,28 +159,24 @@ export function CommandSearchModal({
       c.leftName.toLowerCase().includes(q) ||
       c.rightName.toLowerCase().includes(q),
   );
-
   // Filter Docs
   const docs = ARTICLES.filter(
     (a) =>
       a.title.toLowerCase().includes(q) ||
       a.description.toLowerCase().includes(q),
   );
-
   // Filter Labs
   const labs = LABS_EXPERIMENTS.filter(
     (l) =>
       l.title.toLowerCase().includes(q) ||
       l.description.toLowerCase().includes(q),
   );
-
   const hasResults =
     tools.length > 0 ||
     skus.length > 0 ||
     comparisons.length > 0 ||
     docs.length > 0 ||
     labs.length > 0;
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-start justify-center pt-16 md:pt-24 px-4 bg-black/60 dark:bg-black/70 backdrop-blur-md animate-fadeIn"
@@ -199,7 +186,7 @@ export function CommandSearchModal({
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Search Fabric Master"
+        aria-label={tx("Search Fabric Master")}
         className="w-full max-w-2xl bg-white dark:bg-[#0E1018] border border-[#E2E8F0] dark:border-[#23273D] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
@@ -208,7 +195,7 @@ export function CommandSearchModal({
           <Search className="w-5 h-5 text-[#64748B] dark:text-[#9EA7BD] mr-3 shrink-0" />
           <input
             type="text"
-            aria-label="Search tools and documentation"
+            aria-label={tx("Search tools and documentation")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t(
@@ -218,7 +205,7 @@ export function CommandSearchModal({
             autoFocus
           />
           <button
-            aria-label="Close search"
+            aria-label={tx("Close search")}
             onClick={onClose}
             className="p-1 rounded-lg hover:bg-[#F1F5F9] dark:hover:bg-[#161826] text-[#64748B] dark:text-[#9EA7BD] hover:text-[#0F172A] dark:hover:text-white transition-colors ml-2"
           >
@@ -230,7 +217,7 @@ export function CommandSearchModal({
         <div className="overflow-y-auto p-3 space-y-4 custom-scrollbar">
           {!hasResults && (
             <div className="py-12 text-center text-[#64748B] dark:text-[#9EA7BD]">
-              No results found matching "
+              {tx('No results found matching "')}
               <span className="text-[#0F172A] dark:text-[#F4F6FB]">
                 {query}
               </span>
@@ -242,7 +229,7 @@ export function CommandSearchModal({
           {tools.length > 0 && (
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-[#9EA7BD] px-2 mb-2">
-                Tools & Calculators
+                {tx("Tools & Calculators")}
               </div>
               <div className="space-y-1">
                 {tools.map((t) => {
@@ -259,7 +246,7 @@ export function CommandSearchModal({
                         </div>
                         <div>
                           <div className="font-medium text-sm group-hover:text-blue-600 dark:group-hover:text-[#58a6ff] transition-colors">
-                            {t.title}
+                            {tx(String(t.title ?? ""))}
                           </div>
                           <div className="text-xs text-[#64748B] dark:text-[#9EA7BD]">
                             {t.desc}
@@ -278,7 +265,7 @@ export function CommandSearchModal({
           {skus.length > 0 && (
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-[#9EA7BD] px-2 mb-2">
-                Microsoft Fabric F-SKUs
+                {tx("Microsoft Fabric F-SKUs")}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                 {skus.map((s) => (
@@ -289,10 +276,11 @@ export function CommandSearchModal({
                   >
                     <div>
                       <div className="font-semibold text-sm text-blue-600 dark:text-[#58a6ff] flex items-center gap-2">
-                        {s.name} Capacity
+                        {tx(String(s.name ?? ""))}
+                        {" " + tx("Capacity")}
                         {s.powerBiFreeUsers && (
                           <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-[#238636]/20 text-[#238636] dark:text-[#3fb950] border border-[#238636]/30 font-normal">
-                            PBI Free
+                            {tx("PBI Free")}
                           </span>
                         )}
                       </div>
@@ -311,7 +299,7 @@ export function CommandSearchModal({
           {comparisons.length > 0 && (
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-[#9EA7BD] px-2 mb-2">
-                SKU & Architecture Comparisons
+                {tx("SKU & Architecture Comparisons")}
               </div>
               <div className="space-y-1">
                 {comparisons.map((c) => (
@@ -326,10 +314,10 @@ export function CommandSearchModal({
                       </div>
                       <div>
                         <div className="font-medium text-sm group-hover:text-[#d29922] transition-colors">
-                          {c.title}
+                          {tx(String(c.title ?? ""))}
                         </div>
                         <div className="text-xs text-[#64748B] dark:text-[#9EA7BD]">
-                          {c.subtitle}
+                          {tx(String(c.subtitle ?? ""))}
                         </div>
                       </div>
                     </div>
@@ -344,7 +332,7 @@ export function CommandSearchModal({
           {docs.length > 0 && (
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-[#9EA7BD] px-2 mb-2">
-                Knowledge Base & Documentation
+                {tx("Knowledge Base & Documentation")}
               </div>
               <div className="space-y-1">
                 {docs.map((d) => (
@@ -359,10 +347,10 @@ export function CommandSearchModal({
                       </div>
                       <div>
                         <div className="font-medium text-sm group-hover:text-[#a371f7] transition-colors">
-                          {d.title}
+                          {tx(String(d.title ?? ""))}
                         </div>
                         <div className="text-xs text-[#64748B] dark:text-[#9EA7BD] line-clamp-1">
-                          {d.description}
+                          {tx(String(d.description ?? ""))}
                         </div>
                       </div>
                     </div>
@@ -377,7 +365,7 @@ export function CommandSearchModal({
           {labs.length > 0 && (
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-[#9EA7BD] px-2 mb-2">
-                Fabric Master Labs
+                {tx("Fabric Master Labs")}
               </div>
               <div className="space-y-1">
                 {labs.map((l) => (
@@ -392,10 +380,10 @@ export function CommandSearchModal({
                       </div>
                       <div>
                         <div className="font-medium text-sm group-hover:text-[#238636] dark:group-hover:text-[#3fb950] transition-colors">
-                          {l.title}
+                          {tx(String(l.title ?? ""))}
                         </div>
                         <div className="text-xs text-[#64748B] dark:text-[#9EA7BD] line-clamp-1">
-                          {l.description}
+                          {tx(String(l.description ?? ""))}
                         </div>
                       </div>
                     </div>
@@ -411,11 +399,11 @@ export function CommandSearchModal({
         <div className="px-4 py-2 bg-[#F8FAFC] dark:bg-[#050508] border-t border-[#E2E8F0] dark:border-[#23273D] flex items-center justify-between text-xs text-[#64748B] dark:text-[#9EA7BD]">
           <div className="flex items-center gap-2">
             <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#161826] border border-[#CBD5E1] dark:border-[#23273D] text-[#475569] dark:text-[#F4F6FB] font-mono text-[10px]">
-              CTRL + K
+              {tx("CTRL + K")}
             </kbd>
-            <span>to toggle search anywhere</span>
+            <span>{tx("to toggle search anywhere")}</span>
           </div>
-          <div>Press ESC to close</div>
+          <div>{tx("Press ESC to close")}</div>
         </div>
       </div>
     </div>

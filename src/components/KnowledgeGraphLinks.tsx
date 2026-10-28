@@ -1,47 +1,56 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Calculator, GitCompare, BookOpen, ExternalLink, Sparkles, ArrowRight, GraduationCap } from "lucide-react";
+import {
+  Calculator,
+  GitCompare,
+  BookOpen,
+  ExternalLink,
+  Sparkles,
+  ArrowRight,
+  GraduationCap,
+} from "lucide-react";
 import { FABRIC_SKU_DATA } from "../data/fskus";
 import { COMPARISONS_DATA } from "../data/comparisons";
 import { ARTICLES } from "../data/articles";
-
 interface KnowledgeGraphLinksProps {
   currentCategory?: string;
   currentSku?: string;
   currentComparison?: string;
   className?: string;
 }
-
-export function KnowledgeGraphLinks({ 
-  currentCategory, 
-  currentSku, 
+export function KnowledgeGraphLinks({
+  currentCategory,
+  currentSku,
   currentComparison,
-  className = "" 
+  className = "",
 }: KnowledgeGraphLinksProps) {
+  const tx = useTranslation().t;
   // Related SKUs (exclude current if provided)
-  const relatedSkus = FABRIC_SKU_DATA
-    .filter(s => s.slug !== currentSku)
-    .slice(0, 4);
-
+  const relatedSkus = FABRIC_SKU_DATA.filter(
+    (s) => s.slug !== currentSku,
+  ).slice(0, 4);
   // Related Comparisons
-  const relatedComparisons = COMPARISONS_DATA
-    .filter(c => c.slug !== currentComparison)
-    .slice(0, 3);
-
+  const relatedComparisons = COMPARISONS_DATA.filter(
+    (c) => c.slug !== currentComparison,
+  ).slice(0, 3);
   // Related Articles
   const relatedArticles = ARTICLES.slice(0, 3);
-
   return (
-    <section className={`w-full bg-[#161b22] border-t border-[#30363d] py-12 px-6 ${className}`}>
+    <section
+      className={`w-full bg-[#161b22] border-t border-[#30363d] py-12 px-6 ${className}`}
+    >
       <div className="max-w-7xl mx-auto space-y-10">
         <div className="flex items-center justify-between border-b border-[#30363d] pb-4">
           <div>
             <h2 className="text-2xl font-display font-bold text-[#f0f6fc] flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-[#58a6ff]" />
-              Microsoft Fabric Knowledge Graph & Related Tools
+              {tx("Microsoft Fabric Knowledge Graph & Related Tools")}
             </h2>
             <p className="text-sm text-[#8b949e] mt-1">
-              Explore interconnected capacity calculators, SKU comparisons, and technical guides.
+              {tx(
+                "Explore interconnected capacity calculators, SKU comparisons, and technical guides.",
+              )}
             </p>
           </div>
         </div>
@@ -51,39 +60,59 @@ export function KnowledgeGraphLinks({
           <div className="space-y-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-[#58a6ff] flex items-center gap-2">
               <Calculator className="w-4 h-4" />
-              Planning & Estimators
+              {tx("Planning & Estimators")}
             </h3>
             <div className="space-y-2">
-              <Link to="/wizard" className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group">
+              <Link
+                to="/wizard"
+                className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group"
+              >
                 <div className="font-semibold text-sm text-[#e6edf3] group-hover:text-[#58a6ff] flex items-center justify-between">
-                  Capacity Sizing Wizard
+                  {tx("Capacity Sizing Wizard")}
                   <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#58a6ff] transition-colors" />
                 </div>
-                <div className="text-xs text-[#8b949e] mt-1">AI-guided multi-workload Fabric SKU calculation</div>
+                <div className="text-xs text-[#8b949e] mt-1">
+                  {tx("AI-guided multi-workload Fabric SKU calculation")}
+                </div>
               </Link>
 
-              <Link to="/cost-calculator" className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group">
+              <Link
+                to="/cost-calculator"
+                className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group"
+              >
                 <div className="font-semibold text-sm text-[#e6edf3] group-hover:text-[#58a6ff] flex items-center justify-between">
-                  Cost & Pricing Estimator
+                  {tx("Cost & Pricing Estimator")}
                   <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#58a6ff] transition-colors" />
                 </div>
-                <div className="text-xs text-[#8b949e] mt-1">Translate CUs into monthly PAYG & Reserved costs</div>
+                <div className="text-xs text-[#8b949e] mt-1">
+                  {tx("Translate CUs into monthly PAYG & Reserved costs")}
+                </div>
               </Link>
 
-              <Link to="/spark-estimator" className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group">
+              <Link
+                to="/spark-estimator"
+                className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group"
+              >
                 <div className="font-semibold text-sm text-[#e6edf3] group-hover:text-[#58a6ff] flex items-center justify-between">
-                  Spark CU Estimator
+                  {tx("Spark CU Estimator")}
                   <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#58a6ff] transition-colors" />
                 </div>
-                <div className="text-xs text-[#8b949e] mt-1">Size Apache Spark pools and batch workloads</div>
+                <div className="text-xs text-[#8b949e] mt-1">
+                  {tx("Size Apache Spark pools and batch workloads")}
+                </div>
               </Link>
 
-              <Link to="/power-bi-capacity" className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group">
+              <Link
+                to="/power-bi-capacity"
+                className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group"
+              >
                 <div className="font-semibold text-sm text-[#e6edf3] group-hover:text-[#58a6ff] flex items-center justify-between">
-                  Power BI Capacity Calculator
+                  {tx("Power BI Capacity Calculator")}
                   <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#58a6ff] transition-colors" />
                 </div>
-                <div className="text-xs text-[#8b949e] mt-1">Model peak concurrency and Direct Lake queries</div>
+                <div className="text-xs text-[#8b949e] mt-1">
+                  {tx("Model peak concurrency and Direct Lake queries")}
+                </div>
               </Link>
             </div>
           </div>
@@ -92,27 +121,41 @@ export function KnowledgeGraphLinks({
           <div className="space-y-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-[#3fb950] flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
-              Fabric F-SKU Deep Dives
+              {tx("Fabric F-SKU Deep Dives")}
             </h3>
             <div className="grid grid-cols-2 gap-2">
-              {relatedSkus.map(s => (
-                <Link key={s.slug} to={`/fsku/${s.slug}`} className="p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#3fb950] transition-all group">
+              {relatedSkus.map((s) => (
+                <Link
+                  key={s.slug}
+                  to={`/fsku/${s.slug}`}
+                  className="p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#3fb950] transition-all group"
+                >
                   <div className="font-semibold text-sm text-[#3fb950] group-hover:underline flex items-center justify-between">
-                    {s.name} Capacity
+                    {tx(String(s.name ?? ""))}
+                    {" " + tx("Capacity")}
                   </div>
-                  <div className="text-[11px] text-[#8b949e] mt-1">{s.cu} CUs • ${s.monthlyReserved.toLocaleString()}/mo</div>
+                  <div className="text-[11px] text-[#8b949e] mt-1">
+                    {s.cu}
+                    {" " + tx("CUs \u2022 $")}
+                    {s.monthlyReserved.toLocaleString()}/mo
+                  </div>
                 </Link>
               ))}
             </div>
 
             <div className="pt-2">
               <h4 className="text-xs font-semibold uppercase text-[#8b949e] mb-2 flex items-center gap-1.5">
-                <GitCompare className="w-3.5 h-3.5" /> Popular Comparisons
+                <GitCompare className="w-3.5 h-3.5" />
+                {" " + tx("Popular Comparisons")}
               </h4>
               <div className="space-y-1.5">
-                {relatedComparisons.map(c => (
-                  <Link key={c.slug} to={`/compare/${c.slug}`} className="block text-xs text-[#c9d1d9] hover:text-[#58a6ff] transition-colors line-clamp-1">
-                    • {c.title}
+                {relatedComparisons.map((c) => (
+                  <Link
+                    key={c.slug}
+                    to={`/compare/${c.slug}`}
+                    className="block text-xs text-[#c9d1d9] hover:text-[#58a6ff] transition-colors line-clamp-1"
+                  >
+                    • {tx(String(c.title ?? ""))}
                   </Link>
                 ))}
               </div>
@@ -123,57 +166,81 @@ export function KnowledgeGraphLinks({
           <div className="space-y-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-[#a371f7] flex items-center gap-2">
               <GraduationCap className="w-4 h-4" />
-              Deep Learning Paths & Articles
+              {tx("Deep Learning Paths & Articles")}
             </h3>
             <div className="space-y-2">
-              {relatedArticles.map(a => (
-                <Link key={a.id} to={`/docs/${a.id}`} className="block p-2.5 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#a371f7] transition-all group">
+              {relatedArticles.map((a) => (
+                <Link
+                  key={a.id}
+                  to={`/docs/${a.id}`}
+                  className="block p-2.5 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#a371f7] transition-all group"
+                >
                   <div className="font-medium text-xs text-[#e6edf3] group-hover:text-[#a371f7] transition-colors line-clamp-1">
-                    {a.title}
+                    {tx(String(a.title ?? ""))}
                   </div>
-                  <div className="text-[11px] text-[#8b949e] line-clamp-1 mt-0.5">{a.description}</div>
+                  <div className="text-[11px] text-[#8b949e] line-clamp-1 mt-0.5">
+                    {tx(String(a.description ?? ""))}
+                  </div>
                 </Link>
               ))}
 
               {/* Contextual dattasable.com Learning Path & Blog Links */}
               <div className="pt-2 space-y-2">
-                <a 
-                  href="https://dattasable.com/blog/dp-600-vs-dp-700-vs-dp-800-microsoft-fabric-certification-comparison" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://dattasable.com/blog/dp-600-vs-dp-700-vs-dp-800-microsoft-fabric-certification-comparison"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block p-3 rounded-xl bg-[#0d1117] border border-[#a371f7]/40 hover:border-[#a371f7] transition-all group"
                 >
                   <div className="font-semibold text-xs text-[#a371f7] flex items-center justify-between">
-                    <span>DP-600 vs DP-700 vs DP-800 Certification Guide</span>
+                    <span>
+                      {tx("DP-600 vs DP-700 vs DP-800 Certification Guide")}
+                    </span>
                     <ExternalLink className="w-3.5 h-3.5 text-[#a371f7]" />
                   </div>
-                  <div className="text-[11px] text-[#8b949e] mt-1">Which Microsoft Fabric certification should you choose? Complete 2026 comparison.</div>
+                  <div className="text-[11px] text-[#8b949e] mt-1">
+                    {tx(
+                      "Which Microsoft Fabric certification should you choose? Complete 2026 comparison.",
+                    )}
+                  </div>
                 </a>
 
-                <a 
-                  href="https://dattasable.com/blog/microsoft-fabric-architecture-explained-2026" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://dattasable.com/blog/microsoft-fabric-architecture-explained-2026"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#58a6ff] transition-all group"
                 >
                   <div className="font-semibold text-xs text-[#58a6ff] flex items-center justify-between">
-                    <span>Microsoft Fabric Architecture Explained (2026)</span>
+                    <span>
+                      {tx("Microsoft Fabric Architecture Explained (2026)")}
+                    </span>
                     <ExternalLink className="w-3.5 h-3.5 text-[#58a6ff]" />
                   </div>
-                  <div className="text-[11px] text-[#8b949e] mt-1">OneLake, Medallion Architecture, Direct Lake & CU compute deep dive.</div>
+                  <div className="text-[11px] text-[#8b949e] mt-1">
+                    {tx(
+                      "OneLake, Medallion Architecture, Direct Lake & CU compute deep dive.",
+                    )}
+                  </div>
                 </a>
 
-                <a 
-                  href="https://dattasable.com/blog/dp-700-study-guide-2026" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://dattasable.com/blog/dp-700-study-guide-2026"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block p-3 rounded-xl bg-[#0d1117] border border-[#30363d] hover:border-[#3fb950] transition-all group"
                 >
                   <div className="font-semibold text-xs text-[#3fb950] flex items-center justify-between">
-                    <span>DP-700 Study Guide: Fabric Data Engineer</span>
+                    <span>
+                      {tx("DP-700 Study Guide: Fabric Data Engineer")}
+                    </span>
                     <ExternalLink className="w-3.5 h-3.5 text-[#3fb950]" />
                   </div>
-                  <div className="text-[11px] text-[#8b949e] mt-1">Complete preparation roadmap for Microsoft Fabric Data Engineering exam.</div>
+                  <div className="text-[11px] text-[#8b949e] mt-1">
+                    {tx(
+                      "Complete preparation roadmap for Microsoft Fabric Data Engineering exam.",
+                    )}
+                  </div>
                 </a>
               </div>
             </div>

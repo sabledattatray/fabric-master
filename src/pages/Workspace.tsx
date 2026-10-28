@@ -1,5 +1,6 @@
+import { useTranslation } from "react-i18next";
 import React, { useState, useEffect, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "../components/SEO";
 import { Link } from "react-router-dom";
 import {
   Layers,
@@ -30,12 +31,9 @@ import {
   Clock,
   Bot,
   FileText,
-  Printer
+  Printer,
 } from "lucide-react";
-import {
-  Scenario,
-  WorkloadCalculationInput
-} from "../types";
+import { Scenario, WorkloadCalculationInput } from "../types";
 import {
   getScenarios,
   getScenario,
@@ -48,7 +46,7 @@ import {
   exportScenarioAsJSON,
   exportAllScenariosAsJSON,
   importScenarioFromJSON,
-  resetScenarioToDefault
+  resetScenarioToDefault,
 } from "../lib/scenarios";
 import { calculateCapacity } from "../lib/calculator";
 import {
@@ -71,7 +69,7 @@ import {
   getSampleMedallionLakehouse,
   getSampleThrottledWorkload,
   getSampleSparkBatchBurn,
-  compareTelemetryWithScenario
+  compareTelemetryWithScenario,
 } from "../lib/observability";
 import {
   ResponsiveContainer,
@@ -81,45 +79,55 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ReferenceLine
+  ReferenceLine,
 } from "recharts";
-
-type TabId = "overview" | "inputs" | "capacity" | "finops" | "comparison" | "architecture" | "observability";
-
+type TabId =
+  | "overview"
+  | "inputs"
+  | "capacity"
+  | "finops"
+  | "comparison"
+  | "architecture"
+  | "observability";
 export function Workspace() {
+  const tx = useTranslation().t;
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [activeId, setActiveId] = useState<string>("");
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [showAssumptions, setShowAssumptions] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [toastType, setToastType] = useState<"success" | "error" | "info">("success");
-
+  const [toastType, setToastType] = useState<"success" | "error" | "info">(
+    "success",
+  );
   // Phase 5 FinOps & Sensitivity State
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [selectedRegion, setSelectedRegion] = useState<string>("eastus");
-  const [selectedOperatingProfile, setSelectedOperatingProfile] = useState<OperatingProfileKey>("continuous");
+  const [selectedOperatingProfile, setSelectedOperatingProfile] =
+    useState<OperatingProfileKey>("continuous");
   const [operatingHours, setOperatingHours] = useState<number>(730);
-  const [selectedHeadroomPercent, setSelectedHeadroomPercent] = useState<number>(50);
-  const [showUnsupportedModal, setShowUnsupportedModal] = useState<boolean>(false);
-  const [sensitivityVariant, setSensitivityVariant] = useState<"conservative" | "baseline" | "peak">("baseline");
+  const [selectedHeadroomPercent, setSelectedHeadroomPercent] =
+    useState<number>(50);
+  const [showUnsupportedModal, setShowUnsupportedModal] =
+    useState<boolean>(false);
+  const [sensitivityVariant, setSensitivityVariant] = useState<
+    "conservative" | "baseline" | "peak"
+  >("baseline");
   const [showMathDetails, setShowMathDetails] = useState<boolean>(false);
-
   // Phase 7 Telemetry & Observability State
-  const [telemetryDataset, setTelemetryDataset] = useState<"medallion" | "throttled" | "spark">("medallion");
+  const [telemetryDataset, setTelemetryDataset] = useState<
+    "medallion" | "throttled" | "spark"
+  >("medallion");
   const telemetrySummary = useMemo(() => {
     if (telemetryDataset === "throttled") return getSampleThrottledWorkload();
     if (telemetryDataset === "spark") return getSampleSparkBatchBurn();
     return getSampleMedallionLakehouse();
   }, [telemetryDataset]);
-
   // Modal States
   const [showNewModal, setShowNewModal] = useState<boolean>(false);
   const [newScenarioName, setNewScenarioName] = useState<string>("");
   const [showImportModal, setShowImportModal] = useState<boolean>(false);
   const [importJsonText, setImportJsonText] = useState<string>("");
   const [importError, setImportError] = useState<string | null>(null);
-
-
   // Load scenarios on mount
   useEffect(() => {
     const list = getScenarios();
@@ -132,53 +140,57 @@ export function Workspace() {
       setActiveScenarioId(list[0].id);
     }
   }, []);
-
-  const showToast = (msg: string, type: "success" | "error" | "info" = "success") => {
+  const showToast = (
+    msg: string,
+    type: "success" | "error" | "info" = "success",
+  ) => {
     setToastMessage(msg);
     setToastType(type);
     setTimeout(() => {
       setToastMessage(null);
     }, 4000);
   };
-
   const activeScenario = useMemo(() => {
     return scenarios.find((s) => s.id === activeId) || scenarios[0] || null;
   }, [scenarios, activeId]);
-
   const evalData = activeScenario?.evaluation;
-
   // Sync regional and currency defaults from activeScenario
   useEffect(() => {
-    if (activeScenario?.region && REGIONAL_PRICING_CATALOG[activeScenario.region]) {
+    if (
+      activeScenario?.region &&
+      REGIONAL_PRICING_CATALOG[activeScenario.region]
+    ) {
       setSelectedRegion(activeScenario.region);
     }
-    if (activeScenario?.currency && SUPPORTED_CURRENCIES[activeScenario.currency]) {
+    if (
+      activeScenario?.currency &&
+      SUPPORTED_CURRENCIES[activeScenario.currency]
+    ) {
       setSelectedCurrency(activeScenario.currency);
     }
   }, [activeScenario]);
-
   const handleOperatingProfileChange = (key: OperatingProfileKey) => {
     setSelectedOperatingProfile(key);
     if (key !== "custom") {
       setOperatingHours(OPERATING_HOURS_PROFILES[key].hoursPerMonth);
     }
   };
-
   const reservationEconomics = useMemo(() => {
     if (!evalData) return null;
     return calculateReservationEconomics(
       evalData.targetSkuRecommendation.safeSkuCu,
       selectedRegion,
       selectedCurrency,
-      operatingHours
+      operatingHours,
     );
   }, [evalData, selectedRegion, selectedCurrency, operatingHours]);
-
   const headroomSizing = useMemo(() => {
     if (!evalData) return null;
-    return calculateConfiguredHeadroom(evalData.calculatedCuBaseline, selectedHeadroomPercent);
+    return calculateConfiguredHeadroom(
+      evalData.calculatedCuBaseline,
+      selectedHeadroomPercent,
+    );
   }, [evalData, selectedHeadroomPercent]);
-
   const provenanceMeta = useMemo(() => {
     if (!evalData) return null;
     return getFinOpsResultMetadata(
@@ -186,51 +198,51 @@ export function Workspace() {
       selectedCurrency,
       evalData.targetSkuRecommendation.safeSkuName,
       evalData.targetSkuRecommendation.safeSkuCu,
-      operatingHours
+      operatingHours,
     );
   }, [evalData, selectedRegion, selectedCurrency, operatingHours]);
-
   const sensitivityData = useMemo(() => {
     if (!activeScenario) return null;
     return calculateSensitivityAnalysis(activeScenario.inputs);
   }, [activeScenario]);
-
   const mathExplanation = useMemo(() => {
     if (!activeScenario) return null;
     return getStepByStepExplanation(activeScenario.inputs);
   }, [activeScenario]);
-
   const regionalComparisonList = useMemo(() => {
     if (!evalData) return [];
-    return getRegionalComparison(evalData.targetSkuRecommendation.safeSkuCu, selectedCurrency, operatingHours);
+    return getRegionalComparison(
+      evalData.targetSkuRecommendation.safeSkuCu,
+      selectedCurrency,
+      operatingHours,
+    );
   }, [evalData, selectedCurrency, operatingHours]);
-
-  const currencyObj = SUPPORTED_CURRENCIES[selectedCurrency] || SUPPORTED_CURRENCIES.USD;
-  const currentRegionInfo = REGIONAL_PRICING_CATALOG[selectedRegion] || REGIONAL_PRICING_CATALOG.eastus;
-
+  const currencyObj =
+    SUPPORTED_CURRENCIES[selectedCurrency] || SUPPORTED_CURRENCIES.USD;
+  const currentRegionInfo =
+    REGIONAL_PRICING_CATALOG[selectedRegion] || REGIONAL_PRICING_CATALOG.eastus;
   const handleSelectScenario = (id: string) => {
     setActiveId(id);
     setActiveScenarioId(id);
   };
-
-
   const handleInputChange = <K extends keyof WorkloadCalculationInput>(
     section: K,
     subKey: string,
-    value: number | string
+    value: number | string,
   ) => {
     if (!activeScenario) return;
-
     const currentInputs = { ...activeScenario.inputs };
-
-    if (section === "dataFactoryInput" || section === "sparkComputeInput" || section === "powerBiInput") {
+    if (
+      section === "dataFactoryInput" ||
+      section === "sparkComputeInput" ||
+      section === "powerBiInput"
+    ) {
       const currentSection = { ...(currentInputs[section] as any) };
       currentSection[subKey] = Number(value);
       (currentInputs as any)[section] = currentSection;
     } else {
       (currentInputs as any)[section] = value;
     }
-
     const updatedEvaluation = calculateCapacity(currentInputs);
     const updatedScenario: Scenario = {
       ...activeScenario,
@@ -238,11 +250,11 @@ export function Workspace() {
       evaluation: updatedEvaluation,
       updatedAt: new Date().toISOString(),
     };
-
     saveScenario(updatedScenario);
-    setScenarios((prev) => prev.map((s) => (s.id === updatedScenario.id ? updatedScenario : s)));
+    setScenarios((prev) =>
+      prev.map((s) => (s.id === updatedScenario.id ? updatedScenario : s)),
+    );
   };
-
   const handleCreateNew = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newScenarioName.trim()) return;
@@ -253,7 +265,6 @@ export function Workspace() {
     setNewScenarioName("");
     showToast(`Created scenario: "${created.name}"`);
   };
-
   const handleDuplicate = () => {
     if (!activeScenario) return;
     const duplicated = duplicateScenario(activeScenario.id);
@@ -263,7 +274,6 @@ export function Workspace() {
       showToast(`Duplicated as "${duplicated.name}"`);
     }
   };
-
   const handleDelete = () => {
     if (!activeScenario) return;
     if (scenarios.length <= 1) {
@@ -279,7 +289,6 @@ export function Workspace() {
       showToast(`Deleted scenario "${name}"`, "info");
     }
   };
-
   const handleReset = () => {
     if (!activeScenario) return;
     const reset = resetScenarioToDefault(activeScenario.id);
@@ -288,20 +297,17 @@ export function Workspace() {
       showToast(`Reset "${reset.name}" to standard baseline`, "info");
     }
   };
-
   const handleExportActive = () => {
     if (!activeScenario) return;
     exportScenarioAsJSON(activeScenario);
     showToast(`Exported "${activeScenario.name}" as JSON`);
   };
-
   const handleImportSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!importJsonText.trim()) {
       setImportError("Please provide scenario JSON to import.");
       return;
     }
-
     const res = importScenarioFromJSON(importJsonText);
     if (!res.success) {
       setImportError(res.error || "Failed to validate scenario schema.");
@@ -316,11 +322,9 @@ export function Workspace() {
       showToast("Scenario imported successfully with 100% schema validation!");
     }
   };
-
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = (evt) => {
       const content = evt.target?.result as string;
@@ -331,18 +335,12 @@ export function Workspace() {
     };
     reader.readAsText(file);
   };
-
   return (
-
     <div className="workspace-page min-h-screen bg-[#080F1D] text-[#F0F6FC]">
-      <Helmet>
-        <title>Unified Engineering Workspace | Fabric Master v4.0</title>
-        <meta
-          name="description"
-          content="Enterprise Microsoft Fabric engineering workspace integrating capacity intelligence, FinOps cost modeling, multi-scenario comparisons, and architecture planning."
-        />
-        <link rel="canonical" href="https://fabric.dattasable.com/workspace" />
-      </Helmet>
+      <SEO
+        title="Engineering Workspace"
+        description="Plan capacity, understand costs, and design your Microsoft Fabric architecture in one independent engineering workspace."
+      />
 
       {/* Toast Notification Banner */}
       {toastMessage && (
@@ -353,13 +351,19 @@ export function Workspace() {
             toastType === "success"
               ? "bg-[#0d1f38] border-cyan-500/50 text-cyan-200"
               : toastType === "error"
-              ? "bg-[#331118] border-red-500/50 text-red-200"
-              : "bg-[#162032] border-blue-500/50 text-blue-200"
+                ? "bg-[#331118] border-red-500/50 text-red-200"
+                : "bg-[#162032] border-blue-500/50 text-blue-200"
           }`}
         >
-          {toastType === "success" && <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0" />}
-          {toastType === "error" && <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />}
-          {toastType === "info" && <Info className="w-5 h-5 text-blue-400 shrink-0" />}
+          {toastType === "success" && (
+            <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0" />
+          )}
+          {toastType === "error" && (
+            <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
+          )}
+          {toastType === "info" && (
+            <Info className="w-5 h-5 text-blue-400 shrink-0" />
+          )}
           <span className="text-sm font-medium">{toastMessage}</span>
         </div>
       )}
@@ -375,7 +379,7 @@ export function Workspace() {
             <div>
               <div className="flex items-center space-x-2">
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  Project Estate
+                  {tx("Project Estate")}
                 </span>
                 <span className="text-slate-600">/</span>
                 <span className="text-xs px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-mono border border-blue-500/20">
@@ -383,7 +387,7 @@ export function Workspace() {
                 </span>
               </div>
               <h1 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center space-x-2">
-                <span>Unified Engineering Workspace</span>
+                <span>{tx("Unified Engineering Workspace")}</span>
               </h1>
             </div>
           </div>
@@ -393,7 +397,7 @@ export function Workspace() {
             {/* Scenario Dropdown */}
             <div className="relative">
               <label htmlFor="scenario-select" className="sr-only">
-                Select Active Scenario
+                {tx("Select Active Scenario")}
               </label>
               <select
                 id="scenario-select"
@@ -403,7 +407,7 @@ export function Workspace() {
               >
                 {scenarios.map((sc) => (
                   <option key={sc.id} value={sc.id}>
-                    {sc.name}
+                    {tx(String(sc.name ?? ""))}
                   </option>
                 ))}
               </select>
@@ -413,37 +417,37 @@ export function Workspace() {
             <button
               onClick={() => setShowNewModal(true)}
               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition"
-              title="Create new scenario"
+              title={tx("Create new scenario")}
             >
               <Plus className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">New</span>
+              <span className="hidden sm:inline">{tx("New")}</span>
             </button>
 
             <button
               onClick={handleDuplicate}
               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#162032] hover:bg-[#1f2d47] border border-[#30363d] text-slate-300 text-xs font-medium transition"
-              title="Duplicate active scenario"
+              title={tx("Duplicate active scenario")}
             >
               <Copy className="w-3.5 h-3.5 text-slate-400" />
-              <span className="hidden sm:inline">Duplicate</span>
+              <span className="hidden sm:inline">{tx("Duplicate")}</span>
             </button>
 
             <button
               onClick={handleReset}
               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#162032] hover:bg-[#1f2d47] border border-[#30363d] text-slate-300 text-xs font-medium transition"
-              title="Reset scenario inputs"
+              title={tx("Reset scenario inputs")}
             >
               <RotateCcw className="w-3.5 h-3.5 text-slate-400" />
-              <span className="hidden sm:inline">Reset</span>
+              <span className="hidden sm:inline">{tx("Reset")}</span>
             </button>
 
             <button
               onClick={handleDelete}
               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#1f1618] hover:bg-[#331118] border border-red-900/50 text-red-300 text-xs font-medium transition"
-              title="Delete active scenario"
+              title={tx("Delete active scenario")}
             >
               <Trash2 className="w-3.5 h-3.5 text-red-400" />
-              <span className="hidden sm:inline">Delete</span>
+              <span className="hidden sm:inline">{tx("Delete")}</span>
             </button>
 
             <div className="h-4 w-px bg-slate-700 mx-1 hidden sm:block"></div>
@@ -452,10 +456,10 @@ export function Workspace() {
             <button
               onClick={handleExportActive}
               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#162032] hover:bg-[#1f2d47] border border-[#30363d] text-cyan-300 text-xs font-medium transition"
-              title="Export scenario as validated JSON"
+              title={tx("Export scenario as validated JSON")}
             >
               <FolderDown className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden sm:inline">Export</span>
+              <span className="hidden sm:inline">{tx("Export")}</span>
             </button>
 
             <button
@@ -464,10 +468,10 @@ export function Workspace() {
                 setImportError(null);
               }}
               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#162032] hover:bg-[#1f2d47] border border-[#30363d] text-slate-300 text-xs font-medium transition"
-              title="Import scenario JSON"
+              title={tx("Import scenario JSON")}
             >
               <Upload className="w-3.5 h-3.5 text-slate-400" />
-              <span className="hidden sm:inline">Import</span>
+              <span className="hidden sm:inline">{tx("Import")}</span>
             </button>
 
             {/* Toggle Assumptions Drawer */}
@@ -478,30 +482,32 @@ export function Workspace() {
                   ? "bg-blue-600/20 border-blue-500 text-blue-300"
                   : "bg-[#162032] border-[#30363d] text-slate-300 hover:bg-[#1f2d47]"
               }`}
-              title="Toggle assumptions & calculation methodology drawer"
+              title={tx("Toggle assumptions & calculation methodology drawer")}
             >
               <Info className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Assumptions</span>
+              <span className="hidden sm:inline">{tx("Assumptions")}</span>
             </button>
 
             {/* AI Advisor Contextual Link */}
             <Link
               to="/ai-advisor"
               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#58a6ff]/10 hover:bg-[#58a6ff]/20 border border-[#58a6ff]/30 text-[#58a6ff] text-xs font-semibold transition"
-              title="Open AI Engineering Advisor grounded in this scenario"
+              title={tx(
+                "Open AI Engineering Advisor grounded in this scenario",
+              )}
             >
               <Bot className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">AI Advisor</span>
+              <span className="hidden sm:inline">{tx("AI Advisor")}</span>
             </Link>
 
             {/* Decision Report Link */}
             <Link
               to={`/report?scenario=${activeId}`}
               className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#238636] hover:bg-[#2ea043] text-white text-xs font-semibold shadow-sm transition"
-              title="Open full printable enterprise decision report"
+              title={tx("Open full printable enterprise decision report")}
             >
               <FileText className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Decision Report</span>
+              <span className="hidden sm:inline">{tx("Decision Report")}</span>
             </Link>
           </div>
         </div>
@@ -512,7 +518,7 @@ export function Workspace() {
         {/* Left Navigation Sidebar */}
         <aside className="lg:w-64 shrink-0">
           <nav
-            aria-label="Workspace navigation"
+            aria-label={tx("Workspace navigation")}
             className="bg-[#0f172a] rounded-xl border border-[#21262d] p-2 space-y-1 sticky top-36"
           >
             <button
@@ -525,9 +531,11 @@ export function Workspace() {
             >
               <div className="flex items-center space-x-3">
                 <Layers className="w-4 h-4" />
-                <span>Overview & KPIs</span>
+                <span>{tx("Overview & KPIs")}</span>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ${activeTab === "overview" ? "text-white" : "text-slate-500"}`} />
+              <ChevronRight
+                className={`w-3.5 h-3.5 ${activeTab === "overview" ? "text-white" : "text-slate-500"}`}
+              />
             </button>
 
             <button
@@ -540,9 +548,11 @@ export function Workspace() {
             >
               <div className="flex items-center space-x-3">
                 <Sliders className="w-4 h-4" />
-                <span>Workload Inputs</span>
+                <span>{tx("Workload Inputs")}</span>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ${activeTab === "inputs" ? "text-white" : "text-slate-500"}`} />
+              <ChevronRight
+                className={`w-3.5 h-3.5 ${activeTab === "inputs" ? "text-white" : "text-slate-500"}`}
+              />
             </button>
 
             <button
@@ -555,9 +565,11 @@ export function Workspace() {
             >
               <div className="flex items-center space-x-3">
                 <Cpu className="w-4 h-4" />
-                <span>Capacity Intelligence</span>
+                <span>{tx("Capacity Intelligence")}</span>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ${activeTab === "capacity" ? "text-white" : "text-slate-500"}`} />
+              <ChevronRight
+                className={`w-3.5 h-3.5 ${activeTab === "capacity" ? "text-white" : "text-slate-500"}`}
+              />
             </button>
 
             <button
@@ -570,9 +582,11 @@ export function Workspace() {
             >
               <div className="flex items-center space-x-3">
                 <Coins className="w-4 h-4" />
-                <span>FinOps Studio</span>
+                <span>{tx("FinOps Studio")}</span>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ${activeTab === "finops" ? "text-white" : "text-slate-500"}`} />
+              <ChevronRight
+                className={`w-3.5 h-3.5 ${activeTab === "finops" ? "text-white" : "text-slate-500"}`}
+              />
             </button>
 
             <button
@@ -585,7 +599,7 @@ export function Workspace() {
             >
               <div className="flex items-center space-x-3">
                 <BarChart3 className="w-4 h-4" />
-                <span>Scenario Comparison</span>
+                <span>{tx("Scenario Comparison")}</span>
               </div>
               <span className="text-xs px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-mono">
                 {scenarios.length}
@@ -602,9 +616,11 @@ export function Workspace() {
             >
               <div className="flex items-center space-x-3">
                 <Database className="w-4 h-4" />
-                <span>Topology & Flow</span>
+                <span>{tx("Topology & Flow")}</span>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ${activeTab === "architecture" ? "text-white" : "text-slate-500"}`} />
+              <ChevronRight
+                className={`w-3.5 h-3.5 ${activeTab === "architecture" ? "text-white" : "text-slate-500"}`}
+              />
             </button>
 
             <button
@@ -617,26 +633,35 @@ export function Workspace() {
             >
               <div className="flex items-center space-x-3">
                 <Activity className="w-4 h-4" />
-                <span>Observability & Telemetry</span>
+                <span>{tx("Observability & Telemetry")}</span>
               </div>
-              <ChevronRight className={`w-3.5 h-3.5 ${activeTab === "observability" ? "text-white" : "text-slate-500"}`} />
+              <ChevronRight
+                className={`w-3.5 h-3.5 ${activeTab === "observability" ? "text-white" : "text-slate-500"}`}
+              />
             </button>
 
             {/* Active Scenario Metadata Pill */}
             {activeScenario && (
               <div className="pt-4 mt-4 border-t border-[#21262d] px-2 text-xs text-slate-400 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Schema Version:</span>
-                  <span className="font-mono text-slate-300">{activeScenario.schemaVersion}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Evidence Level:</span>
-                  <span className="capitalize px-1.5 py-0.2 rounded bg-cyan-900/40 text-cyan-300 border border-cyan-800/40">
-                    {activeScenario.evidenceLevel?.replace("_", " ") || "Model Based"}
+                  <span className="text-slate-500">
+                    {tx("Schema Version:")}
+                  </span>
+                  <span className="font-mono text-slate-300">
+                    {activeScenario.schemaVersion}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-500">Updated:</span>
+                  <span className="text-slate-500">
+                    {tx("Evidence Level:")}
+                  </span>
+                  <span className="capitalize px-1.5 py-0.2 rounded bg-cyan-900/40 text-cyan-300 border border-cyan-800/40">
+                    {activeScenario.evidenceLevel?.replace("_", " ") ||
+                      "Model Based"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">{tx("Updated:")}</span>
                   <span className="text-slate-300">
                     {new Date(activeScenario.updatedAt).toLocaleDateString()}
                   </span>
@@ -658,14 +683,22 @@ export function Workspace() {
                   <div>
                     <div className="flex items-center space-x-2 mb-1.5">
                       <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                        Active Scenario
+                        {tx("Active Scenario")}
                       </span>
                       <span className="text-xs text-slate-400">
-                        Region: <strong className="text-slate-200 uppercase">{activeScenario.region}</strong> (US East Baseline)
+                        {tx("Region:") + " "}
+                        <strong className="text-slate-200 uppercase">
+                          {activeScenario.region}
+                        </strong>
+                        {" " + tx("(US East Baseline)")}
                       </span>
                     </div>
-                    <h2 className="text-2xl font-bold text-white tracking-tight">{activeScenario.name}</h2>
-                    <p className="text-sm text-slate-400 mt-1 max-w-2xl">{activeScenario.description}</p>
+                    <h2 className="text-2xl font-bold text-white tracking-tight">
+                      {tx(String(activeScenario.name ?? ""))}
+                    </h2>
+                    <p className="text-sm text-slate-400 mt-1 max-w-2xl">
+                      {tx(String(activeScenario.description ?? ""))}
+                    </p>
                   </div>
 
                   <div className="flex items-center space-x-3 shrink-0">
@@ -674,14 +707,14 @@ export function Workspace() {
                       className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md transition flex items-center space-x-1.5"
                     >
                       <Sliders className="w-3.5 h-3.5" />
-                      <span>Adjust Inputs</span>
+                      <span>{tx("Adjust Inputs")}</span>
                     </button>
                     <button
                       onClick={() => exportAllScenariosAsJSON()}
                       className="px-3 py-2 rounded-lg bg-[#162032] hover:bg-[#1f2d47] border border-[#30363d] text-slate-300 text-xs font-medium transition flex items-center space-x-1.5"
                     >
                       <FolderDown className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Export All</span>
+                      <span>{tx("Export All")}</span>
                     </button>
                   </div>
                 </div>
@@ -690,50 +723,55 @@ export function Workspace() {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-[#21262d]">
                   <div className="bg-[#11192e] p-4 rounded-xl border border-[#21262d]">
                     <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">
-                      Recommended SKU
+                      {tx("Recommended SKU")}
                     </div>
                     <div className="text-2xl font-black text-cyan-400 mt-1">
                       {evalData.targetSkuRecommendation.safeSkuName}
                     </div>
                     <div className="text-xs text-slate-400 mt-0.5">
-                      {evalData.targetSkuRecommendation.safeSkuCu} CUs with +50% Headroom
+                      {evalData.targetSkuRecommendation.safeSkuCu}
+                      {" " + tx("CUs with +50% Headroom")}
                     </div>
                   </div>
 
                   <div className="bg-[#11192e] p-4 rounded-xl border border-[#21262d]">
                     <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">
-                      Baseline Compute
+                      {tx("Baseline Compute")}
                     </div>
                     <div className="text-2xl font-black text-white mt-1">
                       {evalData.calculatedCuBaseline}{" "}
-                      <span className="text-sm font-semibold text-slate-400">CU</span>
+                      <span className="text-sm font-semibold text-slate-400">
+                        CU
+                      </span>
                     </div>
                     <div className="text-xs text-slate-400 mt-0.5">
-                      Composite Workload Demand
+                      {tx("Composite Workload Demand")}
                     </div>
                   </div>
 
                   <div className="bg-[#11192e] p-4 rounded-xl border border-[#21262d]">
                     <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">
-                      PAYG Cost (Monthly)
+                      {tx("PAYG Cost (Monthly)")}
                     </div>
                     <div className="text-2xl font-black text-white mt-1">
-                      ${evalData.financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}
+                      $
+                      {evalData.financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}
                     </div>
                     <div className="text-xs text-slate-400 mt-0.5">
-                      @ $0.1800/CU/hr (730h)
+                      {tx("@ $0.1800/CU/hr (730h)")}
                     </div>
                   </div>
 
                   <div className="bg-[#11192e] p-4 rounded-xl border border-[#21262d]">
                     <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">
-                      1-Yr Reserved Savings
+                      {tx("1-Yr Reserved Savings")}
                     </div>
                     <div className="text-2xl font-black text-emerald-400 mt-1">
-                      ~${evalData.financialSummary.potentialSavingsMonthly.toLocaleString()}
+                      ~$
+                      {evalData.financialSummary.potentialSavingsMonthly.toLocaleString()}
                     </div>
                     <div className="text-xs text-emerald-300/80 mt-0.5">
-                      ~41% Commitment Discount
+                      {tx("~41% Commitment Discount")}
                     </div>
                   </div>
                 </div>
@@ -746,23 +784,28 @@ export function Workspace() {
                   <div className="flex items-center justify-between">
                     <h3 className="text-base font-bold text-white flex items-center space-x-2">
                       <ShieldCheck className="w-5 h-5 text-cyan-400" />
-                      <span>Capacity Headroom Buffer</span>
+                      <span>{tx("Capacity Headroom Buffer")}</span>
                     </h3>
                     <span className="text-xs px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 font-mono border border-cyan-500/20">
-                      +50% Safety
+                      {tx("+50% Safety")}
                     </span>
                   </div>
 
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Production workloads require capacity buffering above baseline demands to absorb concurrent
-                    ad-hoc queries and job spikes without triggering smoothing throttle thresholds.
+                    {tx(
+                      "Production workloads require capacity buffering above baseline demands to absorb concurrent ad-hoc queries and job spikes without triggering smoothing throttle thresholds.",
+                    )}
                   </p>
 
                   <div className="space-y-2 pt-2">
                     <div className="flex justify-between text-xs font-medium">
-                      <span className="text-slate-300">Baseline Demand: {evalData.calculatedCuBaseline} CU</span>
+                      <span className="text-slate-300">
+                        {tx("Baseline Demand:") + " "}
+                        {evalData.calculatedCuBaseline} CU
+                      </span>
                       <span className="text-cyan-400 font-bold">
-                        Buffer Target: {(evalData.calculatedCuBaseline * 1.5).toFixed(1)} CU
+                        {tx("Buffer Target:") + " "}
+                        {(evalData.calculatedCuBaseline * 1.5).toFixed(1)} CU
                       </span>
                     </div>
                     <div className="w-full bg-[#162032] rounded-full h-3 overflow-hidden p-0.5 border border-[#30363d]">
@@ -774,15 +817,20 @@ export function Workspace() {
                             Math.round(
                               ((evalData.calculatedCuBaseline * 1.5) /
                                 evalData.targetSkuRecommendation.safeSkuCu) *
-                                100
-                            )
+                                100,
+                            ),
                           )}%`,
                         }}
                       ></div>
                     </div>
                     <div className="flex justify-between text-[11px] text-slate-500">
-                      <span>0 CU</span>
-                      <span>Target SKU: {evalData.targetSkuRecommendation.safeSkuName} ({evalData.targetSkuRecommendation.safeSkuCu} CU)</span>
+                      <span>{tx("0 CU")}</span>
+                      <span>
+                        {tx("Target SKU:") + " "}
+                        {evalData.targetSkuRecommendation.safeSkuName} (
+                        {evalData.targetSkuRecommendation.safeSkuCu}
+                        {" " + tx("CU)")}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -792,7 +840,7 @@ export function Workspace() {
                   <div className="flex items-center justify-between">
                     <h3 className="text-base font-bold text-white flex items-center space-x-2">
                       <Users className="w-5 h-5 text-blue-400" />
-                      <span>Organizational Licensing</span>
+                      <span>{tx("Organizational Licensing")}</span>
                     </h3>
                     <span
                       className={`text-xs px-2 py-0.5 rounded font-mono border ${
@@ -801,27 +849,29 @@ export function Workspace() {
                           : "bg-amber-500/10 text-amber-300 border-amber-500/20"
                       }`}
                     >
-                      {evalData.targetSkuRecommendation.safeSkuCu >= 64 ? "F64+ Threshold Met" : "Below F64"}
+                      {evalData.targetSkuRecommendation.safeSkuCu >= 64
+                        ? tx("F64+ Threshold Met")
+                        : tx("Below F64")}
                     </span>
                   </div>
 
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Fabric capacities equal to or larger than F64 allow unlimited report viewing by users with standard
-                    Power BI Free licenses. For SKUs smaller than F64, each viewer requires a paid Power BI Pro or PPU
-                    license.
+                    {tx(
+                      "Fabric capacities equal to or larger than F64 allow unlimited report viewing by users with standard Power BI Free licenses. For SKUs smaller than F64, each viewer requires a paid Power BI Pro or PPU license.",
+                    )}
                   </p>
 
                   <div className="pt-2">
                     <div className="p-3 rounded-lg bg-[#11192e] border border-[#21262d] flex items-center justify-between text-xs">
-                      <span className="text-slate-300">Free Viewer Report Distribution:</span>
+                      <span className="text-slate-300">
+                        {tx("Free Viewer Report Distribution:")}
+                      </span>
                       <span
-                        className={`font-semibold ${
-                          evalData.targetSkuRecommendation.safeSkuCu >= 64 ? "text-emerald-400" : "text-amber-400"
-                        }`}
+                        className={`font-semibold ${evalData.targetSkuRecommendation.safeSkuCu >= 64 ? "text-emerald-400" : "text-amber-400"}`}
                       >
                         {evalData.targetSkuRecommendation.safeSkuCu >= 64
-                          ? "Included at No Extra Cost"
-                          : "Requires Individual Pro ($10/user/mo)"}
+                          ? tx("Included at No Extra Cost")
+                          : tx("Requires Individual Pro ($10/user/mo)")}
                       </span>
                     </div>
                   </div>
@@ -832,19 +882,24 @@ export function Workspace() {
               <div className="p-6 rounded-xl bg-[#0f172a] border border-[#21262d] space-y-3">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center space-x-2">
                   <Activity className="w-4 h-4 text-cyan-400" />
-                  <span>Explainable Sizing Rationale</span>
+                  <span>{tx("Explainable Sizing Rationale")}</span>
                 </h3>
                 <ul className="space-y-2 pt-1">
                   {evalData.reasons.map((reason, idx) => (
-                    <li key={idx} className="flex items-start space-x-2.5 text-xs text-slate-300">
+                    <li
+                      key={idx}
+                      className="flex items-start space-x-2.5 text-xs text-slate-300"
+                    >
                       <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                       <span>{reason}</span>
                     </li>
                   ))}
                 </ul>
                 <div className="mt-4 pt-4 border-t border-[#21262d] text-xs text-slate-400 flex items-center justify-between">
-                  <span>Growth Projection:</span>
-                  <span className="font-semibold text-blue-300">{evalData.upgradeTimeline}</span>
+                  <span>{tx("Growth Projection:")}</span>
+                  <span className="font-semibold text-blue-300">
+                    {evalData.upgradeTimeline}
+                  </span>
                 </div>
               </div>
             </div>
@@ -854,68 +909,96 @@ export function Workspace() {
           {activeTab === "inputs" && activeScenario && (
             <div className="space-y-6">
               <div className="p-6 rounded-2xl bg-[#0f172a] border border-[#21262d]">
-                <h2 className="text-xl font-bold text-white tracking-tight">Workload Parameters</h2>
+                <h2 className="text-xl font-bold text-white tracking-tight">
+                  {tx("Workload Parameters")}
+                </h2>
                 <p className="text-xs text-slate-400 mt-1">
-                  Adjust data factory pipeline activity, Apache Spark compute clusters, and concurrent Power BI
-                  report interactions. Values recalculate instantly.
+                  {tx(
+                    "Adjust data factory pipeline activity, Apache Spark compute clusters, and concurrent Power BI report interactions. Values recalculate instantly.",
+                  )}
                 </p>
 
                 {/* Section A: Data Factory */}
                 <div className="mt-6 pt-6 border-t border-[#21262d]">
                   <h3 className="text-sm font-bold text-white flex items-center space-x-2 mb-4">
                     <Database className="w-4 h-4 text-cyan-400" />
-                    <span>Data Factory Pipelines & Ingestion</span>
+                    <span>{tx("Data Factory Pipelines & Ingestion")}</span>
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                        Monthly Pipeline Runs
+                        {tx("Monthly Pipeline Runs")}
                       </label>
                       <input
                         type="number"
                         min="0"
                         max="1000000"
-                        value={activeScenario.inputs.dataFactoryInput.monthlyPipelines}
+                        value={
+                          activeScenario.inputs.dataFactoryInput
+                            .monthlyPipelines
+                        }
                         onChange={(e) =>
-                          handleInputChange("dataFactoryInput", "monthlyPipelines", e.target.value)
+                          handleInputChange(
+                            "dataFactoryInput",
+                            "monthlyPipelines",
+                            e.target.value,
+                          )
                         }
                         className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       />
-                      <span className="text-[11px] text-slate-500 mt-1 block">Scheduled pipeline triggers per month</span>
+                      <span className="text-[11px] text-slate-500 mt-1 block">
+                        {tx("Scheduled pipeline triggers per month")}
+                      </span>
                     </div>
 
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                        Avg Activities per Pipeline
+                        {tx("Avg Activities per Pipeline")}
                       </label>
                       <input
                         type="number"
                         min="1"
                         max="200"
-                        value={activeScenario.inputs.dataFactoryInput.avgActivities}
+                        value={
+                          activeScenario.inputs.dataFactoryInput.avgActivities
+                        }
                         onChange={(e) =>
-                          handleInputChange("dataFactoryInput", "avgActivities", e.target.value)
+                          handleInputChange(
+                            "dataFactoryInput",
+                            "avgActivities",
+                            e.target.value,
+                          )
                         }
                         className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       />
-                      <span className="text-[11px] text-slate-500 mt-1 block">Copy, notebook, and lookup steps</span>
+                      <span className="text-[11px] text-slate-500 mt-1 block">
+                        {tx("Copy, notebook, and lookup steps")}
+                      </span>
                     </div>
 
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                        Monthly Volume (GB)
+                        {tx("Monthly Volume (GB)")}
                       </label>
                       <input
                         type="number"
                         min="0"
                         max="5000000"
-                        value={activeScenario.inputs.dataFactoryInput.dataVolumeGb}
+                        value={
+                          activeScenario.inputs.dataFactoryInput.dataVolumeGb
+                        }
                         onChange={(e) =>
-                          handleInputChange("dataFactoryInput", "dataVolumeGb", e.target.value)
+                          handleInputChange(
+                            "dataFactoryInput",
+                            "dataVolumeGb",
+                            e.target.value,
+                          )
                         }
                         className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       />
-                      <span className="text-[11px] text-slate-500 mt-1 block">Total ingested data volume into OneLake</span>
+                      <span className="text-[11px] text-slate-500 mt-1 block">
+                        {tx("Total ingested data volume into OneLake")}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -924,61 +1007,87 @@ export function Workspace() {
                 <div className="mt-6 pt-6 border-t border-[#21262d]">
                   <h3 className="text-sm font-bold text-white flex items-center space-x-2 mb-4">
                     <Cpu className="w-4 h-4 text-blue-400" />
-                    <span>Apache Spark Compute Clusters</span>
+                    <span>{tx("Apache Spark Compute Clusters")}</span>
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                        Total Worker Nodes
+                        {tx("Total Worker Nodes")}
                       </label>
                       <input
                         type="number"
                         min="1"
                         max="256"
-                        value={activeScenario.inputs.sparkComputeInput.totalNodes}
+                        value={
+                          activeScenario.inputs.sparkComputeInput.totalNodes
+                        }
                         onChange={(e) =>
-                          handleInputChange("sparkComputeInput", "totalNodes", e.target.value)
+                          handleInputChange(
+                            "sparkComputeInput",
+                            "totalNodes",
+                            e.target.value,
+                          )
                         }
                         className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       />
-                      <span className="text-[11px] text-slate-500 mt-1 block">Active executor nodes in pool</span>
+                      <span className="text-[11px] text-slate-500 mt-1 block">
+                        {tx("Active executor nodes in pool")}
+                      </span>
                     </div>
 
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                        vCores per Node
+                        {tx("vCores per Node")}
                       </label>
                       <select
-                        value={activeScenario.inputs.sparkComputeInput.vCoresPerNode}
+                        value={
+                          activeScenario.inputs.sparkComputeInput.vCoresPerNode
+                        }
                         onChange={(e) =>
-                          handleInputChange("sparkComputeInput", "vCoresPerNode", e.target.value)
+                          handleInputChange(
+                            "sparkComputeInput",
+                            "vCoresPerNode",
+                            e.target.value,
+                          )
                         }
                         className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       >
                         {[2, 4, 8, 16, 32, 64].map((cores) => (
                           <option key={cores} value={cores}>
-                            {cores} vCores
+                            {cores}
+                            {" " + tx("vCores")}
                           </option>
                         ))}
                       </select>
-                      <span className="text-[11px] text-slate-500 mt-1 block">Standard Azure cloud VM vCores</span>
+                      <span className="text-[11px] text-slate-500 mt-1 block">
+                        {tx("Standard Azure cloud VM vCores")}
+                      </span>
                     </div>
 
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                        Daily Runtime (Hours)
+                        {tx("Daily Runtime (Hours)")}
                       </label>
                       <input
                         type="number"
                         min="0"
                         max="24"
-                        value={activeScenario.inputs.sparkComputeInput.dailyRuntimeHours}
+                        value={
+                          activeScenario.inputs.sparkComputeInput
+                            .dailyRuntimeHours
+                        }
                         onChange={(e) =>
-                          handleInputChange("sparkComputeInput", "dailyRuntimeHours", e.target.value)
+                          handleInputChange(
+                            "sparkComputeInput",
+                            "dailyRuntimeHours",
+                            e.target.value,
+                          )
                         }
                         className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       />
-                      <span className="text-[11px] text-slate-500 mt-1 block">Hours active per 24h smoothing window</span>
+                      <span className="text-[11px] text-slate-500 mt-1 block">
+                        {tx("Hours active per 24h smoothing window")}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -987,44 +1096,79 @@ export function Workspace() {
                 <div className="mt-6 pt-6 border-t border-[#21262d]">
                   <h3 className="text-sm font-bold text-white flex items-center space-x-2 mb-4">
                     <Users className="w-4 h-4 text-emerald-400" />
-                    <span>Power BI Concurrency & Semantic Models</span>
+                    <span>{tx("Power BI Concurrency & Semantic Models")}</span>
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                        Peak Concurrent Users
+                        {tx("Peak Concurrent Users")}
                       </label>
                       <input
                         type="number"
                         min="0"
                         max="50000"
-                        value={activeScenario.inputs.powerBiInput.peakConcurrentUsers}
+                        value={
+                          activeScenario.inputs.powerBiInput.peakConcurrentUsers
+                        }
                         onChange={(e) =>
-                          handleInputChange("powerBiInput", "peakConcurrentUsers", e.target.value)
+                          handleInputChange(
+                            "powerBiInput",
+                            "peakConcurrentUsers",
+                            e.target.value,
+                          )
                         }
                         className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       />
-                      <span className="text-[11px] text-slate-500 mt-1 block">Simultaneous active dashboard viewers</span>
+                      <span className="text-[11px] text-slate-500 mt-1 block">
+                        {tx("Simultaneous active dashboard viewers")}
+                      </span>
                     </div>
 
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                        Query Complexity Scale (1–5)
+                        {tx("Query Complexity Scale (1\u20135)")}
                       </label>
                       <select
-                        value={activeScenario.inputs.powerBiInput.queryComplexityScale}
+                        value={
+                          activeScenario.inputs.powerBiInput
+                            .queryComplexityScale
+                        }
                         onChange={(e) =>
-                          handleInputChange("powerBiInput", "queryComplexityScale", e.target.value)
+                          handleInputChange(
+                            "powerBiInput",
+                            "queryComplexityScale",
+                            e.target.value,
+                          )
                         }
                         className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                       >
-                        <option value={1}>1 — Simple aggregations & low visual density</option>
-                        <option value={2}>2 — Moderate dimensional filtering</option>
-                        <option value={3}>3 — Standard enterprise Direct Lake models</option>
-                        <option value={4}>4 — Heavy iterative DAX & high visual counts</option>
-                        <option value={5}>5 — Complex composite models & many-to-many relationships</option>
+                        <option value={1}>
+                          {tx(
+                            "1 \u2014 Simple aggregations & low visual density",
+                          )}
+                        </option>
+                        <option value={2}>
+                          {tx("2 \u2014 Moderate dimensional filtering")}
+                        </option>
+                        <option value={3}>
+                          {tx(
+                            "3 \u2014 Standard enterprise Direct Lake models",
+                          )}
+                        </option>
+                        <option value={4}>
+                          {tx(
+                            "4 \u2014 Heavy iterative DAX & high visual counts",
+                          )}
+                        </option>
+                        <option value={5}>
+                          {tx(
+                            "5 \u2014 Complex composite models & many-to-many relationships",
+                          )}
+                        </option>
                       </select>
-                      <span className="text-[11px] text-slate-500 mt-1 block">Affects 5-minute interactive smoothing peak</span>
+                      <span className="text-[11px] text-slate-500 mt-1 block">
+                        {tx("Affects 5-minute interactive smoothing peak")}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1037,10 +1181,13 @@ export function Workspace() {
             <div className="space-y-6">
               <div className="p-6 rounded-2xl bg-[#0f172a] border border-[#21262d] space-y-6">
                 <div>
-                  <h2 className="text-xl font-bold text-white tracking-tight">Capacity Sizing & Smoothing Evaluation</h2>
+                  <h2 className="text-xl font-bold text-white tracking-tight">
+                    {tx("Capacity Sizing & Smoothing Evaluation")}
+                  </h2>
                   <p className="text-xs text-slate-400 mt-1">
-                    Evaluates multi-engine demand across 24-hour background smoothing (Spark, Data Factory) and
-                    5-minute interactive smoothing (Power BI).
+                    {tx(
+                      "Evaluates multi-engine demand across 24-hour background smoothing (Spark, Data Factory) and 5-minute interactive smoothing (Power BI).",
+                    )}
                   </p>
                 </div>
 
@@ -1049,16 +1196,19 @@ export function Workspace() {
                   {/* Lower Cost Alternative */}
                   <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d]">
                     <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-                      Lower-Cost Tier
+                      {tx("Lower-Cost Tier")}
                     </span>
                     <div className="text-xl font-bold text-slate-300 mt-1">
                       {evalData.alternatives.lowerCostSku}
                     </div>
                     <div className="text-xs text-slate-500 mt-0.5">
-                      {evalData.alternatives.lowerCostCu} Capacity Units
+                      {evalData.alternatives.lowerCostCu}
+                      {" " + tx("Capacity Units")}
                     </div>
                     <p className="text-xs text-amber-400/90 mt-3 pt-3 border-t border-[#21262d]">
-                      Risk of interactive throttling under peak concurrency.
+                      {tx(
+                        "Risk of interactive throttling under peak concurrency.",
+                      )}
                     </p>
                   </div>
 
@@ -1066,36 +1216,42 @@ export function Workspace() {
                   <div className="p-4 rounded-xl bg-[#0d2238] border-2 border-cyan-500/50 shadow-lg shadow-cyan-500/10">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] uppercase tracking-wider text-cyan-300 font-bold">
-                        Target Safe SKU
+                        {tx("Target Safe SKU")}
                       </span>
                       <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-cyan-500 text-slate-950">
-                        RECOMMENDED
+                        {tx("RECOMMENDED")}
                       </span>
                     </div>
                     <div className="text-2xl font-black text-cyan-300 mt-1">
                       {evalData.targetSkuRecommendation.safeSkuName}
                     </div>
                     <div className="text-xs text-cyan-200 mt-0.5 font-medium">
-                      {evalData.targetSkuRecommendation.safeSkuCu} Capacity Units (+50% Headroom)
+                      {evalData.targetSkuRecommendation.safeSkuCu}
+                      {" " + tx("Capacity Units (+50% Headroom)")}
                     </div>
                     <p className="text-xs text-cyan-200/90 mt-3 pt-3 border-t border-cyan-800/40">
-                      Sufficient headroom for concurrent workloads and burst operations.
+                      {tx(
+                        "Sufficient headroom for concurrent workloads and burst operations.",
+                      )}
                     </p>
                   </div>
 
                   {/* Future Ready Alternative */}
                   <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d]">
                     <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-                      Future-Ready Tier
+                      {tx("Future-Ready Tier")}
                     </span>
                     <div className="text-xl font-bold text-slate-300 mt-1">
                       {evalData.alternatives.futureReadySku}
                     </div>
                     <div className="text-xs text-slate-500 mt-0.5">
-                      {evalData.alternatives.futureReadyCu} Capacity Units
+                      {evalData.alternatives.futureReadyCu}
+                      {" " + tx("Capacity Units")}
                     </div>
                     <p className="text-xs text-blue-300/90 mt-3 pt-3 border-t border-[#21262d]">
-                      Extended runway for 25%+ annual data estate expansion.
+                      {tx(
+                        "Extended runway for 25%+ annual data estate expansion.",
+                      )}
                     </p>
                   </div>
                 </div>
@@ -1106,10 +1262,14 @@ export function Workspace() {
                     <div>
                       <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center space-x-2">
                         <Cpu className="w-4 h-4 text-cyan-400" />
-                        <span>Configurable Headroom Sizing Buffer</span>
+                        <span>{tx("Configurable Headroom Sizing Buffer")}</span>
                       </span>
                       <p className="text-[11px] text-slate-400 mt-0.5">
-                        Adjust safety margin above composite baseline demand ({evalData.calculatedCuBaseline} CU).
+                        {tx(
+                          "Adjust safety margin above composite baseline demand (",
+                        )}
+                        {evalData.calculatedCuBaseline}
+                        {" " + tx("CU).")}
                       </p>
                     </div>
 
@@ -1117,7 +1277,9 @@ export function Workspace() {
                       {HEADROOM_OPTIONS.map((opt) => (
                         <button
                           key={opt.percent}
-                          onClick={() => setSelectedHeadroomPercent(opt.percent)}
+                          onClick={() =>
+                            setSelectedHeadroomPercent(opt.percent)
+                          }
                           className={`px-2.5 py-1 rounded text-xs font-medium transition ${
                             selectedHeadroomPercent === opt.percent
                               ? "bg-blue-600 text-white shadow-sm font-semibold"
@@ -1133,10 +1295,23 @@ export function Workspace() {
                   {headroomSizing && (
                     <div className="pt-2 border-t border-[#21262d] flex flex-wrap items-center justify-between gap-3 text-xs">
                       <span className="text-slate-300">
-                        {HEADROOM_OPTIONS.find((o) => o.percent === selectedHeadroomPercent)?.description}
+                        {tx(
+                          String(
+                            HEADROOM_OPTIONS.find(
+                              (o) => o.percent === selectedHeadroomPercent,
+                            )?.description ?? "",
+                          ),
+                        )}
                       </span>
                       <span className="font-mono text-cyan-300 bg-cyan-950/40 px-2 py-0.5 rounded border border-cyan-800/40 text-[11px]">
-                        Target: {headroomSizing.targetBufferedCu} CU → Recommended SKU: <strong>{headroomSizing.recommendedSku} ({headroomSizing.recommendedSkuCu} CUs)</strong>
+                        {tx("Target:") + " "}
+                        {headroomSizing.targetBufferedCu}
+                        {" " + tx("CU \u2192 Recommended SKU:") + " "}
+                        <strong>
+                          {headroomSizing.recommendedSku} (
+                          {headroomSizing.recommendedSkuCu}
+                          {" " + tx("CUs)")}
+                        </strong>
                       </span>
                     </div>
                   )}
@@ -1146,7 +1321,7 @@ export function Workspace() {
                 <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-slate-300">
-                      Cost-Optimized Tier Throttling Risk:
+                      {tx("Cost-Optimized Tier Throttling Risk:")}
                     </span>
                     <span className="text-xs font-mono font-bold text-amber-400">
                       {evalData.throttlingAnalysis.optimizedTierRiskPercentage}%
@@ -1155,13 +1330,15 @@ export function Workspace() {
                   <div className="w-full bg-[#162032] rounded-full h-2 overflow-hidden">
                     <div
                       className="bg-amber-400 h-full rounded-full"
-                      style={{ width: `${evalData.throttlingAnalysis.optimizedTierRiskPercentage}%` }}
+                      style={{
+                        width: `${evalData.throttlingAnalysis.optimizedTierRiskPercentage}%`,
+                      }}
                     ></div>
                   </div>
                   <p className="text-[11px] text-slate-400">
-                    Microsoft Fabric distributes background job execution across a 24-hour smoothing period. However,
-                    interactive visual queries are smoothed over 5 minutes and may trigger interactive delays if capacity
-                    is undersized.
+                    {tx(
+                      "Microsoft Fabric distributes background job execution across a 24-hour smoothing period. However, interactive visual queries are smoothed over 5 minutes and may trigger interactive delays if capacity is undersized.",
+                    )}
                   </p>
                 </div>
 
@@ -1172,33 +1349,43 @@ export function Workspace() {
                       <div>
                         <h3 className="text-sm font-bold text-white flex items-center space-x-2">
                           <Sliders className="w-4 h-4 text-cyan-400" />
-                          <span>Workload Sensitivity & Volatility Modeling</span>
+                          <span>
+                            {tx("Workload Sensitivity & Volatility Modeling")}
+                          </span>
                         </h3>
                         <p className="text-xs text-slate-400 mt-0.5">
-                          Simulate workload variance against sizing recommendations and throttling risk.
+                          {tx(
+                            "Simulate workload variance against sizing recommendations and throttling risk.",
+                          )}
                         </p>
                       </div>
 
                       {/* Sensitivity Variant Toggle Pills */}
                       <div className="flex items-center space-x-1.5 p-1 rounded-lg bg-[#0a0f1d] border border-[#21262d] self-start sm:self-auto">
-                        {(["conservative", "baseline", "peak"] as const).map((type) => (
-                          <button
-                            key={type}
-                            onClick={() => setSensitivityVariant(type)}
-                            className={`px-3 py-1 rounded text-xs font-medium transition ${
-                              sensitivityVariant === type
-                                ? "bg-blue-600 text-white shadow-sm"
-                                : "text-slate-400 hover:text-white"
-                            }`}
-                          >
-                            {sensitivityData[type].label}
-                          </button>
-                        ))}
+                        {(["conservative", "baseline", "peak"] as const).map(
+                          (type) => (
+                            <button
+                              key={type}
+                              onClick={() => setSensitivityVariant(type)}
+                              className={`px-3 py-1 rounded text-xs font-medium transition ${
+                                sensitivityVariant === type
+                                  ? "bg-blue-600 text-white shadow-sm"
+                                  : "text-slate-400 hover:text-white"
+                              }`}
+                            >
+                              {tx(String(sensitivityData[type].label ?? ""))}
+                            </button>
+                          ),
+                        )}
                       </div>
                     </div>
 
                     <p className="text-xs text-slate-300 italic border-l-2 border-cyan-500 pl-3">
-                      {sensitivityData[sensitivityVariant].description}
+                      {tx(
+                        String(
+                          sensitivityData[sensitivityVariant].description ?? "",
+                        ),
+                      )}
                     </p>
 
                     {/* Sensitivity Comparison Cards */}
@@ -1209,7 +1396,7 @@ export function Workspace() {
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                           <div className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d]">
                             <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-                              Target Safe SKU
+                              {tx("Target Safe SKU")}
                             </span>
                             <div className="text-lg font-bold text-cyan-300 mt-1">
                               {ev.targetSkuRecommendation.safeSkuName}
@@ -1221,7 +1408,7 @@ export function Workspace() {
 
                           <div className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d]">
                             <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-                              Baseline Demand
+                              {tx("Baseline Demand")}
                             </span>
                             <div className="text-lg font-bold text-white mt-1">
                               {ev.calculatedCuBaseline} CU
@@ -1231,50 +1418,67 @@ export function Workspace() {
                                 v.deltaCuPercent > 0
                                   ? "text-amber-400"
                                   : v.deltaCuPercent < 0
-                                  ? "text-emerald-400"
-                                  : "text-slate-500"
+                                    ? "text-emerald-400"
+                                    : "text-slate-500"
                               }`}
                             >
-                              {v.deltaCuPercent > 0 ? `+${v.deltaCuPercent}%` : v.deltaCuPercent < 0 ? `${v.deltaCuPercent}%` : "Baseline"}
+                              {v.deltaCuPercent > 0
+                                ? `+${v.deltaCuPercent}%`
+                                : v.deltaCuPercent < 0
+                                  ? `${v.deltaCuPercent}%`
+                                  : tx("Baseline")}
                             </span>
                           </div>
 
                           <div className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d]">
                             <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-                              Monthly PAYG
+                              {tx("Monthly PAYG")}
                             </span>
                             <div className="text-lg font-bold text-white mt-1">
-                              ${ev.financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}
+                              $
+                              {ev.financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}
                             </div>
                             <span
                               className={`text-[10px] font-semibold ${
                                 v.deltaCostPercent > 0
                                   ? "text-amber-400"
                                   : v.deltaCostPercent < 0
-                                  ? "text-emerald-400"
-                                  : "text-slate-500"
+                                    ? "text-emerald-400"
+                                    : "text-slate-500"
                               }`}
                             >
-                              {v.deltaCostPercent > 0 ? `+${v.deltaCostPercent}%` : v.deltaCostPercent < 0 ? `${v.deltaCostPercent}%` : "Baseline"}
+                              {v.deltaCostPercent > 0
+                                ? `+${v.deltaCostPercent}%`
+                                : v.deltaCostPercent < 0
+                                  ? `${v.deltaCostPercent}%`
+                                  : tx("Baseline")}
                             </span>
                           </div>
 
                           <div className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d]">
                             <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-                              Throttling Risk
+                              {tx("Throttling Risk")}
                             </span>
                             <div
                               className={`text-lg font-bold mt-1 ${
-                                ev.throttlingAnalysis.optimizedTierRiskPercentage > 40
+                                ev.throttlingAnalysis
+                                  .optimizedTierRiskPercentage > 40
                                   ? "text-red-400"
-                                  : ev.throttlingAnalysis.optimizedTierRiskPercentage > 20
-                                  ? "text-amber-400"
-                                  : "text-emerald-400"
+                                  : ev.throttlingAnalysis
+                                        .optimizedTierRiskPercentage > 20
+                                    ? "text-amber-400"
+                                    : "text-emerald-400"
                               }`}
                             >
-                              {ev.throttlingAnalysis.optimizedTierRiskPercentage}%
+                              {
+                                ev.throttlingAnalysis
+                                  .optimizedTierRiskPercentage
+                              }
+                              %
                             </div>
-                            <span className="text-[10px] text-slate-500">Smoothing Buffer</span>
+                            <span className="text-[10px] text-slate-500">
+                              {tx("Smoothing Buffer")}
+                            </span>
                           </div>
                         </div>
                       );
@@ -1291,55 +1495,93 @@ export function Workspace() {
                     >
                       <div className="flex items-center space-x-2">
                         <Activity className="w-4 h-4 text-cyan-400" />
-                        <span>Step-by-Step Mathematical Formulation Breakdown</span>
+                        <span>
+                          {tx(
+                            "Step-by-Step Mathematical Formulation Breakdown",
+                          )}
+                        </span>
                       </div>
                       <span className="text-xs text-blue-400 hover:text-blue-300 font-semibold">
-                        {showMathDetails ? "Hide Formulas" : "View Explanations"}
+                        {showMathDetails
+                          ? tx("Hide Formulas")
+                          : tx("View Explanations")}
                       </span>
                     </button>
 
                     {showMathDetails && (
                       <div className="pt-3 border-t border-[#21262d] space-y-3 text-xs">
                         <div className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d] space-y-1">
-                          <span className="text-cyan-300 font-semibold block">1. Data Factory Component:</span>
+                          <span className="text-cyan-300 font-semibold block">
+                            {tx("1. Data Factory Component:")}
+                          </span>
                           <code className="text-slate-300 font-mono block text-[11px]">
                             {mathExplanation.dfFormula}
                           </code>
                           <span className="text-[10px] text-slate-500">
-                            Evaluated over standard 730h month: 0.005 CU/activity execution + 0.002 CU/GB OneLake volume.
+                            {tx(
+                              "Evaluated over standard 730h month: 0.005 CU/activity execution + 0.002 CU/GB OneLake volume.",
+                            )}
                           </span>
                         </div>
 
                         <div className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d] space-y-1">
-                          <span className="text-cyan-300 font-semibold block">2. Apache Spark Compute Component:</span>
+                          <span className="text-cyan-300 font-semibold block">
+                            {tx("2. Apache Spark Compute Component:")}
+                          </span>
                           <code className="text-slate-300 font-mono block text-[11px]">
                             {mathExplanation.sparkFormula}
                           </code>
                           <span className="text-[10px] text-slate-500">
-                            Maps standard 2:1 cloud vCore to Fabric CU with 24-hour background smoothing.
+                            {tx(
+                              "Maps standard 2:1 cloud vCore to Fabric CU with 24-hour background smoothing.",
+                            )}
                           </span>
                         </div>
 
                         <div className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d] space-y-1">
-                          <span className="text-cyan-300 font-semibold block">3. Power BI Interactive Component:</span>
+                          <span className="text-cyan-300 font-semibold block">
+                            {tx("3. Power BI Interactive Component:")}
+                          </span>
                           <code className="text-slate-300 font-mono block text-[11px]">
                             {mathExplanation.pbiFormula}
                           </code>
                           <span className="text-[10px] text-slate-500">
-                            Applies DAX query complexity scalar across 5-minute interactive smoothing peak.
+                            {tx(
+                              "Applies DAX query complexity scalar across 5-minute interactive smoothing peak.",
+                            )}
                           </span>
                         </div>
 
                         <div className="p-3 rounded-lg bg-[#0d2238] border border-cyan-800/40 text-cyan-200 space-y-1">
-                          <span className="font-bold text-white block">Composite Baseline & Headroom Sizing:</span>
+                          <span className="font-bold text-white block">
+                            {tx("Composite Baseline & Headroom Sizing:")}
+                          </span>
                           <div className="font-mono text-[11px]">
-                            {mathExplanation.dfCu} CU (DF) + {mathExplanation.sparkCu} CU (Spark) + {mathExplanation.pbiCu} CU (PBI) ={" "}
-                            <strong>{mathExplanation.compositeBaselineCu} Baseline CU</strong>
+                            {mathExplanation.dfCu}
+                            {" " + tx("CU (DF) +") + " "}
+                            {mathExplanation.sparkCu}
+                            {" " + tx("CU (Spark) +") + " "}
+                            {mathExplanation.pbiCu}
+                            {" " + tx("CU (PBI) =")}{" "}
+                            <strong>
+                              {mathExplanation.compositeBaselineCu}
+                              {" " + tx("Baseline CU")}
+                            </strong>
                           </div>
                           <div className="font-mono text-[11px]">
-                            Buffer Target: {mathExplanation.compositeBaselineCu} CU × 1.5 (+50% Headroom) ={" "}
-                            <strong>{mathExplanation.bufferedSafeCu} Safe CU</strong> → Selects{" "}
-                            <strong>{mathExplanation.recommendedSku} ({mathExplanation.recommendedSkuCu} CU)</strong>
+                            {tx("Buffer Target:") + " "}
+                            {mathExplanation.compositeBaselineCu}
+                            {" " + tx("CU \u00D7 1.5 (+50% Headroom) =")}{" "}
+                            <strong>
+                              {mathExplanation.bufferedSafeCu}
+                              {" " + tx("Safe CU")}
+                            </strong>
+                            {" " + tx("\u2192 Selects")}{" "}
+                            <strong>
+                              {mathExplanation.recommendedSku} (
+                              {mathExplanation.recommendedSkuCu}
+                              {" " + tx("CU)")}
+                            </strong>
                           </div>
                         </div>
                       </div>
@@ -1356,9 +1598,13 @@ export function Workspace() {
               <div className="p-6 rounded-2xl bg-[#0f172a] border border-[#21262d] space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">FinOps Cost & Commitment Modeling</h2>
+                    <h2 className="text-xl font-bold text-white tracking-tight">
+                      {tx("FinOps Cost & Commitment Modeling")}
+                    </h2>
                     <p className="text-xs text-slate-400 mt-1">
-                      Multi-regional pricing comparison, currency normalization, and 1-Year Reserved Instance analysis.
+                      {tx(
+                        "Multi-regional pricing comparison, currency normalization, and 1-Year Reserved Instance analysis.",
+                      )}
                     </p>
                   </div>
 
@@ -1367,7 +1613,7 @@ export function Workspace() {
                     {/* Region Selector */}
                     <div>
                       <label htmlFor="finops-region" className="sr-only">
-                        Select Azure Region
+                        {tx("Select Azure Region")}
                       </label>
                       <select
                         id="finops-region"
@@ -1377,7 +1623,8 @@ export function Workspace() {
                       >
                         {Object.values(REGIONAL_PRICING_CATALOG).map((r) => (
                           <option key={r.id} value={r.id}>
-                            {r.name} ({r.multiplier.toFixed(2)}x)
+                            {tx(String(r.name ?? ""))} (
+                            {r.multiplier.toFixed(2)}x)
                           </option>
                         ))}
                       </select>
@@ -1386,7 +1633,7 @@ export function Workspace() {
                     {/* Currency Selector */}
                     <div>
                       <label htmlFor="finops-currency" className="sr-only">
-                        Select Display Currency
+                        {tx("Select Display Currency")}
                       </label>
                       <select
                         id="finops-currency"
@@ -1407,14 +1654,24 @@ export function Workspace() {
                 {/* Regional Rate Banner */}
                 <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] flex flex-wrap items-center justify-between gap-4 text-xs">
                   <div className="flex items-center space-x-2">
-                    <span className="text-slate-400">Selected Region:</span>
-                    <strong className="text-white">{currentRegionInfo.name}</strong>
+                    <span className="text-slate-400">
+                      {tx("Selected Region:")}
+                    </span>
+                    <strong className="text-white">
+                      {tx(String(currentRegionInfo.name ?? ""))}
+                    </strong>
                     <span className="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-mono border border-blue-500/20 text-[10px]">
-                      ${currentRegionInfo.ratePerCuHourUSD.toFixed(4)} / CU / hr USD
+                      ${currentRegionInfo.ratePerCuHourUSD.toFixed(4)} / CU / hr
+                      USD
                     </span>
                   </div>
                   <div className="text-slate-400">
-                    Target SKU: <strong className="text-cyan-400">{evalData.targetSkuRecommendation.safeSkuName}</strong> ({evalData.targetSkuRecommendation.safeSkuCu} CUs)
+                    {tx("Target SKU:") + " "}
+                    <strong className="text-cyan-400">
+                      {evalData.targetSkuRecommendation.safeSkuName}
+                    </strong>{" "}
+                    ({evalData.targetSkuRecommendation.safeSkuCu}
+                    {" " + tx("CUs)")}
                   </div>
                 </div>
 
@@ -1424,15 +1681,21 @@ export function Workspace() {
                     <div>
                       <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center space-x-2">
                         <Clock className="w-4 h-4 text-cyan-400" />
-                        <span>Operating Hours & Runtime Schedule</span>
+                        <span>{tx("Operating Hours & Runtime Schedule")}</span>
                       </span>
                       <p className="text-[11px] text-slate-400 mt-0.5">
-                        Model active billing runtime per month to evaluate capacity pausing vs reservation commitments.
+                        {tx(
+                          "Model active billing runtime per month to evaluate capacity pausing vs reservation commitments.",
+                        )}
                       </p>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-lg bg-[#0a0f1d] border border-[#21262d]">
-                      {(Object.keys(OPERATING_HOURS_PROFILES) as OperatingProfileKey[]).map((key) => {
+                      {(
+                        Object.keys(
+                          OPERATING_HOURS_PROFILES,
+                        ) as OperatingProfileKey[]
+                      ).map((key) => {
                         const prof = OPERATING_HOURS_PROFILES[key];
                         return (
                           <button
@@ -1453,24 +1716,34 @@ export function Workspace() {
 
                   {selectedOperatingProfile === "custom" && (
                     <div className="pt-2 border-t border-[#21262d] flex items-center space-x-4">
-                      <span className="text-xs text-slate-400 shrink-0">Custom Hours / Month:</span>
+                      <span className="text-xs text-slate-400 shrink-0">
+                        {tx("Custom Hours / Month:")}
+                      </span>
                       <input
                         type="range"
                         min={0}
                         max={730}
                         step={10}
                         value={operatingHours}
-                        onChange={(e) => setOperatingHours(Number(e.target.value))}
+                        onChange={(e) =>
+                          setOperatingHours(Number(e.target.value))
+                        }
                         className="flex-1 accent-cyan-400"
                       />
                       <span className="font-mono text-cyan-300 font-bold text-xs shrink-0 w-16 text-right">
-                        {operatingHours} hrs
+                        {operatingHours}
+                        {" " + tx("hrs")}
                       </span>
                     </div>
                   )}
 
                   <div className="text-[11px] text-slate-400 italic">
-                    {OPERATING_HOURS_PROFILES[selectedOperatingProfile].description}
+                    {tx(
+                      String(
+                        OPERATING_HOURS_PROFILES[selectedOperatingProfile]
+                          .description ?? "",
+                      ),
+                    )}
                   </div>
                 </div>
 
@@ -1482,32 +1755,54 @@ export function Workspace() {
                       <div className="p-5 rounded-xl bg-[#11192e] border border-[#21262d] space-y-4">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                            Pay-As-You-Go (PAYG)
+                            {tx("Pay-As-You-Go (PAYG)")}
                           </span>
                           <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300">
-                            {operatingHours < 730 ? `${operatingHours}h Active Runtime` : "Continuous (730h)"}
+                            {operatingHours < 730
+                              ? `${operatingHours}h Active Runtime`
+                              : tx("Continuous (730h)")}
                           </span>
                         </div>
 
                         <div className="text-3xl font-black text-white">
                           {reservationEconomics.formattedMonthlyPayg}
-                          <span className="text-xs font-normal text-slate-400"> / month</span>
+                          <span className="text-xs font-normal text-slate-400">
+                            {" "}
+                            / month
+                          </span>
                         </div>
 
                         <div className="space-y-2 pt-2 border-t border-[#21262d] text-xs text-slate-300">
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Hourly Rate:</span>
-                            <span className="font-mono">{currencyObj.format(reservationEconomics.hourlyPaygUSD)}/hr</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-slate-400">Annual Projection ({operatingHours}h/mo):</span>
+                            <span className="text-slate-400">
+                              {tx("Hourly Rate:")}
+                            </span>
                             <span className="font-mono">
-                              {currencyObj.format(reservationEconomics.annualPaygUSD)}
+                              {currencyObj.format(
+                                reservationEconomics.hourlyPaygUSD,
+                              )}
+                              /hr
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Commitment:</span>
-                            <span>None (Pause or delete capacity anytime)</span>
+                            <span className="text-slate-400">
+                              {tx("Annual Projection (")}
+                              {operatingHours}
+                              {tx("h/mo):")}
+                            </span>
+                            <span className="font-mono">
+                              {currencyObj.format(
+                                reservationEconomics.annualPaygUSD,
+                              )}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-slate-400">
+                              {tx("Commitment:")}
+                            </span>
+                            <span>
+                              {tx("None (Pause or delete capacity anytime)")}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -1516,39 +1811,55 @@ export function Workspace() {
                       <div className="p-5 rounded-xl bg-[#0d2238] border border-cyan-500/40 space-y-4 shadow-lg shadow-cyan-500/5">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold uppercase tracking-wider text-cyan-300">
-                            1-Year Reserved Instance
+                            {tx("1-Year Reserved Instance")}
                           </span>
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            reservationEconomics.isReservationRecommended
-                              ? "bg-cyan-500 text-slate-950"
-                              : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                          }`}>
-                            {reservationEconomics.isReservationRecommended ? "SAVE ~41%" : "FIXED COMMITMENT"}
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                              reservationEconomics.isReservationRecommended
+                                ? "bg-cyan-500 text-slate-950"
+                                : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                            }`}
+                          >
+                            {reservationEconomics.isReservationRecommended
+                              ? tx("SAVE ~41%")
+                              : tx("FIXED COMMITMENT")}
                           </span>
                         </div>
 
                         <div className="text-3xl font-black text-cyan-300">
                           {reservationEconomics.formattedMonthlyReserved}
-                          <span className="text-xs font-normal text-cyan-200"> / month</span>
+                          <span className="text-xs font-normal text-cyan-200">
+                            {" "}
+                            / month
+                          </span>
                         </div>
 
                         <div className="space-y-2 pt-2 border-t border-cyan-800/40 text-xs text-cyan-100">
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Hourly Equivalent (730h):</span>
+                            <span className="text-slate-400">
+                              {tx("Hourly Equivalent (730h):")}
+                            </span>
                             <span className="font-mono">
-                              {currencyObj.format(reservationEconomics.hourlyReservedUSD)}/hr
+                              {currencyObj.format(
+                                reservationEconomics.hourlyReservedUSD,
+                              )}
+                              /hr
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Annual Commitment:</span>
+                            <span className="text-slate-400">
+                              {tx("Annual Commitment:")}
+                            </span>
                             <span className="font-mono">
-                              {currencyObj.format(reservationEconomics.annualReservedCommitmentUSD)}
+                              {currencyObj.format(
+                                reservationEconomics.annualReservedCommitmentUSD,
+                              )}
                             </span>
                           </div>
-                          <div className={`flex justify-between font-semibold ${
-                            reservationEconomics.isReservationRecommended ? "text-emerald-300" : "text-amber-300"
-                          }`}>
-                            <span>Effective Delta:</span>
+                          <div
+                            className={`flex justify-between font-semibold ${reservationEconomics.isReservationRecommended ? "text-emerald-300" : "text-amber-300"}`}
+                          >
+                            <span>{tx("Effective Delta:")}</span>
                             <span>
                               {reservationEconomics.isReservationRecommended
                                 ? `+${reservationEconomics.formattedSavings} / mo Saved`
@@ -1560,18 +1871,24 @@ export function Workspace() {
                     </div>
 
                     {/* Reservation Economics & Break-Even Insight Box */}
-                    <div className={`p-4 rounded-xl border space-y-2 text-xs ${
-                      reservationEconomics.isReservationRecommended
-                        ? "bg-emerald-950/20 border-emerald-500/40 text-emerald-200"
-                        : "bg-blue-950/20 border-blue-500/40 text-blue-200"
-                    }`}>
+                    <div
+                      className={`p-4 rounded-xl border space-y-2 text-xs ${
+                        reservationEconomics.isReservationRecommended
+                          ? "bg-emerald-950/20 border-emerald-500/40 text-emerald-200"
+                          : "bg-blue-950/20 border-blue-500/40 text-blue-200"
+                      }`}
+                    >
                       <div className="flex items-center justify-between">
                         <strong className="text-white flex items-center space-x-1.5">
                           <Coins className="w-4 h-4 text-cyan-400" />
-                          <span>Reservation Economics & Utilization Analysis</span>
+                          <span>
+                            {tx("Reservation Economics & Utilization Analysis")}
+                          </span>
                         </strong>
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900/60 border border-slate-700 text-slate-300">
-                          Break-Even Threshold: 434 hours / month (~14.5h/day)
+                          {tx(
+                            "Break-Even Threshold: 434 hours / month (~14.5h/day)",
+                          )}
                         </span>
                       </div>
                       <p className="text-slate-300">
@@ -1579,9 +1896,14 @@ export function Workspace() {
                       </p>
                       {operatingHours < 730 && (
                         <div className="text-[11px] text-slate-400 pt-1 border-t border-slate-800 flex items-center justify-between">
-                          <span>Idle / Unused Reserved Capacity Cost:</span>
+                          <span>
+                            {tx("Idle / Unused Reserved Capacity Cost:")}
+                          </span>
                           <span className="font-mono text-amber-400">
-                            {currencyObj.format(reservationEconomics.unusedCommitmentUSD)} / month
+                            {currencyObj.format(
+                              reservationEconomics.unusedCommitmentUSD,
+                            )}{" "}
+                            / month
                           </span>
                         </div>
                       )}
@@ -1594,10 +1916,15 @@ export function Workspace() {
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-bold text-white flex items-center space-x-2">
                       <BarChart3 className="w-4 h-4 text-cyan-400" />
-                      <span>Cross-Region Azure Pricing Matrix ({evalData.targetSkuRecommendation.safeSkuName})</span>
+                      <span>
+                        {tx("Cross-Region Azure Pricing Matrix (")}
+                        {evalData.targetSkuRecommendation.safeSkuName})
+                      </span>
                     </h3>
                     <span className="text-[11px] text-slate-400">
-                      Standardized across 8 official cloud regions ({operatingHours}h/mo runtime)
+                      {tx("Standardized across 8 official cloud regions (")}
+                      {operatingHours}
+                      {tx("h/mo runtime)")}
                     </span>
                   </div>
 
@@ -1605,12 +1932,20 @@ export function Workspace() {
                     <table className="w-full text-left text-xs">
                       <thead className="bg-[#11192e] text-slate-400 uppercase tracking-wider font-semibold border-b border-[#21262d]">
                         <tr>
-                          <th className="py-3 px-4">Azure Region</th>
-                          <th className="py-3 px-4">Rate / CU / hr (USD)</th>
-                          <th className="py-3 px-4">Monthly PAYG</th>
-                          <th className="py-3 px-4">1-Yr Reserved / Mo</th>
-                          <th className="py-3 px-4">Annual Commitment Savings</th>
-                          <th className="py-3 px-4 text-right">Rate Status</th>
+                          <th className="py-3 px-4">{tx("Azure Region")}</th>
+                          <th className="py-3 px-4">
+                            {tx("Rate / CU / hr (USD)")}
+                          </th>
+                          <th className="py-3 px-4">{tx("Monthly PAYG")}</th>
+                          <th className="py-3 px-4">
+                            {tx("1-Yr Reserved / Mo")}
+                          </th>
+                          <th className="py-3 px-4">
+                            {tx("Annual Commitment Savings")}
+                          </th>
+                          <th className="py-3 px-4 text-right">
+                            {tx("Rate Status")}
+                          </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-[#21262d]">
@@ -1619,16 +1954,16 @@ export function Workspace() {
                           return (
                             <tr
                               key={rc.regionId}
-                              className={`transition hover:bg-[#162032] ${
-                                isSelected ? "bg-blue-950/20 font-medium" : ""
-                              }`}
+                              className={`transition hover:bg-[#162032] ${isSelected ? "bg-blue-950/20 font-medium" : ""}`}
                             >
                               <td className="py-3 px-4">
                                 <div className="flex items-center space-x-2">
-                                  <span className="text-white font-semibold">{rc.regionName}</span>
+                                  <span className="text-white font-semibold">
+                                    {rc.regionName}
+                                  </span>
                                   {isSelected && (
                                     <span className="px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-400 text-[10px] border border-cyan-500/30">
-                                      SELECTED
+                                      {tx("SELECTED")}
                                     </span>
                                   )}
                                 </div>
@@ -1652,7 +1987,7 @@ export function Workspace() {
 
                               <td className="py-3 px-4 text-right">
                                 <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
-                                  Verified Oct 2026
+                                  {tx("Verified Oct 2026")}
                                 </span>
                               </td>
                             </tr>
@@ -1669,30 +2004,44 @@ export function Workspace() {
                     <div className="flex items-center space-x-2">
                       <AlertTriangle className="w-4 h-4 text-amber-400" />
                       <span className="text-xs font-bold text-white uppercase tracking-wider">
-                        Sovereign Clouds & Unsupported Regions Disclosure
+                        {tx(
+                          "Sovereign Clouds & Unsupported Regions Disclosure",
+                        )}
                       </span>
                     </div>
                     <button
-                      onClick={() => setShowUnsupportedModal(!showUnsupportedModal)}
+                      onClick={() =>
+                        setShowUnsupportedModal(!showUnsupportedModal)
+                      }
                       className="text-xs text-cyan-400 hover:text-cyan-300 font-medium focus:outline-none"
                     >
-                      {showUnsupportedModal ? "Hide Disclosures" : "View Disclosures (3 Regions)"}
+                      {showUnsupportedModal
+                        ? tx("Hide Disclosures")
+                        : tx("View Disclosures (3 Regions)")}
                     </button>
                   </div>
 
                   {showUnsupportedModal && (
                     <div className="pt-3 border-t border-[#21262d] grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                       {UNSUPPORTED_REGIONS_CATALOG.map((u) => (
-                        <div key={u.id} className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d] space-y-1.5">
+                        <div
+                          key={u.id}
+                          className="p-3 rounded-lg bg-[#0f172a] border border-[#21262d] space-y-1.5"
+                        >
                           <div className="flex items-center justify-between">
-                            <strong className="text-white text-[11px]">{u.name}</strong>
+                            <strong className="text-white text-[11px]">
+                              {tx(String(u.name ?? ""))}
+                            </strong>
                             <span className="uppercase text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                              {u.category}
+                              {tx(String(u.category ?? ""))}
                             </span>
                           </div>
-                          <p className="text-[11px] text-slate-400">{u.statusReason}</p>
+                          <p className="text-[11px] text-slate-400">
+                            {u.statusReason}
+                          </p>
                           <p className="text-[10px] text-cyan-300 font-medium pt-1 border-t border-[#21262d]">
-                            Guidance: {u.recommendation}
+                            {tx("Guidance:") + " "}
+                            {u.recommendation}
                           </p>
                         </div>
                       ))}
@@ -1707,37 +2056,56 @@ export function Workspace() {
                       <div className="flex items-center space-x-2">
                         <ShieldCheck className="w-4 h-4 text-cyan-400" />
                         <strong className="text-white text-xs uppercase tracking-wider">
-                          FinOps Pricing Provenance & Data Integrity
+                          {tx("FinOps Pricing Provenance & Data Integrity")}
                         </strong>
                       </div>
                       <span className="text-[10px] font-mono text-cyan-300">
-                        Version {provenanceMeta.pricingDatasetVersion}
+                        {tx("Version") + " "}
+                        {provenanceMeta.pricingDatasetVersion}
                       </span>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
                       <div>
-                        <span className="text-slate-500 block">Calculation Engine:</span>
-                        <span className="font-mono text-slate-200">v{provenanceMeta.calculationEngineVersion}</span>
+                        <span className="text-slate-500 block">
+                          {tx("Calculation Engine:")}
+                        </span>
+                        <span className="font-mono text-slate-200">
+                          v{provenanceMeta.calculationEngineVersion}
+                        </span>
                       </div>
                       <div>
-                        <span className="text-slate-500 block">Active Region:</span>
-                        <span className="font-mono text-slate-200">{provenanceMeta.regionName}</span>
+                        <span className="text-slate-500 block">
+                          {tx("Active Region:")}
+                        </span>
+                        <span className="font-mono text-slate-200">
+                          {provenanceMeta.regionName}
+                        </span>
                       </div>
                       <div>
-                        <span className="text-slate-500 block">Currency & Runtime:</span>
-                        <span className="font-mono text-slate-200">{provenanceMeta.currencyCode} • {provenanceMeta.operatingHoursPerMonth}h/mo</span>
+                        <span className="text-slate-500 block">
+                          {tx("Currency & Runtime:")}
+                        </span>
+                        <span className="font-mono text-slate-200">
+                          {provenanceMeta.currencyCode} •{" "}
+                          {provenanceMeta.operatingHoursPerMonth}
+                          {tx("h/mo")}
+                        </span>
                       </div>
                       <div>
-                        <span className="text-slate-500 block">Timestamp:</span>
+                        <span className="text-slate-500 block">
+                          {tx("Timestamp:")}
+                        </span>
                         <span className="font-mono text-slate-400 text-[10px]">
-                          {new Date(provenanceMeta.calculationTimestamp).toLocaleDateString()}
+                          {new Date(
+                            provenanceMeta.calculationTimestamp,
+                          ).toLocaleDateString()}
                         </span>
                       </div>
                     </div>
 
                     <div className="pt-2 border-t border-cyan-900/30 text-[11px] text-slate-400">
-                      Derived from official{" "}
+                      {tx("Derived from official")}{" "}
                       <a
                         href={provenanceMeta.sourceUrl}
                         target="_blank"
@@ -1747,7 +2115,10 @@ export function Workspace() {
                         <span>{provenanceMeta.sourceReference}</span>
                         <ExternalLink className="w-3 h-3 ml-0.5" />
                       </a>{" "}
-                      ({provenanceMeta.retrievalDate}). Reservations apply to 1-year commitments and charge for 730h/month. Workloads running &lt; 434h/month are more economical via PAYG with automated pause.
+                      ({provenanceMeta.retrievalDate}
+                      {tx(
+                        "). Reservations apply to 1-year commitments and charge for 730h/month. Workloads running &lt; 434h/month are more economical via PAYG with automated pause.",
+                      )}
                     </div>
                   </div>
                 )}
@@ -1755,16 +2126,19 @@ export function Workspace() {
             </div>
           )}
 
-
           {/* TAB 5: SCENARIO COMPARISON (MULTI-SCENARIO) */}
           {activeTab === "comparison" && (
             <div className="space-y-6">
               <div className="p-6 rounded-2xl bg-[#0f172a] border border-[#21262d] space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">Multi-Scenario Comparison</h2>
+                    <h2 className="text-xl font-bold text-white tracking-tight">
+                      {tx("Multi-Scenario Comparison")}
+                    </h2>
                     <p className="text-xs text-slate-400 mt-1">
-                      Evaluate capacity demands, SKUs, and expenditure differences across all saved estate models.
+                      {tx(
+                        "Evaluate capacity demands, SKUs, and expenditure differences across all saved estate models.",
+                      )}
                     </p>
                   </div>
                   <button
@@ -1772,7 +2146,7 @@ export function Workspace() {
                     className="px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md transition flex items-center space-x-1.5 self-start"
                   >
                     <Plus className="w-4 h-4" />
-                    <span>Add Scenario</span>
+                    <span>{tx("Add Scenario")}</span>
                   </button>
                 </div>
 
@@ -1781,37 +2155,44 @@ export function Workspace() {
                   <table className="w-full text-left text-xs">
                     <thead className="bg-[#11192e] text-slate-400 uppercase tracking-wider font-semibold border-b border-[#21262d]">
                       <tr>
-                        <th className="py-3 px-4">Scenario Name</th>
-                        <th className="py-3 px-4">Target Safe SKU</th>
-                        <th className="py-3 px-4">Baseline CU</th>
-                        <th className="py-3 px-4">PAYG / Month</th>
-                        <th className="py-3 px-4">1-Yr Reserved / Mo</th>
-                        <th className="py-3 px-4">Annual Savings</th>
-                        <th className="py-3 px-4">PBI Free Viewers</th>
-                        <th className="py-3 px-4 text-right">Actions</th>
+                        <th className="py-3 px-4">{tx("Scenario Name")}</th>
+                        <th className="py-3 px-4">{tx("Target Safe SKU")}</th>
+                        <th className="py-3 px-4">{tx("Baseline CU")}</th>
+                        <th className="py-3 px-4">{tx("PAYG / Month")}</th>
+                        <th className="py-3 px-4">
+                          {tx("1-Yr Reserved / Mo")}
+                        </th>
+                        <th className="py-3 px-4">{tx("Annual Savings")}</th>
+                        <th className="py-3 px-4">{tx("PBI Free Viewers")}</th>
+                        <th className="py-3 px-4 text-right">
+                          {tx("Actions")}
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#21262d]">
                       {scenarios.map((sc) => {
-                        const ev = sc.evaluation || calculateCapacity(sc.inputs);
+                        const ev =
+                          sc.evaluation || calculateCapacity(sc.inputs);
                         const isCurrent = sc.id === activeId;
                         return (
                           <tr
                             key={sc.id}
-                            className={`transition hover:bg-[#162032] ${
-                              isCurrent ? "bg-blue-950/20 font-medium" : ""
-                            }`}
+                            className={`transition hover:bg-[#162032] ${isCurrent ? "bg-blue-950/20 font-medium" : ""}`}
                           >
                             <td className="py-3 px-4">
                               <div className="flex items-center space-x-2">
-                                <span className="text-white font-semibold">{sc.name}</span>
+                                <span className="text-white font-semibold">
+                                  {tx(String(sc.name ?? ""))}
+                                </span>
                                 {isCurrent && (
                                   <span className="px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-400 text-[10px] border border-blue-500/30">
-                                    ACTIVE
+                                    {tx("ACTIVE")}
                                   </span>
                                 )}
                               </div>
-                              <span className="text-[11px] text-slate-400 block">{sc.region.toUpperCase()}</span>
+                              <span className="text-[11px] text-slate-400 block">
+                                {sc.region.toUpperCase()}
+                              </span>
                             </td>
 
                             <td className="py-3 px-4">
@@ -1828,15 +2209,20 @@ export function Workspace() {
                             </td>
 
                             <td className="py-3 px-4 font-mono text-slate-200">
-                              ${ev.financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}
+                              $
+                              {ev.financialSummary.payAsYouGoMonthlyEstimate.toLocaleString()}
                             </td>
 
                             <td className="py-3 px-4 font-mono text-emerald-400">
-                              ${ev.financialSummary.reservedInstanceMonthlyEstimate.toLocaleString()}
+                              $
+                              {ev.financialSummary.reservedInstanceMonthlyEstimate.toLocaleString()}
                             </td>
 
                             <td className="py-3 px-4 font-mono text-emerald-400 font-semibold">
-                              ~${(ev.financialSummary.potentialSavingsMonthly * 12).toLocaleString()}
+                              ~$
+                              {(
+                                ev.financialSummary.potentialSavingsMonthly * 12
+                              ).toLocaleString()}
                             </td>
 
                             <td className="py-3 px-4">
@@ -1847,19 +2233,23 @@ export function Workspace() {
                                     : "bg-slate-800 text-slate-400"
                                 }`}
                               >
-                                {ev.targetSkuRecommendation.safeSkuCu >= 64 ? "Included (F64+)" : "Requires Pro"}
+                                {ev.targetSkuRecommendation.safeSkuCu >= 64
+                                  ? tx("Included (F64+)")
+                                  : tx("Requires Pro")}
                               </span>
                             </td>
 
                             <td className="py-3 px-4 text-right">
                               {isCurrent ? (
-                                <span className="text-slate-500 text-xs italic">Selected</span>
+                                <span className="text-slate-500 text-xs italic">
+                                  {tx("Selected")}
+                                </span>
                               ) : (
                                 <button
                                   onClick={() => handleSelectScenario(sc.id)}
                                   className="text-xs text-blue-400 hover:text-blue-300 font-semibold"
                                 >
-                                  Switch
+                                  {tx("Switch")}
                                 </button>
                               )}
                             </td>
@@ -1878,10 +2268,13 @@ export function Workspace() {
             <div className="space-y-6">
               <div className="p-6 rounded-2xl bg-[#0f172a] border border-[#21262d] space-y-6">
                 <div>
-                  <h2 className="text-xl font-bold text-white tracking-tight">Fabric Estate Architecture Topology</h2>
+                  <h2 className="text-xl font-bold text-white tracking-tight">
+                    {tx("Fabric Estate Architecture Topology")}
+                  </h2>
                   <p className="text-xs text-slate-400 mt-1">
-                    Visual data movement from ingestion through Medallion lakehouse layers, Spark computation, Direct Lake
-                    caching, and consumption.
+                    {tx(
+                      "Visual data movement from ingestion through Medallion lakehouse layers, Spark computation, Direct Lake caching, and consumption.",
+                    )}
                   </p>
                 </div>
 
@@ -1889,55 +2282,80 @@ export function Workspace() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   {/* Step 1: Ingestion */}
                   <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] relative">
-                    <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1">STAGE 01</div>
-                    <div className="text-sm font-bold text-white mb-1">Data Factory</div>
+                    <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1">
+                      {tx("STAGE 01")}
+                    </div>
+                    <div className="text-sm font-bold text-white mb-1">
+                      {tx("Data Factory")}
+                    </div>
                     <p className="text-[11px] text-slate-400">
-                      {activeScenario.inputs.dataFactoryInput.monthlyPipelines.toLocaleString()} pipeline runs moving{" "}
-                      {activeScenario.inputs.dataFactoryInput.dataVolumeGb} GB into OneLake landing.
+                      {activeScenario.inputs.dataFactoryInput.monthlyPipelines.toLocaleString()}
+                      {" " + tx("pipeline runs moving")}{" "}
+                      {activeScenario.inputs.dataFactoryInput.dataVolumeGb}
+                      {" " + tx("GB into OneLake landing.")}
                     </p>
                     <div className="mt-3 text-[10px] text-slate-500 font-mono">
-                      Smoothing: 24h background window
+                      {tx("Smoothing: 24h background window")}
                     </div>
                   </div>
 
                   {/* Step 2: Storage */}
                   <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] relative">
-                    <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1">STAGE 02</div>
-                    <div className="text-sm font-bold text-white mb-1">OneLake Medallion</div>
+                    <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1">
+                      {tx("STAGE 02")}
+                    </div>
+                    <div className="text-sm font-bold text-white mb-1">
+                      {tx("OneLake Medallion")}
+                    </div>
                     <p className="text-[11px] text-slate-400">
-                      Multi-tenant Delta Parquet tables split across Bronze, Silver clean, and Gold curated business
-                      views.
+                      {tx(
+                        "Multi-tenant Delta Parquet tables split across Bronze, Silver clean, and Gold curated business views.",
+                      )}
                     </p>
                     <div className="mt-3 text-[10px] text-slate-500 font-mono">
-                      Storage: Pure SaaS Lakehouse
+                      {tx("Storage: Pure SaaS Lakehouse")}
                     </div>
                   </div>
 
                   {/* Step 3: Compute */}
                   <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] relative">
-                    <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1">STAGE 03</div>
-                    <div className="text-sm font-bold text-white mb-1">Apache Spark</div>
+                    <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1">
+                      {tx("STAGE 03")}
+                    </div>
+                    <div className="text-sm font-bold text-white mb-1">
+                      {tx("Apache Spark")}
+                    </div>
                     <p className="text-[11px] text-slate-400">
-                      {activeScenario.inputs.sparkComputeInput.totalNodes} worker nodes ×{" "}
-                      {activeScenario.inputs.sparkComputeInput.vCoresPerNode} vCores running{" "}
-                      {activeScenario.inputs.sparkComputeInput.dailyRuntimeHours} hours/day.
+                      {activeScenario.inputs.sparkComputeInput.totalNodes}
+                      {" " + tx("worker nodes \u00D7")}{" "}
+                      {activeScenario.inputs.sparkComputeInput.vCoresPerNode}
+                      {" " + tx("vCores running")}{" "}
+                      {
+                        activeScenario.inputs.sparkComputeInput
+                          .dailyRuntimeHours
+                      }
+                      {" " + tx("hours/day.")}
                     </p>
                     <div className="mt-3 text-[10px] text-slate-500 font-mono">
-                      2:1 vCore-to-CU baseline
+                      {tx("2:1 vCore-to-CU baseline")}
                     </div>
                   </div>
 
                   {/* Step 4: Semantic & Consumption */}
                   <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] relative">
-                    <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1">STAGE 04</div>
-                    <div className="text-sm font-bold text-white mb-1">Direct Lake / PBI</div>
+                    <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1">
+                      {tx("STAGE 04")}
+                    </div>
+                    <div className="text-sm font-bold text-white mb-1">
+                      {tx("Direct Lake / PBI")}
+                    </div>
                     <p className="text-[11px] text-slate-400">
-                      Direct Lake semantic caching serving{" "}
-                      {activeScenario.inputs.powerBiInput.peakConcurrentUsers} concurrent viewers with zero import
-                      latency.
+                      {tx("Direct Lake semantic caching serving")}{" "}
+                      {activeScenario.inputs.powerBiInput.peakConcurrentUsers}
+                      {" " + tx("concurrent viewers with zero import latency.")}
                     </p>
                     <div className="mt-3 text-[10px] text-slate-500 font-mono">
-                      Smoothing: 5m interactive window
+                      {tx("Smoothing: 5m interactive window")}
                     </div>
                   </div>
                 </div>
@@ -1945,13 +2363,15 @@ export function Workspace() {
                 {/* Architecture Planner Shortcut */}
                 <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="text-xs text-slate-300">
-                    Want to customize detailed flow nodes, shortcut links, and network security boundaries?
+                    {tx(
+                      "Want to customize detailed flow nodes, shortcut links, and network security boundaries?",
+                    )}
                   </div>
                   <Link
                     to="/architecture/planner"
                     className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shrink-0 transition"
                   >
-                    <span>Open Architecture Planner</span>
+                    <span>{tx("Open Architecture Planner")}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -1967,18 +2387,22 @@ export function Workspace() {
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                        Phase 7 Subsystem
+                        {tx("Phase 7 Subsystem")}
                       </span>
                       <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
                         <ShieldCheck className="w-3 h-3" />
-                        100% In-Browser Local
+                        {tx("100% In-Browser Local")}
                       </span>
                     </div>
                     <h2 className="text-xl font-bold text-white tracking-tight">
-                      Capacity Observability & Telemetry Diagnostics
+                      {tx("Capacity Observability & Telemetry Diagnostics")}
                     </h2>
                     <p className="text-xs text-slate-400 mt-0.5">
-                      Correlate your planned scenario ({activeScenario.name}) with measured Microsoft Fabric telemetry, 24-hour background smoothing curves, and throttling risk.
+                      {tx("Correlate your planned scenario (")}
+                      {tx(String(activeScenario.name ?? ""))}
+                      {tx(
+                        ") with measured Microsoft Fabric telemetry, 24-hour background smoothing curves, and throttling risk.",
+                      )}
                     </p>
                   </div>
 
@@ -1988,7 +2412,7 @@ export function Workspace() {
                       className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shrink-0 transition shadow-sm"
                     >
                       <Activity className="w-3.5 h-3.5" />
-                      <span>Open Full Observability Studio</span>
+                      <span>{tx("Open Full Observability Studio")}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
@@ -1997,7 +2421,9 @@ export function Workspace() {
                 {/* Dataset switcher */}
                 <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] flex flex-wrap items-center justify-between gap-3 text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-400">Sample Stress Profile:</span>
+                    <span className="text-slate-400">
+                      {tx("Sample Stress Profile:")}
+                    </span>
                     <button
                       onClick={() => setTelemetryDataset("medallion")}
                       className={`px-2.5 py-1 rounded border font-medium transition ${
@@ -2006,7 +2432,7 @@ export function Workspace() {
                           : "bg-[#162032] text-slate-300 border-[#30363d] hover:bg-[#1f2d47]"
                       }`}
                     >
-                      Medallion Lakehouse (F64 Healthy)
+                      {tx("Medallion Lakehouse (F64 Healthy)")}
                     </button>
                     <button
                       onClick={() => setTelemetryDataset("throttled")}
@@ -2016,7 +2442,7 @@ export function Workspace() {
                           : "bg-[#162032] text-slate-300 border-[#30363d] hover:bg-[#1f2d47]"
                       }`}
                     >
-                      Morning Throttling Surge (F32)
+                      {tx("Morning Throttling Surge (F32)")}
                     </button>
                     <button
                       onClick={() => setTelemetryDataset("spark")}
@@ -2026,12 +2452,15 @@ export function Workspace() {
                           : "bg-[#162032] text-slate-300 border-[#30363d] hover:bg-[#1f2d47]"
                       }`}
                     >
-                      Continuous Spark Burn (F16)
+                      {tx("Continuous Spark Burn (F16)")}
                     </button>
                   </div>
 
                   <span className="text-[11px] font-mono text-slate-400">
-                    {telemetrySummary.validRecords} telemetry events ({telemetrySummary.timeRange.durationHours}h window)
+                    {telemetrySummary.validRecords}
+                    {" " + tx("telemetry events (")}
+                    {telemetrySummary.timeRange.durationHours}
+                    {tx("h window)")}
                   </span>
                 </div>
 
@@ -2039,21 +2468,22 @@ export function Workspace() {
                 {(() => {
                   const comparison = compareTelemetryWithScenario(
                     telemetrySummary,
-                    evalData.targetSkuRecommendation.safeSkuName
+                    evalData.targetSkuRecommendation.safeSkuName,
                   );
                   return (
                     <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                          Scenario Reality Check
+                          {tx("Scenario Reality Check")}
                         </span>
                         <span
                           className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
                             comparison.fitAssessment === "Optimal"
                               ? "bg-emerald-950/40 text-emerald-300 border-emerald-800"
-                              : comparison.fitAssessment === "Critical Throttling Risk"
-                              ? "bg-red-950/40 text-red-300 border-red-800"
-                              : "bg-amber-950/40 text-amber-300 border-amber-800"
+                              : comparison.fitAssessment ===
+                                  "Critical Throttling Risk"
+                                ? "bg-red-950/40 text-red-300 border-red-800"
+                                : "bg-amber-950/40 text-amber-300 border-amber-800"
                           }`}
                         >
                           {comparison.fitAssessment}
@@ -2062,37 +2492,48 @@ export function Workspace() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs pt-1">
                         <div>
-                          <span className="text-slate-500 block">Planned SKU Sizing:</span>
+                          <span className="text-slate-500 block">
+                            {tx("Planned SKU Sizing:")}
+                          </span>
                           <span className="font-bold text-white text-sm">
-                            {comparison.scenarioSku} ({comparison.scenarioSkuCu} CUs)
+                            {comparison.scenarioSku} ({comparison.scenarioSkuCu}
+                            {" " + tx("CUs)")}
                           </span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">Observed Smoothed Peak:</span>
+                          <span className="text-slate-500 block">
+                            {tx("Observed Smoothed Peak:")}
+                          </span>
                           <span className="font-bold text-cyan-300 text-sm">
                             {comparison.observedSmoothedPeakCu} CUs
                           </span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">Capacity Utilization:</span>
+                          <span className="text-slate-500 block">
+                            {tx("Capacity Utilization:")}
+                          </span>
                           <span className="font-bold text-white text-sm">
-                            {comparison.utilizationPercent}% (Headroom: {comparison.headroomPercent}%)
+                            {comparison.utilizationPercent}
+                            {tx("% (Headroom:") + " "}
+                            {comparison.headroomPercent}%)
                           </span>
                         </div>
                         <div>
-                          <span className="text-slate-500 block">Throttling Incidents:</span>
+                          <span className="text-slate-500 block">
+                            {tx("Throttling Incidents:")}
+                          </span>
                           <span
-                            className={`font-bold text-sm ${
-                              telemetrySummary.throttlingEventsCount > 0 ? "text-red-400" : "text-emerald-400"
-                            }`}
+                            className={`font-bold text-sm ${telemetrySummary.throttlingEventsCount > 0 ? "text-red-400" : "text-emerald-400"}`}
                           >
-                            {telemetrySummary.throttlingEventsCount} recorded
+                            {telemetrySummary.throttlingEventsCount}
+                            {" " + tx("recorded")}
                           </span>
                         </div>
                       </div>
 
                       <p className="text-xs text-slate-300 border-t border-[#21262d] pt-2 leading-relaxed">
-                        <strong>Engineering Guidance:</strong> {comparison.recommendation}
+                        <strong>{tx("Engineering Guidance:")}</strong>{" "}
+                        {comparison.recommendation}
                       </p>
                     </div>
                   );
@@ -2101,8 +2542,13 @@ export function Workspace() {
                 {/* Hourly Smoothing Timeline Chart */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-white">Hourly CU Consumption & 24-hr Smoothing Curve</span>
-                    <span className="text-slate-400">Limit: {evalData.targetSkuRecommendation.safeSkuCu} CUs</span>
+                    <span className="font-bold text-white">
+                      {tx("Hourly CU Consumption & 24-hr Smoothing Curve")}
+                    </span>
+                    <span className="text-slate-400">
+                      {tx("Limit:") + " "}
+                      {evalData.targetSkuRecommendation.safeSkuCu} CUs
+                    </span>
                   </div>
                   <div className="h-64 w-full bg-[#11192e] p-3 rounded-xl border border-[#21262d]">
                     <ResponsiveContainer width="100%" height="100%">
@@ -2110,28 +2556,53 @@ export function Workspace() {
                         data={telemetrySummary.hourlyTimeSeries}
                         margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#21262d" vertical={false} />
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke="#21262d"
+                          vertical={false}
+                        />
                         <XAxis
                           dataKey="hour"
                           stroke="#64748b"
                           fontSize={10}
                           tickFormatter={(val) => {
                             const parts = val.split(" ");
-                            return parts.length > 1 ? parts[1].replace(":00 UTC", "h") : val;
+                            return parts.length > 1
+                              ? parts[1].replace(":00 UTC", "h")
+                              : val;
                           }}
                         />
-                        <YAxis stroke="#64748b" fontSize={11} domain={[0, "auto"]} />
+                        <YAxis
+                          stroke="#64748b"
+                          fontSize={11}
+                          domain={[0, "auto"]}
+                        />
                         <Tooltip
                           content={({ active, payload, label }) => {
                             if (active && payload && payload.length) {
                               const d = payload[0].payload;
                               return (
                                 <div className="bg-[#0f172a] border border-[#21262d] p-2.5 rounded-lg shadow-xl text-xs space-y-1">
-                                  <div className="font-bold text-white">{label}</div>
-                                  <div className="text-blue-400">Background: {d.backgroundCu} CU</div>
-                                  <div className="text-emerald-400">Interactive: {d.interactiveCu} CU</div>
-                                  <div className="text-amber-400 font-semibold">Smoothed: {d.smoothedCu} CU</div>
-                                  {d.throttled && <div className="text-red-400 font-bold">Throttling Detected</div>}
+                                  <div className="font-bold text-white">
+                                    {label}
+                                  </div>
+                                  <div className="text-blue-400">
+                                    {tx("Background:") + " "}
+                                    {d.backgroundCu} CU
+                                  </div>
+                                  <div className="text-emerald-400">
+                                    {tx("Interactive:") + " "}
+                                    {d.interactiveCu} CU
+                                  </div>
+                                  <div className="text-amber-400 font-semibold">
+                                    {tx("Smoothed:") + " "}
+                                    {d.smoothedCu} CU
+                                  </div>
+                                  {d.throttled && (
+                                    <div className="text-red-400 font-bold">
+                                      {tx("Throttling Detected")}
+                                    </div>
+                                  )}
                                 </div>
                               );
                             }
@@ -2175,30 +2646,48 @@ export function Workspace() {
                 {/* Top Consuming Artifacts Preview */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold text-white">Top Consuming Artifacts</span>
-                    <Link to="/observability" className="text-blue-400 hover:underline flex items-center gap-1">
-                      <span>View All & Upload Custom CSV</span>
+                    <span className="font-bold text-white">
+                      {tx("Top Consuming Artifacts")}
+                    </span>
+                    <Link
+                      to="/observability"
+                      className="text-blue-400 hover:underline flex items-center gap-1"
+                    >
+                      <span>{tx("View All & Upload Custom CSV")}</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    {telemetrySummary.topConsumers.slice(0, 4).map((item, idx) => (
-                      <div key={idx} className="p-3 bg-[#11192e] rounded-xl border border-[#21262d] space-y-1">
-                        <div className="flex items-center justify-between text-xs">
-                          <span className="font-mono text-[10px] text-cyan-400 px-1.5 py-0.5 rounded bg-cyan-950/50">
-                            {item.itemKind}
-                          </span>
-                          <span className="font-bold text-white">{item.percentage}%</span>
+                    {telemetrySummary.topConsumers
+                      .slice(0, 4)
+                      .map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="p-3 bg-[#11192e] rounded-xl border border-[#21262d] space-y-1"
+                        >
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-mono text-[10px] text-cyan-400 px-1.5 py-0.5 rounded bg-cyan-950/50">
+                              {item.itemKind}
+                            </span>
+                            <span className="font-bold text-white">
+                              {item.percentage}%
+                            </span>
+                          </div>
+                          <div
+                            className="text-xs font-semibold text-white truncate"
+                            title={item.itemName}
+                          >
+                            {item.itemName}
+                          </div>
+                          <div className="text-[11px] text-slate-400">
+                            {item.cuHours}
+                            {" " + tx("CU-h consumed (")}
+                            {item.operationCount}
+                            {" " + tx("ops)")}
+                          </div>
                         </div>
-                        <div className="text-xs font-semibold text-white truncate" title={item.itemName}>
-                          {item.itemName}
-                        </div>
-                        <div className="text-[11px] text-slate-400">
-                          {item.cuHours} CU-h consumed ({item.operationCount} ops)
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               </div>
@@ -2212,12 +2701,12 @@ export function Workspace() {
             <div className="flex items-center justify-between pb-3 border-b border-[#21262d]">
               <h3 className="text-sm font-bold text-white flex items-center space-x-2">
                 <Info className="w-4 h-4 text-cyan-400" />
-                <span>Assumptions & Methodology</span>
+                <span>{tx("Assumptions & Methodology")}</span>
               </h3>
               <button
                 onClick={() => setShowAssumptions(false)}
                 className="p-1 rounded text-slate-400 hover:text-white"
-                title="Close panel"
+                title={tx("Close panel")}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -2225,45 +2714,58 @@ export function Workspace() {
 
             <div className="space-y-3 text-xs text-slate-300">
               <div>
-                <strong className="text-cyan-300 block mb-1">Deterministic Calculation Engine:</strong>
+                <strong className="text-cyan-300 block mb-1">
+                  {tx("Deterministic Calculation Engine:")}
+                </strong>
                 <p className="text-slate-400 leading-relaxed text-[11px]">
-                  All estimates are derived deterministically using documented formulas without speculative AI
-                  invented sizing.
+                  {tx(
+                    "All estimates are derived deterministically using documented formulas without speculative AI invented sizing.",
+                  )}
                 </p>
               </div>
 
               <div>
-                <strong className="text-cyan-300 block mb-1">Pricing Provenance:</strong>
+                <strong className="text-cyan-300 block mb-1">
+                  {tx("Pricing Provenance:")}
+                </strong>
                 <p className="text-slate-400 leading-relaxed text-[11px]">
-                  Base rate: $0.1800/CU/hour PAYG in US East / US West. 1-Year Reserved Instance discount applies ~41%
-                  reduction. Source: Microsoft Fabric Azure Pricing.
+                  {tx(
+                    "Base rate: $0.1800/CU/hour PAYG in US East / US West. 1-Year Reserved Instance discount applies ~41% reduction. Source: Microsoft Fabric Azure Pricing.",
+                  )}
                 </p>
               </div>
 
               <div>
-                <strong className="text-cyan-300 block mb-1">Smoothing Windows:</strong>
+                <strong className="text-cyan-300 block mb-1">
+                  {tx("Smoothing Windows:")}
+                </strong>
                 <p className="text-slate-400 leading-relaxed text-[11px]">
-                  Background compute operations (Spark, Data Factory) smooth over 24 hours. Interactive operations (DAX
-                  queries) smooth over 5 minutes.
+                  {tx(
+                    "Background compute operations (Spark, Data Factory) smooth over 24 hours. Interactive operations (DAX queries) smooth over 5 minutes.",
+                  )}
                 </p>
               </div>
 
               <div>
-                <strong className="text-cyan-300 block mb-1">Sizing Buffer:</strong>
+                <strong className="text-cyan-300 block mb-1">
+                  {tx("Sizing Buffer:")}
+                </strong>
                 <p className="text-slate-400 leading-relaxed text-[11px]">
-                  Safe SKU recommendations incorporate a +50% headroom buffer to prevent operational throttling under
-                  concurrency spikes.
+                  {tx(
+                    "Safe SKU recommendations incorporate a +50% headroom buffer to prevent operational throttling under concurrency spikes.",
+                  )}
                 </p>
               </div>
 
               <div className="pt-3 border-t border-[#21262d]">
                 <strong className="text-amber-400 block mb-1 flex items-center space-x-1">
                   <AlertTriangle className="w-3.5 h-3.5" />
-                  <span>Model Limitations:</span>
+                  <span>{tx("Model Limitations:")}</span>
                 </strong>
                 <p className="text-slate-400 leading-relaxed text-[11px]">
-                  Calculations represent preliminary architectural estimates. Actual production consumption must be
-                  validated against real metrics using the Microsoft Fabric Capacity Metrics App.
+                  {tx(
+                    "Calculations represent preliminary architectural estimates. Actual production consumption must be validated against real metrics using the Microsoft Fabric Capacity Metrics App.",
+                  )}
                 </p>
               </div>
             </div>
@@ -2280,7 +2782,9 @@ export function Workspace() {
         >
           <div className="bg-[#0f172a] border border-[#21262d] rounded-2xl p-6 w-full max-w-md shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white">Create New Scenario</h3>
+              <h3 className="text-lg font-bold text-white">
+                {tx("Create New Scenario")}
+              </h3>
               <button
                 onClick={() => setShowNewModal(false)}
                 className="text-slate-400 hover:text-white"
@@ -2292,12 +2796,12 @@ export function Workspace() {
             <form onSubmit={handleCreateNew} className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Scenario Name
+                  {tx("Scenario Name")}
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g., Marketing Lakehouse Phase 2"
+                  placeholder={tx("e.g., Marketing Lakehouse Phase 2")}
                   value={newScenarioName}
                   onChange={(e) => setNewScenarioName(e.target.value)}
                   className="w-full bg-[#11192e] border border-[#30363d] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -2305,7 +2809,9 @@ export function Workspace() {
               </div>
 
               <p className="text-xs text-slate-400">
-                New scenarios initialize with standard baseline parameters and are saved locally in browser storage.
+                {tx(
+                  "New scenarios initialize with standard baseline parameters and are saved locally in browser storage.",
+                )}
               </p>
 
               <div className="flex justify-end space-x-3 pt-2">
@@ -2314,13 +2820,13 @@ export function Workspace() {
                   onClick={() => setShowNewModal(false)}
                   className="px-4 py-2 rounded-lg bg-[#162032] hover:bg-[#1f2d47] text-slate-300 text-xs font-medium"
                 >
-                  Cancel
+                  {tx("Cancel")}
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md"
                 >
-                  Create Scenario
+                  {tx("Create Scenario")}
                 </button>
               </div>
             </form>
@@ -2339,7 +2845,7 @@ export function Workspace() {
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-bold text-white flex items-center space-x-2">
                 <Upload className="w-5 h-5 text-cyan-400" />
-                <span>Import Scenario JSON</span>
+                <span>{tx("Import Scenario JSON")}</span>
               </h3>
               <button
                 onClick={() => setShowImportModal(false)}
@@ -2352,7 +2858,7 @@ export function Workspace() {
             <form onSubmit={handleImportSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Select JSON File
+                  {tx("Select JSON File")}
                 </label>
                 <input
                   type="file"
@@ -2364,7 +2870,7 @@ export function Workspace() {
 
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                  Or Paste Valid Scenario JSON
+                  {tx("Or Paste Valid Scenario JSON")}
                 </label>
                 <textarea
                   rows={6}
@@ -2373,7 +2879,9 @@ export function Workspace() {
                     setImportJsonText(e.target.value);
                     setImportError(null);
                   }}
-                  placeholder='{"name": "Custom Model", "inputs": { ... }}'
+                  placeholder={tx(
+                    '{"name": "Custom Model", "inputs": { ... }}',
+                  )}
                   className="w-full bg-[#11192e] border border-[#30363d] rounded-lg p-3 text-xs text-slate-200 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
                 ></textarea>
               </div>
@@ -2386,8 +2894,9 @@ export function Workspace() {
               )}
 
               <p className="text-[11px] text-slate-400">
-                All imported data is strictly sanitized and validated against the Fabric Master v4.0 Zod schema. Scripts
-                or unauthorized metadata tags are automatically stripped.
+                {tx(
+                  "All imported data is strictly sanitized and validated against the Fabric Master v4.0 Zod schema. Scripts or unauthorized metadata tags are automatically stripped.",
+                )}
               </p>
 
               <div className="flex justify-end space-x-3 pt-2">
@@ -2396,13 +2905,13 @@ export function Workspace() {
                   onClick={() => setShowImportModal(false)}
                   className="px-4 py-2 rounded-lg bg-[#162032] hover:bg-[#1f2d47] text-slate-300 text-xs font-medium"
                 >
-                  Cancel
+                  {tx("Cancel")}
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md"
                 >
-                  Validate & Import
+                  {tx("Validate & Import")}
                 </button>
               </div>
             </form>

@@ -8,8 +8,12 @@ const { renderPage, extraPaths = [] } = await import(pathToFileURL(path.resolve(
 const base = await fs.readFile('dist/index.html', 'utf8');
 const xml = await fs.readFile('public/sitemap.xml', 'utf8');
 const paths = [...new Set([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => new URL(match[1]).pathname).concat(extraPaths))];
-for (const route of paths) {
-  const { html, head = '' } = await renderPage(route);
+const languageCodes = ['es','ja','pt','zh','ru','fr','ko','de'];
+const baseRoutes = paths.filter(route => !/^\/(es|ja|pt|zh|ru|fr|ko|de)(?:\/|$)/.test(route));
+for (const language of languageCodes) { for (const route of baseRoutes) paths.push(route === "/" ? `/${language}` : `/${language}${route}`); }
+const uniquePaths = [...new Set(paths)];
+for (const route of uniquePaths) {
+  const { html, head = '', language = 'en' } = await renderPage(route);
   if (!html.includes('<h1')) throw Error('Missing rendered heading: ' + route);
   let template;
   const target = path.join('dist', route, 'index.html');
@@ -26,16 +30,17 @@ for (const route of paths) {
   if (head) {
     result = result.replace(/<title>[\s\S]*?<\/title>/g, '').replace(/<meta[^>]+(?:name="(?:description|keywords|robots|author|title)"|property="(?:og:|twitter:)[^"]+")[^>]*>/g, '').replace(/<link[^>]+rel="canonical"[^>]*>/g, '').replace(/<script[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g, '').replace('</head>', head + '</head>');
   }
+  result = result.replace(/<html[^>]*>/, `<html lang="${language}">`);
   await fs.mkdir(path.dirname(target), { recursive: true });
   await fs.writeFile(target, result);
 }
-console.log('Rendered public page content for ' + paths.length + ' routes.');
+console.log('Rendered public page content for ' + uniquePaths.length + ' routes.');
 
 // Generated routes are served before the existing application fallback.
 const routing = JSON.parse(await fs.readFile('vercel.json', 'utf8'));
 const existing = routing.rewrites || [];
-const exact = paths.filter(route => route !== '/').map(route => ({ source: route, destination: route + '/index.html' }));
+const exact = uniquePaths.filter(route => route !== '/').map(route => ({ source: route, destination: route + '/index.html' }));
 const api = existing.filter(rule => rule.source.startsWith('/api'));
-const rest = existing.filter(rule => !rule.source.startsWith('/api') && !paths.includes(rule.source));
+const rest = existing.filter(rule => !rule.source.startsWith('/api') && !uniquePaths.includes(rule.source));
 routing.rewrites = [...api, ...exact, ...rest];
 await fs.writeFile('vercel.json', JSON.stringify(routing, null, 2) + '\n');

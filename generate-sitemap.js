@@ -72,7 +72,11 @@ for (const id of docIds) {
 `;
 }
 
+// Fully translated homepages have stable, crawlable language URLs.
+for (const language of ['es','ja','pt','zh','ru','fr','ko','de']) {
+  sitemap += `  <url><loc>https://fabric.dattasable.com/${language}</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>\n`;
+}
 sitemap += `</urlset>`;
 
 fs.writeFileSync('public/sitemap.xml', sitemap);
-console.log(`Sitemap generated successfully containing ${indexableStaticRoutes.length + skuSlugs.length + comparisonSlugs.length + docIds.length} INDEXABLE Category A URLs (filtered out utility/experimental noindex routes)!`);
+console.log(`Sitemap generated successfully containing ${indexableStaticRoutes.length + skuSlugs.length + comparisonSlugs.length + docIds.length + 8} INDEXABLE Category A URLs (filtered out utility/experimental noindex routes)!`);

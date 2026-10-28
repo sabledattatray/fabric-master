@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "node download.js && node generate-sitemap.js && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs && node scripts/prerender.mjs",
+    "build": "node scripts/build-translations.mjs && node download.js && node generate-sitemap.js && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs && node scripts/prerender.mjs",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test:readiness": "node scripts/test-readiness.mjs"
+    "test:readiness": "node scripts/test-readiness.mjs",
+    "test:i18n": "node scripts/test-i18n.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

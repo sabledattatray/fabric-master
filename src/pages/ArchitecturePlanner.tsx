@@ -1,5 +1,6 @@
+import { useTranslation } from "react-i18next";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "../components/SEO";
 import { Link } from "react-router-dom";
 import {
   ArrowDown,
@@ -43,7 +44,6 @@ import {
 } from "../components/architecture/ArchitectureCanvas";
 import "../styles/onelake.css";
 import "../styles/architecture-planner.css";
-
 const DEFAULT_TEMPLATE = "medallion-lakehouse";
 type View = "diagram" | "outline" | "connections";
 const VIEW_OPTIONS = [
@@ -51,8 +51,8 @@ const VIEW_OPTIONS = [
   { id: "outline", label: "Outline", icon: LayoutList },
   { id: "connections", label: "Connections", icon: GitBranch },
 ] as const;
-
 export function ArchitecturePlanner() {
+  const tx = useTranslation().t;
   const [selectedTemplateKey, setSelectedTemplateKey] =
     useState(DEFAULT_TEMPLATE);
   const [currentDiagram, setCurrentDiagram] = useState<ArchitectureDiagram>(
@@ -72,7 +72,6 @@ export function ArchitecturePlanner() {
   const modalRef = useRef<HTMLDivElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tabRefs = useRef(new Map<View, HTMLButtonElement>());
-
   useEffect(() => {
     const saved = getSavedDiagrams().find(
       (diagram) => diagram.id === DEFAULT_TEMPLATE,
@@ -93,7 +92,6 @@ export function ArchitecturePlanner() {
       if (toastTimer.current) clearTimeout(toastTimer.current);
     };
   }, []);
-
   useEffect(() => {
     if (!showAddModal) return;
     const previousFocus = document.activeElement as HTMLElement | null;
@@ -124,7 +122,6 @@ export function ArchitecturePlanner() {
       previousFocus?.focus();
     };
   }, [showAddModal]);
-
   const selected =
     currentDiagram.nodes.find((node) => node.id === selectedId) ||
     currentDiagram.nodes[0];
@@ -154,7 +151,6 @@ export function ArchitecturePlanner() {
   const populatedStages = new Set(
     currentDiagram.nodes.map((node) => node.category),
   ).size;
-
   const showToast = (message: string) => {
     setToastMessage(message);
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -289,22 +285,12 @@ export function ArchitecturePlanner() {
     setView(next);
     tabRefs.current.get(next)?.focus();
   };
-
   return (
     <div className="onelake-page ap-page">
-      <Helmet>
-        <title>
-          Architecture Planner | Microsoft Fabric Design Studio | Fabric Master
-        </title>
-        <meta
-          name="description"
-          content="Plan your Microsoft Fabric architecture with reference templates, a connected visual canvas, structural rule checks, and diagram exports."
-        />
-        <link
-          rel="canonical"
-          href="https://fabric.dattasable.com/architecture/planner"
-        />
-      </Helmet>
+      <SEO
+        title="Architecture Planner"
+        description="Design your Microsoft Fabric architecture with reference templates, connected components, and structural rule checks."
+      />
       {toastMessage && (
         <div role="status" className="ap-toast">
           <CheckCircle2 size={17} />
@@ -315,20 +301,21 @@ export function ArchitecturePlanner() {
         <div>
           <div className="eyebrow">
             <Layers size={14} />
-            ARCHITECTURE DESIGN STUDIO
+            {tx("ARCHITECTURE DESIGN STUDIO")}
           </div>
           <h1>
-            Architecture Planner
-            <span>A considered design. A clearer direction.</span>
+            {tx("Architecture Planner")}
+            <span>{tx("A considered design. A clearer direction.")}</span>
           </h1>
           <p>
-            Shape your Microsoft Fabric estate. Start with a reference
-            architecture, connect the pieces, and turn your design into a plan.
+            {tx(
+              "Shape your Microsoft Fabric estate. Start with a reference architecture, connect the pieces, and turn your design into a plan.",
+            )}
           </p>
         </div>
         <Link to="/architecture/onelake" className="premium-button secondary">
           <Waves size={15} />
-          Explore OneLake
+          {tx("Explore OneLake")}
           <ArrowUpRight size={15} />
         </Link>
       </div>
@@ -338,7 +325,8 @@ export function ArchitecturePlanner() {
             <Database size={17} />
           </span>
           <span>
-            <strong>{currentDiagram.nodes.length}</strong>Components
+            <strong>{currentDiagram.nodes.length}</strong>
+            {tx("Components")}
           </span>
         </div>
         <div>
@@ -346,7 +334,8 @@ export function ArchitecturePlanner() {
             <GitBranch size={17} />
           </span>
           <span>
-            <strong>{currentDiagram.connections.length}</strong>Connections
+            <strong>{currentDiagram.connections.length}</strong>
+            {tx("Connections")}
           </span>
         </div>
         <div>
@@ -358,7 +347,7 @@ export function ArchitecturePlanner() {
               {populatedStages}
               <small>/ 6</small>
             </strong>
-            Stages in use
+            {tx("Stages in use")}
           </span>
         </div>
         <div
@@ -370,9 +359,12 @@ export function ArchitecturePlanner() {
               {validation.score}
               <small>/ 100</small>
             </strong>
-            <span>Structural rule score</span>
+            <span>{tx("Structural rule score")}</span>
           </span>
-          <a href="#ap-validation" aria-label="Review architecture checks">
+          <a
+            href="#ap-validation"
+            aria-label={tx("Review architecture checks")}
+          >
             <ArrowUpRight size={16} />
           </a>
         </div>
@@ -380,7 +372,9 @@ export function ArchitecturePlanner() {
 
       <div className="ap-template-bar">
         <div>
-          <label htmlFor="ap-template-select">REFERENCE ARCHITECTURE</label>
+          <label htmlFor="ap-template-select">
+            {tx("REFERENCE ARCHITECTURE")}
+          </label>
           <select
             id="ap-template-select"
             value={selectedTemplateKey}
@@ -389,15 +383,15 @@ export function ArchitecturePlanner() {
             {Object.entries(REFERENCE_ARCHITECTURE_TEMPLATES).map(
               ([key, template]) => (
                 <option key={key} value={key}>
-                  {template.name}
+                  {tx(String(template.name ?? ""))}
                 </option>
               ),
             )}
           </select>
         </div>
         <span className="ap-template-count">
-          {Object.keys(REFERENCE_ARCHITECTURE_TEMPLATES).length} reference
-          patterns
+          {Object.keys(REFERENCE_ARCHITECTURE_TEMPLATES).length}
+          {" " + tx("reference patterns")}
         </span>
         <button
           type="button"
@@ -405,13 +399,13 @@ export function ArchitecturePlanner() {
           onClick={() => openAdd()}
         >
           <Plus size={16} />
-          Add component
+          {tx("Add component")}
         </button>
       </div>
       <div className="ap-workbench">
         <section
           className="ol-canvas-panel ap-canvas-panel"
-          aria-label="Architecture design canvas"
+          aria-label={tx("Architecture design canvas")}
         >
           <div className="ol-canvas-heading">
             <div>
@@ -419,22 +413,24 @@ export function ArchitecturePlanner() {
                 <Network size={18} />
               </span>
               <div>
-                <h2>{currentDiagram.name}</h2>
+                <h2>{tx(String(currentDiagram.name ?? ""))}</h2>
                 <p>
-                  Logical architecture <span>/</span> Editable design
+                  {tx("Logical architecture") + " "}
+                  <span>/</span>
+                  {" " + tx("Editable design")}
                 </p>
               </div>
             </div>
-            <span className="ol-sample-badge">DESIGN MODE</span>
+            <span className="ol-sample-badge">{tx("DESIGN MODE")}</span>
           </div>
           <p className="ap-template-description">
-            {currentDiagram.description}
+            {tx(String(currentDiagram.description ?? ""))}
           </p>
           <div className="ol-toolbar ap-toolbar">
             <div
               className="ol-view-tabs"
               role="tablist"
-              aria-label="Architecture views"
+              aria-label={tx("Architecture views")}
               onKeyDown={handleTabKey}
             >
               {VIEW_OPTIONS.map((option) => (
@@ -453,7 +449,7 @@ export function ArchitecturePlanner() {
                   onClick={() => setView(option.id)}
                 >
                   <option.icon size={14} />
-                  {option.label}
+                  {tx(String(option.label ?? ""))}
                 </button>
               ))}
             </div>
@@ -461,8 +457,8 @@ export function ArchitecturePlanner() {
               <button
                 type="button"
                 onClick={resetDiagram}
-                aria-label="Reset template"
-                title="Restore the original template"
+                aria-label={tx("Reset template")}
+                title={tx("Restore the original template")}
               >
                 <RotateCcw size={14} />
               </button>
@@ -470,8 +466,8 @@ export function ArchitecturePlanner() {
               <button
                 type="button"
                 onClick={() => exportDiagramAsSVG(currentDiagram)}
-                aria-label="Export SVG"
-                title="Export SVG"
+                aria-label={tx("Export SVG")}
+                title={tx("Export SVG")}
               >
                 <Download size={14} />
                 <span>SVG</span>
@@ -479,8 +475,8 @@ export function ArchitecturePlanner() {
               <button
                 type="button"
                 onClick={() => exportDiagramAsJSON(currentDiagram)}
-                aria-label="Export JSON"
-                title="Export JSON"
+                aria-label={tx("Export JSON")}
+                title={tx("Export JSON")}
               >
                 <FileJson size={14} />
                 <span>JSON</span>
@@ -489,9 +485,9 @@ export function ArchitecturePlanner() {
           </div>
           {selected && (
             <div className="ol-mobile-selection">
-              <span>{selected.label}</span>
+              <span>{tx(String(selected.label ?? ""))}</span>
               <a href="#ap-item-inspector">
-                View details
+                {tx("View details")}
                 <ArrowDown size={13} />
               </a>
             </div>
@@ -507,9 +503,9 @@ export function ArchitecturePlanner() {
                 <div className="ap-canvas-context">
                   <span>
                     <span className="status-dot" />
-                    YOUR FABRIC DATA ESTATE
+                    {tx("YOUR FABRIC DATA ESTATE")}
                   </span>
-                  <span>SELECT A COMPONENT TO INSPECT</span>
+                  <span>{tx("SELECT A COMPONENT TO INSPECT")}</span>
                 </div>
                 <ArchitectureCanvas
                   nodes={currentDiagram.nodes}
@@ -521,23 +517,26 @@ export function ArchitecturePlanner() {
                 <div className="ap-canvas-legend">
                   <span>
                     <i className="ap-legend-active" />
-                    Selected connections
+                    {tx("Selected connections")}
                   </span>
                   <span>
                     <i />
-                    Other connections
+                    {tx("Other connections")}
                   </span>
-                  <span>Logical relationships, not measured data traffic</span>
+                  <span>
+                    {tx("Logical relationships, not measured data traffic")}
+                  </span>
                 </div>
               </>
             )}
             {view === "outline" && (
               <div className="ap-outline">
                 <div className="ap-view-intro">
-                  <h3>Component outline</h3>
+                  <h3>{tx("Component outline")}</h3>
                   <p>
-                    A keyboard-friendly inventory of every component in your
-                    design.
+                    {tx(
+                      "A keyboard-friendly inventory of every component in your design.",
+                    )}
                   </p>
                 </div>
                 {ARCHITECTURE_STAGES.map((stage) => {
@@ -551,7 +550,7 @@ export function ArchitecturePlanner() {
                     >
                       <h4>
                         <stage.icon size={14} />
-                        {stage.number} / {stage.title}
+                        {stage.number} / {tx(String(stage.title ?? ""))}
                         <span>{nodes.length}</span>
                       </h4>
                       {nodes.length ? (
@@ -564,15 +563,17 @@ export function ArchitecturePlanner() {
                             className={`ap-outline-item ${selected?.id === node.id ? "is-selected" : ""}`}
                           >
                             <span>
-                              <strong>{node.label}</strong>
-                              <small>{node.serviceName}</small>
+                              <strong>{tx(String(node.label ?? ""))}</strong>
+                              <small>
+                                {tx(String(node.serviceName ?? ""))}
+                              </small>
                             </span>
                             <ArrowUpRight size={14} />
                           </button>
                         ))
                       ) : (
                         <p className="ap-empty-text">
-                          No components in this stage.
+                          {tx("No components in this stage.")}
                         </p>
                       )}
                     </section>
@@ -583,10 +584,11 @@ export function ArchitecturePlanner() {
             {view === "connections" && (
               <div className="ap-connections-view">
                 <div className="ap-view-intro">
-                  <h3>Connected by design</h3>
+                  <h3>{tx("Connected by design")}</h3>
                   <p>
-                    Inspect the source, destination, and purpose of each
-                    configured relationship.
+                    {tx(
+                      "Inspect the source, destination, and purpose of each configured relationship.",
+                    )}
                   </p>
                 </div>
                 {currentDiagram.connections.length ? (
@@ -621,7 +623,7 @@ export function ArchitecturePlanner() {
                               {to?.label || edge.to}
                             </button>
                           </div>
-                          <p>{edge.label || "Logical relationship"}</p>
+                          <p>{tx(edge.label || "Logical relationship")}</p>
                         </div>
                         <button
                           type="button"
@@ -637,10 +639,11 @@ export function ArchitecturePlanner() {
                 ) : (
                   <div className="ap-empty-state">
                     <GitBranch size={30} />
-                    <h3>No connections yet</h3>
+                    <h3>{tx("No connections yet")}</h3>
                     <p>
-                      Select a component and connect it to a destination in the
-                      inspector.
+                      {tx(
+                        "Select a component and connect it to a destination in the inspector.",
+                      )}
                     </p>
                   </div>
                 )}
@@ -651,14 +654,19 @@ export function ArchitecturePlanner() {
             <span>
               <ShieldCheck size={13} />
               {saveState === "saved"
-                ? "Saved in this browser"
+                ? tx("Saved in this browser")
                 : saveState === "unavailable"
-                  ? "Browser storage unavailable · export to keep your design"
-                  : "Changes are saved in this browser"}
+                  ? tx(
+                      "Browser storage unavailable \u00B7 export to keep your design",
+                    )
+                  : tx("Changes are saved in this browser")}
             </span>
             <span>
-              {currentDiagram.nodes.length} items <i />
-              {currentDiagram.connections.length} relationships
+              {currentDiagram.nodes.length}
+              {" " + tx("items") + " "}
+              <i />
+              {currentDiagram.connections.length}
+              {" " + tx("relationships")}
             </span>
           </div>
         </section>
@@ -667,10 +675,10 @@ export function ArchitecturePlanner() {
           className="ol-inspector ap-inspector"
           id="ap-item-inspector"
           tabIndex={-1}
-          aria-label="Component inspector"
+          aria-label={tx("Component inspector")}
         >
           <div className="ol-inspector-heading">
-            <span>COMPONENT INSPECTOR</span>
+            <span>{tx("COMPONENT INSPECTOR")}</span>
             <MousePointer2 size={13} />
           </div>
           {selected ? (
@@ -681,27 +689,31 @@ export function ArchitecturePlanner() {
                 <span className="ol-inspector-icon">
                   <ArchitectureItemIcon node={selected} size={25} />
                 </span>
-                <span className="ol-layer-pill">{selected.category}</span>
-                <h2>{selected.label}</h2>
-                <span>{selected.serviceName}</span>
+                <span className="ol-layer-pill">
+                  {tx(String(selected.category ?? ""))}
+                </span>
+                <h2>{tx(String(selected.label ?? ""))}</h2>
+                <span>{tx(String(selected.serviceName ?? ""))}</span>
               </div>
               <div className="ol-inspector-section">
-                <h3>ROLE IN YOUR ARCHITECTURE</h3>
-                <p>{selected.description}</p>
+                <h3>{tx("ROLE IN YOUR ARCHITECTURE")}</h3>
+                <p>{tx(String(selected.description ?? ""))}</p>
               </div>
               <dl className="ol-item-properties">
                 <div>
-                  <dt>Design stage</dt>
+                  <dt>{tx("Design stage")}</dt>
                   <dd>
-                    {
-                      ARCHITECTURE_STAGES.find(
-                        (stage) => stage.category === selected.category,
-                      )?.title
-                    }
+                    {tx(
+                      String(
+                        ARCHITECTURE_STAGES.find(
+                          (stage) => stage.category === selected.category,
+                        )?.title ?? "",
+                      ),
+                    )}
                   </dd>
                 </div>
                 <div>
-                  <dt>Upstream items</dt>
+                  <dt>{tx("Upstream items")}</dt>
                   <dd>
                     {
                       selectedConnections.filter(
@@ -711,7 +723,7 @@ export function ArchitecturePlanner() {
                   </dd>
                 </div>
                 <div>
-                  <dt>Downstream items</dt>
+                  <dt>{tx("Downstream items")}</dt>
                   <dd>
                     {
                       selectedConnections.filter(
@@ -723,7 +735,8 @@ export function ArchitecturePlanner() {
               </dl>
               <div className="ol-inspector-section">
                 <h3>
-                  CONNECTED ITEMS<span>{selectedConnections.length}</span>
+                  {tx("CONNECTED ITEMS")}
+                  <span>{selectedConnections.length}</span>
                 </h3>
                 {selectedConnections.length ? (
                   selectedConnections.map((edge, index) => {
@@ -742,9 +755,11 @@ export function ArchitecturePlanner() {
                           <ArchitectureItemIcon node={neighbor} size={16} />
                         </span>
                         <span>
-                          <small>{incoming ? "UPSTREAM" : "DOWNSTREAM"}</small>
-                          <strong>{neighbor.label}</strong>
-                          <em>{edge.label || "Logical relationship"}</em>
+                          <small>
+                            {incoming ? tx("UPSTREAM") : tx("DOWNSTREAM")}
+                          </small>
+                          <strong>{tx(String(neighbor.label ?? ""))}</strong>
+                          <em>{tx(edge.label || "Logical relationship")}</em>
                         </span>
                         <ArrowUpRight size={13} />
                       </button>
@@ -752,17 +767,19 @@ export function ArchitecturePlanner() {
                   })
                 ) : (
                   <p className="ap-empty-text">
-                    No relationships configured. Connect this item below.
+                    {tx(
+                      "No relationships configured. Connect this item below.",
+                    )}
                   </p>
                 )}
               </div>
               <form className="ap-connect-form" onSubmit={addConnection}>
                 <h3>
                   <Link2 size={13} />
-                  ADD A CONNECTION
+                  {tx("ADD A CONNECTION")}
                 </h3>
                 <label htmlFor="ap-connection-target">
-                  Connect this item to
+                  {tx("Connect this item to")}
                 </label>
                 <select
                   id="ap-connection-target"
@@ -773,22 +790,23 @@ export function ArchitecturePlanner() {
                   {availableTargets.length ? (
                     availableTargets.map((node) => (
                       <option key={node.id} value={node.id}>
-                        {node.label}
+                        {tx(String(node.label ?? ""))}
                       </option>
                     ))
                   ) : (
-                    <option value="">No available destinations</option>
+                    <option value="">{tx("No available destinations")}</option>
                   )}
                 </select>
                 <label htmlFor="ap-connection-label">
-                  Relationship label <span>Optional</span>
+                  {tx("Relationship label") + " "}
+                  <span>{tx("Optional")}</span>
                 </label>
                 <input
                   id="ap-connection-label"
                   maxLength={100}
                   value={connectionLabel}
                   onChange={(event) => setConnectionLabel(event.target.value)}
-                  placeholder="e.g. Curated data"
+                  placeholder={tx("e.g. Curated data")}
                 />
                 <button
                   type="submit"
@@ -796,7 +814,7 @@ export function ArchitecturePlanner() {
                   className="premium-button secondary"
                 >
                   <Plus size={13} />
-                  Add connection
+                  {tx("Add connection")}
                 </button>
               </form>
               {selectedFindings.length > 0 && (
@@ -804,7 +822,7 @@ export function ArchitecturePlanner() {
                   {selectedFindings.map((issue) => (
                     <p key={issue.id}>
                       <TriangleAlert size={13} />
-                      <span>{issue.message}</span>
+                      <span>{tx(String(issue.message ?? ""))}</span>
                     </p>
                   ))}
                 </div>
@@ -815,20 +833,24 @@ export function ArchitecturePlanner() {
                 onClick={removeSelected}
               >
                 <Trash2 size={13} />
-                Remove component
+                {tx("Remove component")}
               </button>
             </div>
           ) : (
             <div className="ap-empty-state">
               <Layers size={30} />
-              <h3>Your canvas is ready</h3>
-              <p>Add a component or restore a reference template to begin.</p>
+              <h3>{tx("Your canvas is ready")}</h3>
+              <p>
+                {tx(
+                  "Add a component or restore a reference template to begin.",
+                )}
+              </p>
               <button
                 type="button"
                 className="premium-button primary"
                 onClick={() => openAdd()}
               >
-                Add component
+                {tx("Add component")}
               </button>
             </div>
           )}
@@ -838,7 +860,7 @@ export function ArchitecturePlanner() {
       <section
         className="ap-validation"
         id="ap-validation"
-        aria-label="Architecture rule checks"
+        aria-label={tx("Architecture rule checks")}
       >
         <div className="ap-validation-heading">
           <div>
@@ -846,8 +868,8 @@ export function ArchitecturePlanner() {
               <ShieldCheck size={20} />
             </span>
             <div>
-              <div className="eyebrow">CHECK THE FOUNDATIONS</div>
-              <h2>Architecture review</h2>
+              <div className="eyebrow">{tx("CHECK THE FOUNDATIONS")}</div>
+              <h2>{tx("Architecture review")}</h2>
             </div>
           </div>
           <span
@@ -855,12 +877,13 @@ export function ArchitecturePlanner() {
           >
             {validation.issues.length
               ? `${validation.issues.length} findings`
-              : "All structural checks passed"}
+              : tx("All structural checks passed")}
           </span>
         </div>
         <p className="ap-review-description">
-          Checks for source, storage, analytics, governance, and isolated
-          components. Use these findings to refine your design.
+          {tx(
+            "Checks for source, storage, analytics, governance, and isolated components. Use these findings to refine your design.",
+          )}
         </p>
         {validation.issues.length ? (
           <div className="ap-findings-list">
@@ -876,8 +899,8 @@ export function ArchitecturePlanner() {
                 )}
                 <div>
                   <span>{issue.severity}</span>
-                  <h3>{issue.message}</h3>
-                  <p>{issue.remediation}</p>
+                  <h3>{tx(String(issue.message ?? ""))}</h3>
+                  <p>{tx(String(issue.remediation ?? ""))}</p>
                 </div>
                 {issue.nodeId && (
                   <button
@@ -888,7 +911,7 @@ export function ArchitecturePlanner() {
                       document.getElementById("ap-item-inspector")?.focus();
                     }}
                   >
-                    Inspect
+                    {tx("Inspect")}
                     <ArrowUpRight size={13} />
                   </button>
                 )}
@@ -906,7 +929,7 @@ export function ArchitecturePlanner() {
             ].map((label) => (
               <span key={label}>
                 <CheckCircle2 size={14} />
-                {label}
+                {tx(label)}
               </span>
             ))}
           </div>
@@ -916,7 +939,7 @@ export function ArchitecturePlanner() {
         <section>
           <h2>
             <CheckCircle2 size={17} />
-            Before you implement
+            {tx("Before you implement")}
           </h2>
           <ul>
             {currentDiagram.prerequisites.map((item) => (
@@ -930,7 +953,7 @@ export function ArchitecturePlanner() {
         <section>
           <h2>
             <ShieldCheck size={17} />
-            Governance by design
+            {tx("Governance by design")}
           </h2>
           <p>{currentDiagram.governanceNotes}</p>
           <a
@@ -939,7 +962,7 @@ export function ArchitecturePlanner() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Read the governance guidance
+            {tx("Read the governance guidance")}
             <ArrowUpRight size={14} />
           </a>
         </section>
@@ -965,20 +988,21 @@ export function ArchitecturePlanner() {
               <button
                 type="button"
                 className="icon-button"
-                aria-label="Close component catalog"
+                aria-label={tx("Close component catalog")}
                 onClick={() => setShowAddModal(false)}
               >
                 <X size={19} />
               </button>
             </div>
-            <div className="eyebrow">BUILD YOUR ARCHITECTURE</div>
-            <h2 id="ap-add-title">Add a component</h2>
+            <div className="eyebrow">{tx("BUILD YOUR ARCHITECTURE")}</div>
+            <h2 id="ap-add-title">{tx("Add a component")}</h2>
             <p>
-              Choose a building block, give it a name, and connect it to your
-              estate.
+              {tx(
+                "Choose a building block, give it a name, and connect it to your estate.",
+              )}
             </p>
             <form onSubmit={addComponent}>
-              <label htmlFor="ap-component-type">Component</label>
+              <label htmlFor="ap-component-type">{tx("Component")}</label>
               <select
                 id="ap-component-type"
                 value={newNodeCategoryIndex}
@@ -988,30 +1012,37 @@ export function ArchitecturePlanner() {
               >
                 {AVAILABLE_COMPONENT_CATALOG.map((item, index) => (
                   <option key={`${item.category}-${item.label}`} value={index}>
-                    {item.label} · {item.category}
+                    {tx(String(item.label ?? ""))} ·{" "}
+                    {tx(String(item.category ?? ""))}
                   </option>
                 ))}
               </select>
               <div className="ap-catalog-description">
                 <Info size={15} />
                 <p>
-                  {
-                    AVAILABLE_COMPONENT_CATALOG[newNodeCategoryIndex]
-                      ?.description
-                  }
+                  {tx(
+                    String(
+                      AVAILABLE_COMPONENT_CATALOG[newNodeCategoryIndex]
+                        ?.description ?? "",
+                    ),
+                  )}
                 </p>
               </div>
               <label htmlFor="ap-component-name">
-                Custom name <span>Optional</span>
+                {tx("Custom name") + " "}
+                <span>{tx("Optional")}</span>
               </label>
               <input
                 id="ap-component-name"
                 maxLength={80}
                 value={newNodeLabel}
                 onChange={(event) => setNewNodeLabel(event.target.value)}
-                placeholder={
-                  AVAILABLE_COMPONENT_CATALOG[newNodeCategoryIndex]?.label
-                }
+                placeholder={tx(
+                  String(
+                    AVAILABLE_COMPONENT_CATALOG[newNodeCategoryIndex]?.label ??
+                      "",
+                  ),
+                )}
               />
               <div className="ap-modal-footer">
                 <button
@@ -1019,11 +1050,11 @@ export function ArchitecturePlanner() {
                   className="premium-button secondary"
                   onClick={() => setShowAddModal(false)}
                 >
-                  Cancel
+                  {tx("Cancel")}
                 </button>
                 <button type="submit" className="premium-button primary">
                   <Plus size={15} />
-                  Add to canvas
+                  {tx("Add to canvas")}
                 </button>
               </div>
             </form>

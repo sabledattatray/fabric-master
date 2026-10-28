@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 /**
  * Fabric Master v4.0 - Capacity Observability & Telemetry Diagnostics Studio
  *
@@ -9,9 +10,8 @@
  * - Reality-check comparison between observed telemetry and planned capacity scenarios
  * - 100% Client-side in-memory execution with zero network exfiltration
  */
-
 import React, { useState, useMemo, useRef } from "react";
-import { Helmet } from "react-helmet-async";
+import { SEO } from "../components/SEO";
 import { Link } from "react-router-dom";
 import {
   Activity,
@@ -34,7 +34,7 @@ import {
   TrendingUp,
   AlertOctagon,
   ChevronDown,
-  Database
+  Database,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -48,7 +48,7 @@ import {
   ReferenceLine,
   BarChart,
   Bar,
-  Cell
+  Cell,
 } from "recharts";
 import {
   ObservabilitySummary,
@@ -58,10 +58,9 @@ import {
   getSampleMedallionLakehouse,
   getSampleThrottledWorkload,
   getSampleSparkBatchBurn,
-  compareTelemetryWithScenario
+  compareTelemetryWithScenario,
 } from "../lib/observability";
 import { getScenarios, getActiveScenarioId } from "../lib/scenarios";
-
 const CAPACITY_SKUS = [
   { sku: "F2", cu: 2 },
   { sku: "F4", cu: 4 },
@@ -73,42 +72,44 @@ const CAPACITY_SKUS = [
   { sku: "F256", cu: 256 },
   { sku: "F512", cu: 512 },
   { sku: "F1024", cu: 1024 },
-  { sku: "F2048", cu: 2048 }
+  { sku: "F2048", cu: 2048 },
 ];
-
 export function Observability() {
+  const tx = useTranslation().t;
   // Initial state loads the Healthy Enterprise Medallion Lakehouse sample
-  const [summary, setSummary] = useState<ObservabilitySummary>(() => getSampleMedallionLakehouse());
+  const [summary, setSummary] = useState<ObservabilitySummary>(() =>
+    getSampleMedallionLakehouse(),
+  );
   const [selectedSku, setSelectedSku] = useState<string>("F64");
   const [selectedItemFilter, setSelectedItemFilter] = useState<string>("all");
   const [showUploadModal, setShowUploadModal] = useState<boolean>(false);
   const [uploadText, setUploadText] = useState<string>("");
-  const [uploadDatasetName, setUploadDatasetName] = useState<string>("Custom Telemetry Export");
+  const [uploadDatasetName, setUploadDatasetName] = useState<string>(
+    "Custom Telemetry Export",
+  );
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [showQualityModal, setShowQualityModal] = useState<boolean>(false);
   const [showSmoothingHelp, setShowSmoothingHelp] = useState<boolean>(false);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   // Active planning scenarios for comparison
   const scenarios = useMemo(() => getScenarios(), []);
   const activeScenarioId = useMemo(() => getActiveScenarioId(), []);
   const activeScenario = useMemo(() => {
-    return scenarios.find(s => s.id === activeScenarioId) || scenarios[0] || null;
+    return (
+      scenarios.find((s) => s.id === activeScenarioId) || scenarios[0] || null
+    );
   }, [scenarios, activeScenarioId]);
-
   // Evaluated capacity limit in CUs
   const evaluatedCapacityLimit = useMemo(() => {
-    const found = CAPACITY_SKUS.find(s => s.sku === selectedSku);
+    const found = CAPACITY_SKUS.find((s) => s.sku === selectedSku);
     return found ? found.cu : 64;
   }, [selectedSku]);
-
   // Telemetry comparison against active scenario
   const scenarioComparison = useMemo(() => {
-    const plannedSku = activeScenario?.evaluation?.targetSkuRecommendation?.safeSkuName || "F64";
+    const plannedSku =
+      activeScenario?.evaluation?.targetSkuRecommendation?.safeSkuName || "F64";
     return compareTelemetryWithScenario(summary, plannedSku);
   }, [summary, activeScenario]);
-
   // Handle switching sample datasets
   const loadSample = (type: "medallion" | "throttled" | "spark") => {
     if (type === "medallion") {
@@ -122,25 +123,30 @@ export function Observability() {
       setSelectedSku("F16");
     }
   };
-
   // Handle direct file upload (CSV or JSON)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = (event) => {
       const content = event.target?.result as string;
       if (!content) return;
-
       const fileName = file.name;
       try {
         if (fileName.toLowerCase().endsWith(".json")) {
-          const res = parseTelemetryJSON(content, fileName, evaluatedCapacityLimit);
+          const res = parseTelemetryJSON(
+            content,
+            fileName,
+            evaluatedCapacityLimit,
+          );
           setSummary(res.summary);
           setSelectedSku(res.summary.recommendedSku);
         } else {
-          const res = parseTelemetryCSV(content, fileName, evaluatedCapacityLimit);
+          const res = parseTelemetryCSV(
+            content,
+            fileName,
+            evaluatedCapacityLimit,
+          );
           setSummary(res.summary);
           setSelectedSku(res.summary.recommendedSku);
         }
@@ -153,22 +159,29 @@ export function Observability() {
     };
     reader.readAsText(file);
   };
-
   // Handle manual paste upload
   const handleManualUpload = () => {
     if (!uploadText.trim()) {
       setUploadError("Please paste valid CSV or JSON content.");
       return;
     }
-
     try {
-      const isJson = uploadText.trim().startsWith("{") || uploadText.trim().startsWith("[");
+      const isJson =
+        uploadText.trim().startsWith("{") || uploadText.trim().startsWith("[");
       if (isJson) {
-        const res = parseTelemetryJSON(uploadText, uploadDatasetName, evaluatedCapacityLimit);
+        const res = parseTelemetryJSON(
+          uploadText,
+          uploadDatasetName,
+          evaluatedCapacityLimit,
+        );
         setSummary(res.summary);
         setSelectedSku(res.summary.recommendedSku);
       } else {
-        const res = parseTelemetryCSV(uploadText, uploadDatasetName, evaluatedCapacityLimit);
+        const res = parseTelemetryCSV(
+          uploadText,
+          uploadDatasetName,
+          evaluatedCapacityLimit,
+        );
         setSummary(res.summary);
         setSelectedSku(res.summary.recommendedSku);
       }
@@ -179,16 +192,18 @@ export function Observability() {
       setUploadError(err?.message || "Failed to parse pasted telemetry.");
     }
   };
-
   // Filter top consumers
   const filteredConsumers = useMemo(() => {
     if (selectedItemFilter === "all") return summary.topConsumers;
-    return summary.topConsumers.filter(c => c.itemKind.toLowerCase() === selectedItemFilter.toLowerCase());
+    return summary.topConsumers.filter(
+      (c) => c.itemKind.toLowerCase() === selectedItemFilter.toLowerCase(),
+    );
   }, [summary.topConsumers, selectedItemFilter]);
-
   // Export summary as JSON
   const handleExportSummary = () => {
-    const blob = new Blob([JSON.stringify(summary, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(summary, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -196,17 +211,12 @@ export function Observability() {
     a.click();
     URL.revokeObjectURL(url);
   };
-
   return (
     <div className="min-h-screen bg-[#0d1117] text-[#c9d1d9] pb-16">
-      <Helmet>
-        <title>Capacity Observability & Telemetry Diagnostics | Fabric Master</title>
-        <meta
-          name="description"
-          content="Enterprise telemetry analytics and capacity metrics parser for Microsoft Fabric. Analyze hourly CU demand, 24-hour background smoothing, and throttling risk."
-        />
-        <link rel="canonical" href="https://fabric.dattasable.com/observability" />
-      </Helmet>
+      <SEO
+        title="Capacity Observability"
+        description="Analyze capacity metrics and inspect workload assumptions."
+      />
 
       {/* Hero Header */}
       <div className="border-b border-[#30363d] bg-[#161b22]/70 backdrop-blur-md">
@@ -216,18 +226,20 @@ export function Observability() {
               <div className="flex items-center gap-2 mb-2">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#1f6feb]/20 text-[#58a6ff] border border-[#1f6feb]/40">
                   <Activity className="w-3.5 h-3.5" />
-                  Phase 7 Telemetry Subsystem
+                  {tx("Phase 7 Telemetry Subsystem")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#238636]/20 text-[#3fb950] border border-[#238636]/40">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  100% In-Browser Local
+                  {tx("100% In-Browser Local")}
                 </span>
               </div>
               <h1 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">
-                Fabric Capacity Observability & Diagnostics
+                {tx("Fabric Capacity Observability & Diagnostics")}
               </h1>
               <p className="mt-2 text-base text-[#8b949e] max-w-3xl">
-                Ingest official Microsoft Fabric Capacity Metrics App exports or test synthetic stress scenarios. Evaluate 24-hour background smoothing, pinpoint peak query spikes, and predict throttling before users are impacted.
+                {tx(
+                  "Ingest official Microsoft Fabric Capacity Metrics App exports or test synthetic stress scenarios. Evaluate 24-hour background smoothing, pinpoint peak query spikes, and predict throttling before users are impacted.",
+                )}
               </p>
             </div>
 
@@ -238,14 +250,14 @@ export function Observability() {
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-[#238636] text-white hover:bg-[#2ea043] transition-colors shadow-sm"
               >
                 <Upload className="w-4 h-4" />
-                Upload Telemetry
+                {tx("Upload Telemetry")}
               </button>
               <button
                 onClick={handleExportSummary}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold bg-[#21262d] text-[#c9d1d9] hover:bg-[#30363d] border border-[#30363d] transition-colors"
               >
                 <FolderDown className="w-4 h-4" />
-                Export Audit JSON
+                {tx("Export Audit JSON")}
               </button>
             </div>
           </div>
@@ -255,7 +267,11 @@ export function Observability() {
             <div className="flex items-center gap-2.5">
               <ShieldCheck className="w-5 h-5 flex-shrink-0 text-[#58a6ff]" />
               <span>
-                <strong>Zero Exfiltration Guarantee:</strong> Your Fabric telemetry data is processed entirely in your browser memory. No operational logs, timestamps, or dataset names are ever transmitted to any external server or AI provider.
+                <strong>{tx("Zero Exfiltration Guarantee:")}</strong>
+                {" " +
+                  tx(
+                    "Your Fabric telemetry data is processed entirely in your browser memory. No operational logs, timestamps, or dataset names are ever transmitted to any external server or AI provider.",
+                  )}
               </span>
             </div>
             <button
@@ -263,7 +279,7 @@ export function Observability() {
               className="inline-flex items-center gap-1 font-semibold underline hover:text-white flex-shrink-0"
             >
               <HelpCircle className="w-3.5 h-3.5" />
-              How Fabric Smoothing Works
+              {tx("How Fabric Smoothing Works")}
             </button>
           </div>
         </div>
@@ -275,11 +291,18 @@ export function Observability() {
         <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-5 shadow-sm">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
-              <span className="text-xs uppercase tracking-wider font-semibold text-[#8b949e]">Active Telemetry Dataset</span>
+              <span className="text-xs uppercase tracking-wider font-semibold text-[#8b949e]">
+                {tx("Active Telemetry Dataset")}
+              </span>
               <div className="flex items-center gap-3 mt-1">
-                <span className="text-lg font-bold text-white">{summary.datasetName}</span>
+                <span className="text-lg font-bold text-white">
+                  {summary.datasetName}
+                </span>
                 <span className="text-xs px-2 py-0.5 rounded bg-[#30363d] text-[#c9d1d9] font-mono">
-                  {summary.validRecords} records ({summary.timeRange.durationHours}h span)
+                  {summary.validRecords}
+                  {" " + tx("records (")}
+                  {summary.timeRange.durationHours}
+                  {tx("h span)")}
                 </span>
                 {summary.rejectedRecords > 0 && (
                   <button
@@ -287,14 +310,17 @@ export function Observability() {
                     className="text-xs px-2 py-0.5 rounded bg-[#da3633]/20 text-[#f85149] border border-[#da3633]/40 flex items-center gap-1"
                   >
                     <AlertTriangle className="w-3 h-3" />
-                    {summary.rejectedRecords} rejected rows
+                    {summary.rejectedRecords}
+                    {" " + tx("rejected rows")}
                   </button>
                 )}
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-xs text-[#8b949e]">Test Scenarios:</span>
+              <span className="text-xs text-[#8b949e]">
+                {tx("Test Scenarios:")}
+              </span>
               <button
                 onClick={() => loadSample("medallion")}
                 className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition-colors ${
@@ -303,7 +329,7 @@ export function Observability() {
                     : "bg-[#21262d] text-[#c9d1d9] border-[#30363d] hover:bg-[#30363d]"
                 }`}
               >
-                Medallion Lakehouse (F64)
+                {tx("Medallion Lakehouse (F64)")}
               </button>
               <button
                 onClick={() => loadSample("throttled")}
@@ -313,7 +339,7 @@ export function Observability() {
                     : "bg-[#21262d] text-[#c9d1d9] border-[#30363d] hover:bg-[#30363d]"
                 }`}
               >
-                Morning Throttling (F32)
+                {tx("Morning Throttling (F32)")}
               </button>
               <button
                 onClick={() => loadSample("spark")}
@@ -323,14 +349,16 @@ export function Observability() {
                     : "bg-[#21262d] text-[#c9d1d9] border-[#30363d] hover:bg-[#30363d]"
                 }`}
               >
-                Spark Batch Burn (F16)
+                {tx("Spark Batch Burn (F16)")}
               </button>
 
               <div className="h-6 w-px bg-[#30363d] hidden sm:block"></div>
 
               {/* Sizing Evaluator Dropdown */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-[#8b949e]">Evaluated Capacity:</span>
+                <span className="text-xs text-[#8b949e]">
+                  {tx("Evaluated Capacity:")}
+                </span>
                 <select
                   value={selectedSku}
                   onChange={(e) => setSelectedSku(e.target.value)}
@@ -338,7 +366,8 @@ export function Observability() {
                 >
                   {CAPACITY_SKUS.map((item) => (
                     <option key={item.sku} value={item.sku}>
-                      {item.sku} ({item.cu} CUs)
+                      {item.sku} ({item.cu}
+                      {" " + tx("CUs)")}
                     </option>
                   ))}
                 </select>
@@ -352,7 +381,7 @@ export function Observability() {
           {/* Card 1: Peak Demand */}
           <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-4 space-y-1">
             <div className="flex items-center justify-between text-xs text-[#8b949e]">
-              <span>Peak Instantaneous Demand</span>
+              <span>{tx("Peak Instantaneous Demand")}</span>
               <TrendingUp className="w-4 h-4 text-[#58a6ff]" />
             </div>
             <div className="text-2xl font-bold text-white flex items-baseline gap-1">
@@ -360,14 +389,17 @@ export function Observability() {
               <span className="text-xs font-normal text-[#8b949e]">CUs</span>
             </div>
             <div className="text-xs text-[#8b949e] truncate">
-              Recorded: {summary.peakTimestamp ? summary.peakTimestamp.split(" ")[1] : "N/A"}
+              {tx("Recorded:") + " "}
+              {summary.peakTimestamp
+                ? summary.peakTimestamp.split(" ")[1]
+                : "N/A"}
             </div>
           </div>
 
           {/* Card 2: 24h Smoothed Peak */}
           <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-4 space-y-1">
             <div className="flex items-center justify-between text-xs text-[#8b949e]">
-              <span>24h Smoothed Peak</span>
+              <span>{tx("24h Smoothed Peak")}</span>
               <Cpu className="w-4 h-4 text-[#3fb950]" />
             </div>
             <div className="text-2xl font-bold text-white flex items-baseline gap-1">
@@ -375,7 +407,7 @@ export function Observability() {
               <span className="text-xs font-normal text-[#8b949e]">CUs</span>
             </div>
             <div className="text-xs text-[#8b949e]">
-              Amortized across background window
+              {tx("Amortized across background window")}
             </div>
           </div>
 
@@ -388,7 +420,7 @@ export function Observability() {
             }`}
           >
             <div className="flex items-center justify-between text-xs text-[#8b949e]">
-              <span>Throttling Events</span>
+              <span>{tx("Throttling Events")}</span>
               {summary.throttlingEventsCount > 0 ? (
                 <AlertOctagon className="w-4 h-4 text-[#f85149]" />
               ) : (
@@ -396,44 +428,49 @@ export function Observability() {
               )}
             </div>
             <div
-              className={`text-2xl font-bold flex items-baseline gap-1 ${
-                summary.throttlingEventsCount > 0 ? "text-[#f85149]" : "text-white"
-              }`}
+              className={`text-2xl font-bold flex items-baseline gap-1 ${summary.throttlingEventsCount > 0 ? "text-[#f85149]" : "text-white"}`}
             >
               {summary.throttlingEventsCount}
-              <span className="text-xs font-normal text-[#8b949e]">incidents</span>
+              <span className="text-xs font-normal text-[#8b949e]">
+                {tx("incidents")}
+              </span>
             </div>
             <div className="text-xs text-[#8b949e]">
-              Risk Index: {summary.throttlingRiskScore} / 100
+              {tx("Risk Index:") + " "}
+              {summary.throttlingRiskScore} / 100
             </div>
           </div>
 
           {/* Card 4: Operation Type Ratio */}
           <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-4 space-y-1">
             <div className="flex items-center justify-between text-xs text-[#8b949e]">
-              <span>Interactive vs Background</span>
+              <span>{tx("Interactive vs Background")}</span>
               <Layers className="w-4 h-4 text-[#d29922]" />
             </div>
             <div className="text-2xl font-bold text-white flex items-baseline gap-1">
-              {Math.round(summary.interactiveRatio * 100)}% / {Math.round(summary.backgroundRatio * 100)}%
+              {Math.round(summary.interactiveRatio * 100)}% /{" "}
+              {Math.round(summary.backgroundRatio * 100)}%
             </div>
             <div className="text-xs text-[#8b949e]">
-              Interactive: 5m | Batch: 24h smooth
+              {tx("Interactive: 5m | Batch: 24h smooth")}
             </div>
           </div>
 
           {/* Card 5: Safe Recommended SKU */}
           <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-4 space-y-1">
             <div className="flex items-center justify-between text-xs text-[#8b949e]">
-              <span>Recommended Safe Tier</span>
+              <span>{tx("Recommended Safe Tier")}</span>
               <Zap className="w-4 h-4 text-[#a371f7]" />
             </div>
             <div className="text-2xl font-bold text-[#a371f7] flex items-baseline gap-1">
               {summary.recommendedSku}{" "}
-              <span className="text-xs font-normal text-[#8b949e]">({summary.recommendedSkuCu} CUs)</span>
+              <span className="text-xs font-normal text-[#8b949e]">
+                ({summary.recommendedSkuCu}
+                {" " + tx("CUs)")}
+              </span>
             </div>
             <div className="text-xs text-[#8b949e]">
-              Includes +20% operating headroom
+              {tx("Includes +20% operating headroom")}
             </div>
           </div>
         </div>
@@ -443,10 +480,11 @@ export function Observability() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#30363d] pb-4 mb-4">
             <div>
               <span className="text-xs font-semibold uppercase tracking-wider text-[#58a6ff]">
-                Reality Check: Active Scenario Alignment
+                {tx("Reality Check: Active Scenario Alignment")}
               </span>
               <h2 className="text-lg font-bold text-white mt-0.5">
-                Observed Telemetry vs Planned Scenario ({activeScenario?.name || "Default Lakehouse"})
+                {tx("Observed Telemetry vs Planned Scenario (")}
+                {activeScenario?.name || "Default Lakehouse"})
               </h2>
             </div>
             <div className="flex items-center gap-2">
@@ -454,9 +492,10 @@ export function Observability() {
                 className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${
                   scenarioComparison.fitAssessment === "Optimal"
                     ? "bg-[#238636]/20 text-[#3fb950] border-[#238636]"
-                    : scenarioComparison.fitAssessment === "Critical Throttling Risk"
-                    ? "bg-[#da3633]/20 text-[#f85149] border-[#da3633]"
-                    : "bg-[#d29922]/20 text-[#e3b341] border-[#d29922]"
+                    : scenarioComparison.fitAssessment ===
+                        "Critical Throttling Risk"
+                      ? "bg-[#da3633]/20 text-[#f85149] border-[#da3633]"
+                      : "bg-[#d29922]/20 text-[#e3b341] border-[#d29922]"
                 }`}
               >
                 {scenarioComparison.fitAssessment}
@@ -466,27 +505,41 @@ export function Observability() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
             <div className="space-y-1">
-              <span className="text-xs text-[#8b949e]">Planned Capacity Model:</span>
+              <span className="text-xs text-[#8b949e]">
+                {tx("Planned Capacity Model:")}
+              </span>
               <div className="font-semibold text-white">
-                {scenarioComparison.scenarioSku} ({scenarioComparison.scenarioSkuCu} CUs)
+                {scenarioComparison.scenarioSku} (
+                {scenarioComparison.scenarioSkuCu}
+                {" " + tx("CUs)")}
               </div>
               <p className="text-xs text-[#8b949e]">
-                Derived from active scenario inputs in Workspace.
+                {tx("Derived from active scenario inputs in Workspace.")}
               </p>
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs text-[#8b949e]">Observed Smoothed Demand:</span>
+              <span className="text-xs text-[#8b949e]">
+                {tx("Observed Smoothed Demand:")}
+              </span>
               <div className="font-semibold text-white">
-                {scenarioComparison.observedSmoothedPeakCu} CUs (Peak: {scenarioComparison.observedPeakCu} CUs)
+                {scenarioComparison.observedSmoothedPeakCu}
+                {" " + tx("CUs (Peak:") + " "}
+                {scenarioComparison.observedPeakCu}
+                {" " + tx("CUs)")}
               </div>
               <p className="text-xs text-[#8b949e]">
-                Utilization: {scenarioComparison.utilizationPercent}% | Headroom: {scenarioComparison.headroomPercent}%
+                {tx("Utilization:") + " "}
+                {scenarioComparison.utilizationPercent}
+                {tx("% | Headroom:") + " "}
+                {scenarioComparison.headroomPercent}%
               </p>
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs text-[#8b949e]">Engineering Guidance:</span>
+              <span className="text-xs text-[#8b949e]">
+                {tx("Engineering Guidance:")}
+              </span>
               <p className="text-xs text-[#c9d1d9] leading-relaxed">
                 {scenarioComparison.recommendation}
               </p>
@@ -500,44 +553,61 @@ export function Observability() {
             <div>
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-[#58a6ff]" />
-                Hourly CU Consumption & 24-Hour Smoothing Timeline
+                {tx("Hourly CU Consumption & 24-Hour Smoothing Timeline")}
               </h2>
               <p className="text-xs text-[#8b949e] mt-1">
-                Visualizes raw interactive and background CU demand along with Microsoft Fabric's 24-hour background smoothing curve against the {selectedSku} capacity threshold.
+                {tx(
+                  "Visualizes raw interactive and background CU demand along with Microsoft Fabric's 24-hour background smoothing curve against the",
+                ) + " "}
+                {selectedSku}
+                {" " + tx("capacity threshold.")}
               </p>
             </div>
 
             <div className="flex items-center gap-4 text-xs">
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded bg-[#3b82f6]"></div>
-                <span>Background CU</span>
+                <span>{tx("Background CU")}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-3 rounded bg-[#10b981]"></div>
-                <span>Interactive CU</span>
+                <span>{tx("Interactive CU")}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-0.5 bg-[#f59e0b]"></div>
-                <span>Smoothed Demand</span>
+                <span>{tx("Smoothed Demand")}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3 h-0.5 bg-[#f85149] border-t border-dashed"></div>
-                <span>Limit ({evaluatedCapacityLimit} CU)</span>
+                <span>
+                  {tx("Limit (")}
+                  {evaluatedCapacityLimit}
+                  {" " + tx("CU)")}
+                </span>
               </div>
             </div>
           </div>
 
           <div className="h-80 w-full pt-4">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={summary.hourlyTimeSeries} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#30363d" vertical={false} />
+              <AreaChart
+                data={summary.hourlyTimeSeries}
+                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#30363d"
+                  vertical={false}
+                />
                 <XAxis
                   dataKey="hour"
                   stroke="#8b949e"
                   fontSize={10}
                   tickFormatter={(val) => {
                     const parts = val.split(" ");
-                    return parts.length > 1 ? parts[1].replace(":00 UTC", "h") : val;
+                    return parts.length > 1
+                      ? parts[1].replace(":00 UTC", "h")
+                      : val;
                   }}
                 />
                 <YAxis stroke="#8b949e" fontSize={11} domain={[0, "auto"]} />
@@ -547,17 +617,37 @@ export function Observability() {
                       const data = payload[0].payload;
                       return (
                         <div className="bg-[#161b22] border border-[#30363d] p-3 rounded-lg shadow-xl text-xs space-y-1.5">
-                          <div className="font-bold text-white border-b border-[#30363d] pb-1">{label}</div>
-                          <div className="text-[#3b82f6]">Background: {data.backgroundCu} CU</div>
-                          <div className="text-[#10b981]">Interactive: {data.interactiveCu} CU</div>
-                          <div className="text-white font-semibold">Total Raw: {data.totalCu} CU</div>
-                          <div className="text-[#f59e0b] font-semibold">Smoothed Demand: {data.smoothedCu} CU</div>
-                          <div className="text-[#8b949e]">Capacity Limit: {data.capacityLimit} CU</div>
-                          <div className="text-[#8b949e]">Borrow Balance: {data.cumulativeBorrowPercent}%</div>
+                          <div className="font-bold text-white border-b border-[#30363d] pb-1">
+                            {label}
+                          </div>
+                          <div className="text-[#3b82f6]">
+                            {tx("Background:") + " "}
+                            {data.backgroundCu} CU
+                          </div>
+                          <div className="text-[#10b981]">
+                            {tx("Interactive:") + " "}
+                            {data.interactiveCu} CU
+                          </div>
+                          <div className="text-white font-semibold">
+                            {tx("Total Raw:") + " "}
+                            {data.totalCu} CU
+                          </div>
+                          <div className="text-[#f59e0b] font-semibold">
+                            {tx("Smoothed Demand:") + " "}
+                            {data.smoothedCu} CU
+                          </div>
+                          <div className="text-[#8b949e]">
+                            {tx("Capacity Limit:") + " "}
+                            {data.capacityLimit} CU
+                          </div>
+                          <div className="text-[#8b949e]">
+                            {tx("Borrow Balance:") + " "}
+                            {data.cumulativeBorrowPercent}%
+                          </div>
                           {data.throttled && (
                             <div className="text-[#f85149] font-bold flex items-center gap-1 pt-1">
                               <AlertTriangle className="w-3 h-3" />
-                              Throttling / Delay Active
+                              {tx("Throttling / Delay Active")}
                             </div>
                           )}
                         </div>
@@ -601,7 +691,7 @@ export function Observability() {
                     value: `Limit: ${evaluatedCapacityLimit} CU`,
                     fill: "#f85149",
                     fontSize: 10,
-                    position: "top"
+                    position: "top",
                   }}
                 />
               </AreaChart>
@@ -615,19 +705,25 @@ export function Observability() {
           <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-6 lg:col-span-1 space-y-4">
             <h2 className="text-base font-bold text-white flex items-center gap-2">
               <Database className="w-4 h-4 text-[#58a6ff]" />
-              Workload Engine Distribution
+              {tx("Workload Engine Distribution")}
             </h2>
             <p className="text-xs text-[#8b949e]">
-              Proportion of total CU-hours consumed across Microsoft Fabric engines during the observed timeframe.
+              {tx(
+                "Proportion of total CU-hours consumed across Microsoft Fabric engines during the observed timeframe.",
+              )}
             </p>
 
             <div className="space-y-3 pt-2">
               {summary.engineBreakdown.map((eng) => (
                 <div key={eng.kind} className="space-y-1">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-white">{eng.kind}</span>
+                    <span className="font-semibold text-white">
+                      {tx(String(eng.kind ?? ""))}
+                    </span>
                     <span className="text-[#8b949e]">
-                      {eng.cuHours} CU-h ({eng.percentage}%)
+                      {eng.cuHours}
+                      {" " + tx("CU-h (")}
+                      {eng.percentage}%)
                     </span>
                   </div>
                   <div className="w-full h-2 rounded-full bg-[#21262d] overflow-hidden">
@@ -635,7 +731,7 @@ export function Observability() {
                       className="h-full rounded-full transition-all duration-300"
                       style={{
                         width: `${Math.max(2, eng.percentage)}%`,
-                        backgroundColor: eng.color
+                        backgroundColor: eng.color,
                       }}
                     ></div>
                   </div>
@@ -649,39 +745,57 @@ export function Observability() {
             <div className="flex items-center justify-between">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[#e3b341]" />
-                Smoothing & Throttling Mechanics
+                {tx("Smoothing & Throttling Mechanics")}
               </h2>
               <span className="text-xs px-2 py-0.5 rounded bg-[#30363d] text-[#8b949e]">
-                Microsoft Fabric Specification
+                {tx("Microsoft Fabric Specification")}
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="p-3 bg-[#0d1117] rounded-lg border border-[#30363d] space-y-1.5">
-                <span className="font-semibold text-[#58a6ff]">Interactive Operations (5-Min Smoothing)</span>
+                <span className="font-semibold text-[#58a6ff]">
+                  {tx("Interactive Operations (5-Min Smoothing)")}
+                </span>
                 <p className="text-[#8b949e] leading-relaxed">
-                  Power BI report renders, DAX queries, and lakehouse previews are smoothed over a 5-minute sliding window. Sudden concurrent spikes can immediately trigger <strong>Interactive Delays</strong> (UI pauses) if borrow thresholds are exceeded.
+                  {tx(
+                    "Power BI report renders, DAX queries, and lakehouse previews are smoothed over a 5-minute sliding window. Sudden concurrent spikes can immediately trigger",
+                  ) + " "}
+                  <strong>{tx("Interactive Delays")}</strong>
+                  {" " + tx("(UI pauses) if borrow thresholds are exceeded.")}
                 </p>
               </div>
 
               <div className="p-3 bg-[#0d1117] rounded-lg border border-[#30363d] space-y-1.5">
-                <span className="font-semibold text-[#3fb950]">Background Operations (24-Hour Smoothing)</span>
+                <span className="font-semibold text-[#3fb950]">
+                  {tx("Background Operations (24-Hour Smoothing)")}
+                </span>
                 <p className="text-[#8b949e] leading-relaxed">
-                  Spark notebooks, Data Factory pipelines, and Lakehouse compaction are smoothed over a 24-hour sliding window. A heavy batch job borrows capacity against future hours without immediate throttling, provided it clears within 24 hours.
+                  {tx(
+                    "Spark notebooks, Data Factory pipelines, and Lakehouse compaction are smoothed over a 24-hour sliding window. A heavy batch job borrows capacity against future hours without immediate throttling, provided it clears within 24 hours.",
+                  )}
                 </p>
               </div>
 
               <div className="p-3 bg-[#0d1117] rounded-lg border border-[#30363d] space-y-1.5">
-                <span className="font-semibold text-[#e3b341]">Interactive Delay Threshold (10 Min)</span>
+                <span className="font-semibold text-[#e3b341]">
+                  {tx("Interactive Delay Threshold (10 Min)")}
+                </span>
                 <p className="text-[#8b949e] leading-relaxed">
-                  When continuous consumption exceeds capacity limit for 10 consecutive minutes, subsequent user queries experience artificial delays to protect compute stability.
+                  {tx(
+                    "When continuous consumption exceeds capacity limit for 10 consecutive minutes, subsequent user queries experience artificial delays to protect compute stability.",
+                  )}
                 </p>
               </div>
 
               <div className="p-3 bg-[#0d1117] rounded-lg border border-[#30363d] space-y-1.5">
-                <span className="font-semibold text-[#f85149]">Cumulative Rejection Threshold (60 Min)</span>
+                <span className="font-semibold text-[#f85149]">
+                  {tx("Cumulative Rejection Threshold (60 Min)")}
+                </span>
                 <p className="text-[#8b949e] leading-relaxed">
-                  If accumulated borrow debt reaches the equivalent of 60 minutes of full capacity starvation, new interactive operations are rejected with HTTP 429 throttling errors.
+                  {tx(
+                    "If accumulated borrow debt reaches the equivalent of 60 minutes of full capacity starvation, new interactive operations are rejected with HTTP 429 throttling errors.",
+                  )}
                 </p>
               </div>
             </div>
@@ -694,28 +808,32 @@ export function Observability() {
             <div>
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Activity className="w-4 h-4 text-[#58a6ff]" />
-                Top Capacity-Consuming Artifacts
+                {tx("Top Capacity-Consuming Artifacts")}
               </h2>
               <p className="text-xs text-[#8b949e] mt-0.5">
-                Identify which workspaces, notebooks, models, or pipelines are driving your monthly compute costs.
+                {tx(
+                  "Identify which workspaces, notebooks, models, or pipelines are driving your monthly compute costs.",
+                )}
               </p>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-[#8b949e]">Filter by Engine:</span>
+              <span className="text-xs text-[#8b949e]">
+                {tx("Filter by Engine:")}
+              </span>
               <select
                 value={selectedItemFilter}
                 onChange={(e) => setSelectedItemFilter(e.target.value)}
                 className="bg-[#0d1117] border border-[#30363d] rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#58a6ff]"
               >
-                <option value="all">All Engines</option>
-                <option value="Lakehouse">Lakehouse</option>
-                <option value="Warehouse">Warehouse</option>
-                <option value="Notebook">Notebook</option>
+                <option value="all">{tx("All Engines")}</option>
+                <option value="Lakehouse">{tx("Lakehouse")}</option>
+                <option value="Warehouse">{tx("Warehouse")}</option>
+                <option value="Notebook">{tx("Notebook")}</option>
                 <option value="SparkJob">Spark</option>
-                <option value="SemanticModel">Semantic Model</option>
-                <option value="Pipeline">Pipeline</option>
-                <option value="Eventhouse">Eventhouse</option>
+                <option value="SemanticModel">{tx("Semantic Model")}</option>
+                <option value="Pipeline">{tx("Pipeline")}</option>
+                <option value="Eventhouse">{tx("Eventhouse")}</option>
               </select>
             </div>
           </div>
@@ -724,24 +842,39 @@ export function Observability() {
             <table className="w-full text-left border-collapse text-xs">
               <thead>
                 <tr className="border-b border-[#30363d] bg-[#21262d]/50 text-[#8b949e]">
-                  <th className="py-3 px-4 font-semibold">Artifact / Item Name</th>
-                  <th className="py-3 px-4 font-semibold">Engine / Kind</th>
-                  <th className="py-3 px-4 font-semibold">Total CU-Hours</th>
-                  <th className="py-3 px-4 font-semibold">% of Capacity</th>
-                  <th className="py-3 px-4 font-semibold">Total Operations</th>
-                  <th className="py-3 px-4 font-semibold">Peak Burst CU</th>
+                  <th className="py-3 px-4 font-semibold">
+                    {tx("Artifact / Item Name")}
+                  </th>
+                  <th className="py-3 px-4 font-semibold">
+                    {tx("Engine / Kind")}
+                  </th>
+                  <th className="py-3 px-4 font-semibold">
+                    {tx("Total CU-Hours")}
+                  </th>
+                  <th className="py-3 px-4 font-semibold">
+                    {tx("% of Capacity")}
+                  </th>
+                  <th className="py-3 px-4 font-semibold">
+                    {tx("Total Operations")}
+                  </th>
+                  <th className="py-3 px-4 font-semibold">
+                    {tx("Peak Burst CU")}
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#30363d]">
                 {filteredConsumers.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-[#8b949e]">
-                      No artifacts found matching the selected filter.
+                      {tx("No artifacts found matching the selected filter.")}
                     </td>
                   </tr>
                 ) : (
                   filteredConsumers.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-[#21262d]/30 transition-colors">
+                    <tr
+                      key={idx}
+                      className="hover:bg-[#21262d]/30 transition-colors"
+                    >
                       <td className="py-3 px-4 font-medium text-white flex items-center gap-2">
                         <FileText className="w-3.5 h-3.5 text-[#58a6ff]" />
                         {item.itemName}
@@ -751,20 +884,31 @@ export function Observability() {
                           {item.itemKind}
                         </span>
                       </td>
-                      <td className="py-3 px-4 font-semibold text-white">{item.cuHours} CU-h</td>
+                      <td className="py-3 px-4 font-semibold text-white">
+                        {item.cuHours}
+                        {" " + tx("CU-h")}
+                      </td>
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
-                          <span className="w-8 text-right text-[#c9d1d9]">{item.percentage}%</span>
+                          <span className="w-8 text-right text-[#c9d1d9]">
+                            {item.percentage}%
+                          </span>
                           <div className="w-20 h-1.5 rounded-full bg-[#21262d] overflow-hidden">
                             <div
                               className="h-full rounded-full bg-[#58a6ff]"
-                              style={{ width: `${Math.min(100, item.percentage * 2)}%` }}
+                              style={{
+                                width: `${Math.min(100, item.percentage * 2)}%`,
+                              }}
                             ></div>
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-[#8b949e]">{item.operationCount}</td>
-                      <td className="py-3 px-4 font-mono text-white">{item.maxBurstCu} CU</td>
+                      <td className="py-3 px-4 text-[#8b949e]">
+                        {item.operationCount}
+                      </td>
+                      <td className="py-3 px-4 font-mono text-white">
+                        {item.maxBurstCu} CU
+                      </td>
                     </tr>
                   ))
                 )}
@@ -776,13 +920,15 @@ export function Observability() {
         {/* Navigation Link back to Workspace */}
         <div className="flex items-center justify-between p-4 bg-[#161b22] border border-[#30363d] rounded-xl text-xs">
           <span className="text-[#8b949e]">
-            Want to correlate this telemetry with your multi-region FinOps budget and architecture topology?
+            {tx(
+              "Want to correlate this telemetry with your multi-region FinOps budget and architecture topology?",
+            )}
           </span>
           <Link
             to="/workspace"
             className="inline-flex items-center gap-1 font-semibold text-[#58a6ff] hover:underline"
           >
-            Open Unified Engineering Workspace
+            {tx("Open Unified Engineering Workspace")}
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -795,7 +941,7 @@ export function Observability() {
             <div className="flex items-center justify-between border-b border-[#30363d] pb-3">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <Upload className="w-5 h-5 text-[#238636]" />
-                Import Capacity Telemetry Export
+                {tx("Import Capacity Telemetry Export")}
               </h2>
               <button
                 onClick={() => setShowUploadModal(false)}
@@ -806,24 +952,28 @@ export function Observability() {
             </div>
 
             <p className="text-xs text-[#8b949e]">
-              Upload or paste exported data from the Microsoft Fabric Capacity Metrics App (CSV format or JSON array). Data is parsed locally in-memory.
+              {tx(
+                "Upload or paste exported data from the Microsoft Fabric Capacity Metrics App (CSV format or JSON array). Data is parsed locally in-memory.",
+              )}
             </p>
 
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-[#c9d1d9] mb-1">Dataset Label</label>
+                <label className="block text-xs font-semibold text-[#c9d1d9] mb-1">
+                  {tx("Dataset Label")}
+                </label>
                 <input
                   type="text"
                   value={uploadDatasetName}
                   onChange={(e) => setUploadDatasetName(e.target.value)}
                   className="w-full bg-[#0d1117] border border-[#30363d] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#58a6ff]"
-                  placeholder="e.g. Production Capacity October Export"
+                  placeholder={tx("e.g. Production Capacity October Export")}
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-[#c9d1d9] mb-1">
-                  Upload CSV or JSON file
+                  {tx("Upload CSV or JSON file")}
                 </label>
                 <input
                   type="file"
@@ -836,19 +986,23 @@ export function Observability() {
 
               <div className="relative flex py-1 items-center">
                 <div className="flex-grow border-t border-[#30363d]"></div>
-                <span className="flex-shrink mx-4 text-xs text-[#8b949e]">OR PASTE RAW DATA</span>
+                <span className="flex-shrink mx-4 text-xs text-[#8b949e]">
+                  {tx("OR PASTE RAW DATA")}
+                </span>
                 <div className="flex-grow border-t border-[#30363d]"></div>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-[#c9d1d9] mb-1">
-                  Paste Raw CSV or JSON
+                  {tx("Paste Raw CSV or JSON")}
                 </label>
                 <textarea
                   rows={6}
                   value={uploadText}
                   onChange={(e) => setUploadText(e.target.value)}
-                  placeholder="Timestamp,Item Name,Item Kind,Operation Name,Operation Type,Total CU (s),Status&#10;2026-10-26T09:00:00Z,Finance Model,SemanticModel,DAX Query,Interactive,3600,Success"
+                  placeholder={tx(
+                    "Timestamp,Item Name,Item Kind,Operation Name,Operation Type,Total CU (s),Status&#10;2026-10-26T09:00:00Z,Finance Model,SemanticModel,DAX Query,Interactive,3600,Success",
+                  )}
                   className="w-full font-mono bg-[#0d1117] border border-[#30363d] rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-[#58a6ff]"
                 ></textarea>
               </div>
@@ -866,13 +1020,13 @@ export function Observability() {
                 onClick={() => setShowUploadModal(false)}
                 className="px-4 py-2 rounded-lg text-xs font-semibold text-[#c9d1d9] hover:bg-[#21262d]"
               >
-                Cancel
+                {tx("Cancel")}
               </button>
               <button
                 onClick={handleManualUpload}
                 className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#238636] text-white hover:bg-[#2ea043]"
               >
-                Parse & Analyze
+                {tx("Parse & Analyze")}
               </button>
             </div>
           </div>
@@ -886,7 +1040,7 @@ export function Observability() {
             <div className="flex items-center justify-between border-b border-[#30363d] pb-3">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-[#f85149]" />
-                Data Quality & Rejected Rows Audit
+                {tx("Data Quality & Rejected Rows Audit")}
               </h2>
               <button
                 onClick={() => setShowQualityModal(false)}
@@ -897,14 +1051,22 @@ export function Observability() {
             </div>
 
             <p className="text-xs text-[#8b949e]">
-              The following rows were omitted during ingestion due to missing mandatory columns or invalid timestamp formats:
+              {tx(
+                "The following rows were omitted during ingestion due to missing mandatory columns or invalid timestamp formats:",
+              )}
             </p>
 
             <div className="max-h-60 overflow-y-auto space-y-2 text-xs">
               {summary.qualityIssues.map((issue, idx) => (
-                <div key={idx} className="p-2.5 bg-[#0d1117] border border-[#30363d] rounded-lg">
+                <div
+                  key={idx}
+                  className="p-2.5 bg-[#0d1117] border border-[#30363d] rounded-lg"
+                >
                   <div className="flex items-center justify-between font-semibold text-[#f85149]">
-                    <span>Row {issue.row}</span>
+                    <span>
+                      {tx("Row") + " "}
+                      {issue.row}
+                    </span>
                     <span className="text-[#8b949e]">{issue.reason}</span>
                   </div>
                   <pre className="mt-1 text-[11px] text-[#8b949e] overflow-x-auto font-mono">
@@ -919,7 +1081,7 @@ export function Observability() {
                 onClick={() => setShowQualityModal(false)}
                 className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#21262d] text-white hover:bg-[#30363d]"
               >
-                Close Audit
+                {tx("Close Audit")}
               </button>
             </div>
           </div>
@@ -933,7 +1095,7 @@ export function Observability() {
             <div className="flex items-center justify-between border-b border-[#30363d] pb-3">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <HelpCircle className="w-5 h-5 text-[#58a6ff]" />
-                Understanding Microsoft Fabric Smoothing
+                {tx("Understanding Microsoft Fabric Smoothing")}
               </h2>
               <button
                 onClick={() => setShowSmoothingHelp(false)}
@@ -945,21 +1107,50 @@ export function Observability() {
 
             <div className="text-xs text-[#c9d1d9] space-y-3 leading-relaxed">
               <p>
-                Unlike traditional cloud VMs that throttle compute the microsecond usage hits 100%, Microsoft Fabric employs an asynchronous <strong>Smoothing Algorithm</strong>:
+                {tx(
+                  "Unlike traditional cloud VMs that throttle compute the microsecond usage hits 100%, Microsoft Fabric employs an asynchronous",
+                ) + " "}
+                <strong>{tx("Smoothing Algorithm")}</strong>:
               </p>
               <ul className="list-disc pl-5 space-y-1.5 text-[#8b949e]">
                 <li>
-                  <strong className="text-white">Background Operations (24h window):</strong> Spark jobs, data pipelines, and semantic model refreshes are smoothed over 24 hours. A job using 240 CU-seconds is charged at 10 CU-seconds per hour across the next 24 hours.
+                  <strong className="text-white">
+                    {tx("Background Operations (24h window):")}
+                  </strong>
+                  {" " +
+                    tx(
+                      "Spark jobs, data pipelines, and semantic model refreshes are smoothed over 24 hours. A job using 240 CU-seconds is charged at 10 CU-seconds per hour across the next 24 hours.",
+                    )}
                 </li>
                 <li>
-                  <strong className="text-white">Interactive Operations (5m window):</strong> Direct Lake queries, paginated reports, and UI interactions are smoothed over 5 minutes. High concurrency can cause instantaneous spikes.
+                  <strong className="text-white">
+                    {tx("Interactive Operations (5m window):")}
+                  </strong>
+                  {" " +
+                    tx(
+                      "Direct Lake queries, paginated reports, and UI interactions are smoothed over 5 minutes. High concurrency can cause instantaneous spikes.",
+                    )}
                 </li>
                 <li>
-                  <strong className="text-white">Carryforward Borrowing:</strong> Capacities can borrow compute power into future hours up to 24x their hourly CU quota. If usage stays elevated and debt exceeds 100%, Fabric triggers <strong>Interactive Rejections</strong>.
+                  <strong className="text-white">
+                    {tx("Carryforward Borrowing:")}
+                  </strong>
+                  {" " +
+                    tx(
+                      "Capacities can borrow compute power into future hours up to 24x their hourly CU quota. If usage stays elevated and debt exceeds 100%, Fabric triggers",
+                    ) +
+                    " "}
+                  <strong>{tx("Interactive Rejections")}</strong>.
                 </li>
               </ul>
               <div className="p-3 bg-[#1f6feb]/10 border border-[#1f6feb]/30 rounded-lg text-[#58a6ff]">
-                <strong>Best Practice:</strong> Always evaluate the <strong>Smoothed Demand</strong> rather than momentary raw peaks when sizing your production F-SKU.
+                <strong>{tx("Best Practice:")}</strong>
+                {" " + tx("Always evaluate the") + " "}
+                <strong>{tx("Smoothed Demand")}</strong>
+                {" " +
+                  tx(
+                    "rather than momentary raw peaks when sizing your production F-SKU.",
+                  )}
               </div>
             </div>
 
@@ -968,7 +1159,7 @@ export function Observability() {
                 onClick={() => setShowSmoothingHelp(false)}
                 className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#21262d] text-white hover:bg-[#30363d]"
               >
-                Got It
+                {tx("Got It")}
               </button>
             </div>
           </div>

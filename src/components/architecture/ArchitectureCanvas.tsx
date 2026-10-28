@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useEffect, useId, useRef, useState } from "react";
 import {
   Activity,
@@ -13,7 +14,6 @@ import type {
   ArchitectureConnection,
   ComponentCategory,
 } from "../../lib/architecture";
-
 export const ARCHITECTURE_STAGES = [
   {
     category: "source",
@@ -58,7 +58,6 @@ export const ARCHITECTURE_STAGES = [
     icon: ShieldCheck,
   },
 ] as const;
-
 export function ArchitectureItemIcon({
   node,
   size = 18,
@@ -71,7 +70,6 @@ export function ArchitectureItemIcon({
       ?.icon || Database;
   return <Icon size={size} strokeWidth={1.6} />;
 }
-
 interface CanvasProps {
   nodes: ArchitectureNode[];
   connections: ArchitectureConnection[];
@@ -79,8 +77,11 @@ interface CanvasProps {
   onSelect: (id: string) => void;
   onAdd: (category: ComponentCategory) => void;
 }
-type DrawnPath = { from: string; to: string; d: string };
-
+type DrawnPath = {
+  from: string;
+  to: string;
+  d: string;
+};
 export function ArchitectureCanvas({
   nodes,
   connections,
@@ -88,6 +89,7 @@ export function ArchitectureCanvas({
   onSelect,
   onAdd,
 }: CanvasProps) {
+  const tx = useTranslation().t;
   const boardRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef(new Map<string, HTMLButtonElement>());
   const markerId = useId().replace(/:/g, "");
@@ -96,15 +98,18 @@ export function ArchitectureCanvas({
     height: number;
     paths: DrawnPath[];
   }>({ width: 1, height: 1, paths: [] });
-
   useEffect(() => {
     const board = boardRef.current;
     if (!board) return;
     let frame = 0;
     const measure = () => {
       const base = board.getBoundingClientRect();
-      const rectangles = [...nodeRefs.current.values()].map(element => element.getBoundingClientRect());
-      const bottomChannel = Math.max(base.top, ...rectangles.map(rectangle => rectangle.bottom)) - base.top;
+      const rectangles = [...nodeRefs.current.values()].map((element) =>
+        element.getBoundingClientRect(),
+      );
+      const bottomChannel =
+        Math.max(base.top, ...rectangles.map((rectangle) => rectangle.bottom)) -
+        base.top;
       const paths = connections.flatMap((edge, index) => {
         const from = nodeRefs.current.get(edge.from)?.getBoundingClientRect();
         const to = nodeRefs.current.get(edge.to)?.getBoundingClientRect();
@@ -135,8 +140,11 @@ export function ArchitectureCanvas({
           const ty = (downward ? to.top : to.bottom) - base.top;
           const low = Math.min(from.bottom, to.bottom);
           const high = Math.max(from.top, to.top);
-          const blocked = rectangles.some(rectangle =>
-            Math.abs(rectangle.left - from.left) < 4 && rectangle.top > low && rectangle.bottom < high
+          const blocked = rectangles.some(
+            (rectangle) =>
+              Math.abs(rectangle.left - from.left) < 4 &&
+              rectangle.top > low &&
+              rectangle.bottom < high,
           );
           if (blocked) {
             const start = from.right - base.left;
@@ -172,7 +180,6 @@ export function ArchitectureCanvas({
       cancelAnimationFrame(frame);
     };
   }, [nodes, connections]);
-
   return (
     <div className="ap-flow-board" ref={boardRef}>
       <svg
@@ -234,13 +241,13 @@ export function ArchitectureCanvas({
           <section
             className={`ap-stage-row ap-tone-${stage.category}`}
             key={stage.category}
-            aria-label={stage.title}
+            aria-label={tx(String(stage.title ?? ""))}
           >
             <div className="ap-stage-heading">
               <span className="ap-stage-number">{stage.number}</span>
               <div>
-                <h3>{stage.title}</h3>
-                <p>{stage.subtitle}</p>
+                <h3>{tx(String(stage.title ?? ""))}</h3>
+                <p>{tx(String(stage.subtitle ?? ""))}</p>
               </div>
               <span className="ap-stage-count">{stageNodes.length}</span>
             </div>
@@ -254,7 +261,7 @@ export function ArchitectureCanvas({
                       if (element) nodeRefs.current.set(node.id, element);
                       else nodeRefs.current.delete(node.id);
                     }}
-                    aria-label={`Inspect ${node.label}`}
+                    aria-label={tx("Inspect {{name}}", { name: tx(node.label) })}
                     aria-pressed={selectedId === node.id}
                     className={`ap-node-card ${selectedId === node.id ? "is-selected" : ""}`}
                     onClick={() => onSelect(node.id)}
@@ -263,11 +270,13 @@ export function ArchitectureCanvas({
                       <span className="ol-node-icon">
                         <ArchitectureItemIcon node={node} />
                       </span>
-                      <small>{stage.title}</small>
+                      <small>{tx(String(stage.title ?? ""))}</small>
                       <span className="ap-node-dot" />
                     </span>
-                    <strong>{node.label}</strong>
-                    <span className="ap-node-service">{node.serviceName}</span>
+                    <strong>{tx(String(node.label ?? ""))}</strong>
+                    <span className="ap-node-service">
+                      {tx(String(node.serviceName ?? ""))}
+                    </span>
                   </button>
                 ))
               ) : (
@@ -277,7 +286,9 @@ export function ArchitectureCanvas({
                   onClick={() => onAdd(stage.category)}
                 >
                   <Plus size={15} />
-                  <span>Add a {stage.category} component</span>
+                  <span>
+                    {tx("Add component: {{category}}", { category: tx(stage.category) })}
+                  </span>
                 </button>
               )}
             </div>

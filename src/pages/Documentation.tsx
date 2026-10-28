@@ -11,13 +11,12 @@ import { ARTICLES } from "../data/articles";
 import { SEO } from "../components/SEO";
 import { Footer } from "../components/Footer";
 import { useTranslation } from "react-i18next";
-
 const categories = [
   "All guides",
   ...new Set(ARTICLES.map((article) => article.category)),
 ];
-
 export function Documentation() {
+  const tx = useTranslation().t;
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All guides");
@@ -41,11 +40,11 @@ export function Documentation() {
         <header className="knowledge-header">
           <div className="eyebrow">
             <BookOpen size={14} />
-            THE FABRIC KNOWLEDGE LIBRARY
+            {tx("THE FABRIC KNOWLEDGE LIBRARY")}
           </div>
           <h1>
             {t("Documentation")}
-            <span>A clearer understanding starts here.</span>
+            <span>{tx("A clearer understanding starts here.")}</span>
           </h1>
           <p>
             {t(
@@ -55,13 +54,16 @@ export function Documentation() {
           <label className="library-search">
             <Search size={18} />
             <input
-              aria-label="Search documentation"
+              aria-label={tx("Search documentation")}
               type="search"
-              placeholder="Find a concept, workload, or guide..."
+              placeholder={tx("Find a concept, workload, or guide...")}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
-            <kbd>{ARTICLES.length} guides</kbd>
+            <kbd>
+              {ARTICLES.length}
+              {" " + tx("guides")}
+            </kbd>
           </label>
         </header>
         <Link
@@ -72,15 +74,19 @@ export function Documentation() {
             <Layers size={31} strokeWidth={1.4} />
           </span>
           <div>
-            <span className="eyebrow">NEW TO FABRIC MASTER?</span>
-            <h2>Start with a plan you can explain.</h2>
-            <p>Your first capacity estimate, step by step.</p>
+            <span className="eyebrow">{tx("NEW TO FABRIC MASTER?")}</span>
+            <h2>{tx("Start with a plan you can explain.")}</h2>
+            <p>{tx("Your first capacity estimate, step by step.")}</p>
           </div>
           <span className="text-link">
-            Read the getting started guide <ArrowUpRight size={17} />
+            {tx("Read the getting started guide") + " "}
+            <ArrowUpRight size={17} />
           </span>
         </Link>
-        <div className="library-filters" aria-label="Filter guides by category">
+        <div
+          className="library-filters"
+          aria-label={tx("Filter guides by category")}
+        >
           {categories.map((item) => (
             <button
               key={item}
@@ -95,8 +101,8 @@ export function Documentation() {
         </div>
         <div className="library-result-count" role="status">
           {visibleArticles.length}{" "}
-          {visibleArticles.length === 1 ? "guide" : "guides"}
-          {query && ` matching “${query}”`}
+          {visibleArticles.length === 1 ? tx("guide") : tx("guides")}
+          {query && " " + tx("matching “{{query}}”", { query })}
         </div>
         <div className="library-grid">
           {visibleArticles.map((article, index) => (
@@ -112,7 +118,8 @@ export function Documentation() {
               <h2>{t(article.title)}</h2>
               <p>{t(article.description)}</p>
               <span className="library-card-bottom">
-                Read guide <ArrowRight size={14} />
+                {tx("Read guide") + " "}
+                <ArrowRight size={14} />
               </span>
             </Link>
           ))}
@@ -120,8 +127,8 @@ export function Documentation() {
         {visibleArticles.length === 0 && (
           <div className="library-empty">
             <Search size={28} />
-            <h2>No guides found</h2>
-            <p>Try another search or browse all categories.</p>
+            <h2>{tx("No guides found")}</h2>
+            <p>{tx("Try another search or browse all categories.")}</p>
             <button
               className="premium-button secondary"
               onClick={() => {
@@ -129,7 +136,7 @@ export function Documentation() {
                 setCategory("All guides");
               }}
             >
-              Clear filters
+              {tx("Clear filters")}
             </button>
           </div>
         )}
