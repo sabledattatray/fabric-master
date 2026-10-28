@@ -7,9 +7,9 @@ export function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="w-full bg-[#0d1117] border-t border-[#30363d] pt-12 pb-16 px-6 relative mt-auto print:hidden">
+    <footer className="w-full bg-[#050508] border-t border-[#23273D] pt-12 pb-16 px-6 relative mt-auto print:hidden">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-xl font-semibold text-white mb-8 border-b border-[#30363d] pb-4">{t('Resources & Support')}</h2>
+        <h2 className="text-xl font-semibold text-white mb-8 border-b border-[#23273D] pb-4">{t('Resources & Support')}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           
@@ -17,10 +17,10 @@ export function Footer() {
           <div>
             <h3 className="text-base font-semibold text-white mb-4">{t('Was this toolkit helpful?')}</h3>
             <div className="flex space-x-3 mb-4">
-              <button className="flex items-center px-4 py-1.5 rounded-md bg-[#21262d] border border-[#30363d] hover:bg-[#30363d] transition-colors text-sm font-medium text-[#c9d1d9]">
+              <button className="flex items-center px-4 py-1.5 rounded-md bg-[#161826] border border-[#23273D] hover:bg-[#1E2336] transition-colors text-sm font-medium text-[#F4F6FB]">
                 <ThumbsUp className="w-4 h-4 mr-2" /> {t('Yes')}
               </button>
-              <button className="flex items-center px-4 py-1.5 rounded-md bg-[#21262d] border border-[#30363d] hover:bg-[#30363d] transition-colors text-sm font-medium text-[#c9d1d9]">
+              <button className="flex items-center px-4 py-1.5 rounded-md bg-[#161826] border border-[#23273D] hover:bg-[#1E2336] transition-colors text-sm font-medium text-[#F4F6FB]">
                 <ThumbsDown className="w-4 h-4 mr-2" /> {t('No')}
               </button>
             </div>
@@ -30,10 +30,10 @@ export function Footer() {
           {/* Help us make these docs great! */}
           <div>
             <h3 className="text-base font-semibold text-white mb-2">{t('Open Source Project')}</h3>
-            <p className="text-sm text-[#8b949e] mb-4">
+            <p className="text-sm text-[#9EA7BD] mb-4">
               {t('Fabric Master is open source and community-driven. Have an improvement? Submit a pull request.')}
             </p>
-            <a href="https://github.com/sabledattatray/fabric-master" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-1.5 rounded-md bg-[#21262d] border border-[#30363d] hover:bg-[#30363d] transition-colors text-sm font-medium text-[#c9d1d9] mb-4">
+            <a href="https://github.com/sabledattatray/fabric-master" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-1.5 rounded-md bg-[#161826] border border-[#23273D] hover:bg-[#1E2336] transition-colors text-sm font-medium text-[#F4F6FB] mb-4">
               <GitPullRequest className="w-4 h-4 mr-2" /> {t('Contribute on GitHub')}
             </a>
             <br/>
@@ -60,8 +60,8 @@ export function Footer() {
         </div>
 
         {/* Independent Product Disclaimer */}
-        <div className="pt-8 border-t border-[#30363d] text-xs text-[#8b949e] space-y-2">
-          <p className="font-semibold text-[#c9d1d9] tracking-wide uppercase text-[11px]">
+        <div className="pt-8 border-t border-[#23273D] text-xs text-[#9EA7BD] space-y-2">
+          <p className="font-semibold text-[#F4F6FB] tracking-wide uppercase text-[11px]">
             {t('Independent Engineering & FinOps Workbench')}
           </p>
           <p className="leading-relaxed max-w-4xl">
@@ -70,9 +70,9 @@ export function Footer() {
         </div>
 
         {/* Legal and Attribution */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between text-xs text-[#8b949e] pt-6 border-t border-[#30363d]/50 mt-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between text-xs text-[#9EA7BD] pt-6 border-t border-[#23273D]/50 mt-6">
           <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 mb-4 md:mb-0">
-            <span className="font-semibold text-[#c9d1d9]">{t('Governance')}</span>
+            <span className="font-semibold text-[#F4F6FB]">{t('Governance')}</span>
             <div className="flex flex-wrap gap-x-4 gap-y-2 items-center">
               <span>© {new Date().getFullYear()} Fabric Master v4.0</span>
               <Link to="/terms" className="text-[#58a6ff] hover:underline">{t('Terms')}</Link>
@@ -88,7 +88,7 @@ export function Footer() {
               href="https://dattasable.com" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="text-[#c9d1d9] font-medium hover:text-[#58a6ff] transition-colors"
+              className="text-[#F4F6FB] font-medium hover:text-[#58a6ff] transition-colors"
             >
               Datta Sable
             </a>
@@ -96,7 +96,7 @@ export function Footer() {
         </div>
         
         <button 
-          className="absolute right-6 bottom-6 p-2 rounded-full bg-[#21262d] border border-[#30363d] text-[#8b949e] hover:text-[#c9d1d9] hover:bg-[#30363d] transition-colors"
+          className="absolute right-6 bottom-6 p-2 rounded-full bg-[#161826] border border-[#23273D] text-[#9EA7BD] hover:text-[#F4F6FB] hover:bg-[#1E2336] transition-colors"
           onClick={(e) => {
             const container = e.currentTarget.closest('.overflow-y-auto');
             if (container) {

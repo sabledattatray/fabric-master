@@ -77,7 +77,7 @@ export function Landing() {
   const featuredGuides = ARTICLES.slice(0, 4);
 
   return (
-    <div className="w-full h-full overflow-y-auto custom-scrollbar bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235]">
+    <div className="w-full h-full overflow-y-auto custom-scrollbar bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235]">
       <SEO
         title="Fabric Master v4.0 — Microsoft Fabric Capacity Intelligence & FinOps Workbench"
         description="The Independent Microsoft Fabric Engineering Workbench. Model Capacity Units (CUs), forecast Pay-As-You-Go vs 1-Year Reserved Instance costs, design architectures, and prevent throttling."
@@ -86,13 +86,13 @@ export function Landing() {
       />
 
       {/* 1. Top Trust & Open Source Status Bar */}
-      <div className="bg-[#101B2D] dark:bg-[#101B2D] light:bg-[#FFFFFF] border-b border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] py-2 px-4 text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-[#0E1018] dark:bg-[#0E1018] light:bg-[#FFFFFF] border-b border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] py-2 px-4 text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5 font-semibold text-[#22C55E]">
             <Code className="w-3.5 h-3.5" />
             100% Open Source (MIT)
           </span>
-          <span className="text-[#2B3B53] dark:text-[#2B3B53] light:text-[#DCE4EF]">•</span>
+          <span className="text-[#23273D] dark:text-[#23273D] light:text-[#DCE4EF]">•</span>
           <a
             href="https://github.com/sabledattatray/fabric-master"
             target="_blank"
@@ -108,7 +108,7 @@ export function Landing() {
             <Clock className="w-3.5 h-3.5 text-[#F59E0B]" />
             October 2026 Edition
           </span>
-          <span className="text-[#2B3B53] dark:text-[#2B3B53] light:text-[#DCE4EF]">•</span>
+          <span className="text-[#23273D] dark:text-[#23273D] light:text-[#DCE4EF]">•</span>
           <span className="px-1.5 py-0.5 rounded bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/30 font-mono text-[11px] font-semibold">
             v4.0 Release
           </span>
@@ -116,7 +116,7 @@ export function Landing() {
       </div>
 
       {/* 2. Hero Section */}
-      <section className="relative w-full border-b border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] overflow-hidden bg-gradient-to-b from-[#101B2D] to-[#080F1D] dark:from-[#101B2D] dark:to-[#080F1D] light:from-[#FFFFFF] light:to-[#F7F9FC] px-6 py-16 md:py-24">
+      <section className="relative w-full border-b border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] overflow-hidden bg-gradient-to-b from-[#0E1018] to-[#050508] dark:from-[#0E1018] dark:to-[#050508] light:from-[#FFFFFF] light:to-[#F7F9FC] px-6 py-16 md:py-24">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Headlines & Actions */}
@@ -126,11 +126,11 @@ export function Landing() {
               <span>Independent Microsoft Fabric Engineering & FinOps Workbench</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235] leading-[1.12]">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235] leading-[1.12]">
               {t("Engineer Microsoft Fabric with Confidence")}
             </h1>
 
-            <p className="text-base sm:text-lg text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] leading-relaxed max-w-2xl font-normal">
+            <p className="text-base sm:text-lg text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] leading-relaxed max-w-2xl font-normal">
               {t("Capacity planning, cost intelligence, architecture design, and explainable engineering guidance in one independent workspace.")}
             </p>
 
@@ -146,7 +146,7 @@ export function Landing() {
 
               <button
                 onClick={() => navigate("/cost-calculator")}
-                className="px-6 py-3.5 bg-[#17263D] hover:bg-[#203452] dark:bg-[#17263D] dark:hover:bg-[#203452] light:bg-[#FFFFFF] light:hover:bg-[#F1F5FA] text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] font-semibold rounded-xl transition-all flex items-center gap-2 text-sm sm:text-base cursor-pointer focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                className="px-6 py-3.5 bg-[#161826] hover:bg-[#1A1E2E] dark:bg-[#161826] dark:hover:bg-[#1A1E2E] light:bg-[#FFFFFF] light:hover:bg-[#F1F5FA] text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] font-semibold rounded-xl transition-all flex items-center gap-2 text-sm sm:text-base cursor-pointer focus:ring-2 focus:ring-blue-400 focus:outline-none"
               >
                 <DollarSign className="w-5 h-5 text-[#22D3EE]" />
                 {t("Explore Fabric Calculators")}
@@ -156,7 +156,7 @@ export function Landing() {
                 href="https://github.com/sabledattatray/fabric-master"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-3.5 bg-transparent hover:bg-[#17263D] dark:hover:bg-[#17263D] light:hover:bg-[#F1F5FA] text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] hover:text-[#F3F7FC] dark:hover:text-[#F3F7FC] light:hover:text-[#142235] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] font-medium rounded-xl transition-all flex items-center gap-2 text-sm"
+                className="px-5 py-3.5 bg-transparent hover:bg-[#161826] dark:hover:bg-[#161826] light:hover:bg-[#F1F5FA] text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] hover:text-[#F4F6FB] dark:hover:text-[#F4F6FB] light:hover:text-[#142235] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] font-medium rounded-xl transition-all flex items-center gap-2 text-sm"
               >
                 <Github className="w-5 h-5" />
                 <span>GitHub</span>
@@ -164,7 +164,7 @@ export function Landing() {
             </div>
 
             {/* Supporting Trust Statement */}
-            <div className="pt-6 border-t border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] flex flex-wrap items-center gap-6 text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D]">
+            <div className="pt-6 border-t border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] flex flex-wrap items-center gap-6 text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D]">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#22C55E]" />
                 <span>Independent Engineering Platform</span>
@@ -182,13 +182,13 @@ export function Landing() {
 
           {/* Right Column: High-Quality Interactive Preview Widget */}
           <div className="lg:col-span-5 w-full">
-            <div className="bg-[#101B2D] dark:bg-[#101B2D] light:bg-[#FFFFFF] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] rounded-2xl p-6 shadow-2xl space-y-6 relative overflow-hidden">
-              <div className="flex items-center justify-between border-b border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] pb-4">
+            <div className="bg-[#0E1018] dark:bg-[#0E1018] light:bg-[#FFFFFF] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] rounded-2xl p-6 shadow-2xl space-y-6 relative overflow-hidden">
+              <div className="flex items-center justify-between border-b border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] pb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-[#F87171]"></div>
                   <div className="w-3 h-3 rounded-full bg-[#F59E0B]"></div>
                   <div className="w-3 h-3 rounded-full bg-[#22C55E]"></div>
-                  <span className="text-xs font-mono text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] ml-2">
+                  <span className="text-xs font-mono text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] ml-2">
                     Capacity Sizing Preview
                   </span>
                 </div>
@@ -199,7 +199,7 @@ export function Landing() {
 
               {/* Interactive SKU Selector Pills */}
               <div>
-                <label className="block text-xs font-semibold text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] mb-2 uppercase tracking-wider">
+                <label className="block text-xs font-semibold text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] mb-2 uppercase tracking-wider">
                   Select Sizing Tier (Illustrative):
                 </label>
                 <div className="grid grid-cols-6 gap-1.5">
@@ -211,7 +211,7 @@ export function Landing() {
                       className={`py-1.5 rounded-lg text-xs font-mono font-semibold border transition-all cursor-pointer ${
                         selectedPreviewSkuSlug === slug
                           ? "bg-[#3B82F6] text-white border-[#3B82F6] shadow-sm"
-                          : "bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F1F5FA] text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] hover:border-[#3B82F6]"
+                          : "bg-[#050508] dark:bg-[#050508] light:bg-[#F1F5FA] text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] hover:border-[#3B82F6]"
                       }`}
                     >
                       {slug.toUpperCase()}
@@ -222,9 +222,9 @@ export function Landing() {
 
               {/* Sample Calculation Result Box */}
               <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] flex items-center justify-between">
+                <div className="p-4 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] flex items-center justify-between">
                   <div>
-                    <div className="text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D]">
+                    <div className="text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D]">
                       Baseline Workload Demand
                     </div>
                     <div className="text-2xl font-bold text-[#3B82F6]">
@@ -232,7 +232,7 @@ export function Landing() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D]">
+                    <div className="text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D]">
                       Candidate SKU Tier
                     </div>
                     <div className="text-2xl font-bold text-[#22C55E]">
@@ -242,15 +242,15 @@ export function Landing() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF]">
-                    <div className="text-[11px] text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D]">
+                  <div className="p-3 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF]">
+                    <div className="text-[11px] text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D]">
                       PAYG Monthly (Est.)
                     </div>
-                    <div className="text-base font-semibold text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235]">
+                    <div className="text-base font-semibold text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235]">
                       ${previewSku.monthlyPayg.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </div>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#22C55E]/40">
+                  <div className="p-3 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#22C55E]/40">
                     <div className="text-[11px] text-[#22C55E]">
                       1-Yr Reserved (Est.)
                     </div>
@@ -262,13 +262,13 @@ export function Landing() {
 
                 {/* Headroom / Buffer Bar */}
                 <div className="space-y-1.5">
-                  <div className="flex justify-between text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D]">
+                  <div className="flex justify-between text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D]">
                     <span>Headroom Analysis</span>
                     <span className="text-[#22C55E] font-semibold">
                       +{previewBufferPercent}% Safe Headroom
                     </span>
                   </div>
-                  <div className="w-full bg-[#17263D] dark:bg-[#17263D] light:bg-[#E2E8F0] h-2.5 rounded-full overflow-hidden border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF]">
+                  <div className="w-full bg-[#161826] dark:bg-[#161826] light:bg-[#E2E8F0] h-2.5 rounded-full overflow-hidden border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF]">
                     <div
                       className="bg-gradient-to-r from-[#3B82F6] to-[#22C55E] h-full"
                       style={{ width: `${Math.min(100, Math.round((previewBaselineDemand / previewSku.cu) * 100))}%` }}
@@ -277,12 +277,12 @@ export function Landing() {
                 </div>
 
                 {/* Workload Mix & Licensing Metadata */}
-                <div className="p-3 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] space-y-1.5 text-xs">
-                  <div className="flex justify-between text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D]">
+                <div className="p-3 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] space-y-1.5 text-xs">
+                  <div className="flex justify-between text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D]">
                     <span>Illustrative Workload Distribution:</span>
-                    <span className="font-mono text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235]">DF 15% • Spark 55% • PBI 30%</span>
+                    <span className="font-mono text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235]">DF 15% • Spark 55% • PBI 30%</span>
                   </div>
-                  <div className="flex justify-between text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D]">
+                  <div className="flex justify-between text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D]">
                     <span>Power BI Free-Viewer Licensing:</span>
                     <span className={previewSku.powerBiFreeUsers ? "text-[#22C55E] font-semibold" : "text-[#F59E0B]"}>
                       {previewSku.powerBiFreeUsers ? "Included (F64+)" : "Requires Pro/PPU (<F64)"}
@@ -290,7 +290,7 @@ export function Landing() {
                   </div>
                 </div>
 
-                <div className="text-[10px] text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] text-center">
+                <div className="text-[10px] text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] text-center">
                   * Synthetic demonstration data for preliminary architectural modeling.
                 </div>
               </div>
@@ -298,7 +298,7 @@ export function Landing() {
               <div className="pt-2 text-center">
                 <button
                   onClick={() => navigate("/wizard")}
-                  className="w-full py-2.5 rounded-xl bg-[#17263D] hover:bg-[#203452] dark:bg-[#17263D] dark:hover:bg-[#203452] light:bg-[#F1F5FA] light:hover:bg-[#E2E8F0] text-xs font-semibold text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="w-full py-2.5 rounded-xl bg-[#161826] hover:bg-[#1A1E2E] dark:bg-[#161826] dark:hover:bg-[#1A1E2E] light:bg-[#F1F5FA] light:hover:bg-[#E2E8F0] text-xs font-semibold text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <span>Model Custom Organization Workload in Sizing Wizard</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#3B82F6]" />
@@ -310,27 +310,27 @@ export function Landing() {
       </section>
 
       {/* 3. Verified Platform Metrics Bar */}
-      <section className="py-8 bg-[#101B2D] dark:bg-[#101B2D] light:bg-[#FFFFFF] border-b border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF]">
+      <section className="py-8 bg-[#0E1018] dark:bg-[#0E1018] light:bg-[#FFFFFF] border-b border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF]">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
-          <div className="p-4 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF]">
+          <div className="p-4 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF]">
             <div className="text-3xl font-display font-bold text-[#3B82F6]">11</div>
-            <div className="text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] mt-1 font-medium">Fabric SKUs (F2–F2048)</div>
+            <div className="text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] mt-1 font-medium">Fabric SKUs (F2–F2048)</div>
           </div>
-          <div className="p-4 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF]">
+          <div className="p-4 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF]">
             <div className="text-3xl font-display font-bold text-[#22C55E]">8</div>
-            <div className="text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] mt-1 font-medium">Engineering Tools</div>
+            <div className="text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] mt-1 font-medium">Engineering Tools</div>
           </div>
-          <div className="p-4 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF]">
+          <div className="p-4 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF]">
             <div className="text-3xl font-display font-bold text-[#22D3EE]">25</div>
-            <div className="text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] mt-1 font-medium">Architecture Guides</div>
+            <div className="text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] mt-1 font-medium">Architecture Guides</div>
           </div>
-          <div className="p-4 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF]">
+          <div className="p-4 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF]">
             <div className="text-3xl font-display font-bold text-[#F59E0B]">100%</div>
-            <div className="text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] mt-1 font-medium">Deterministic Models</div>
+            <div className="text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] mt-1 font-medium">Deterministic Models</div>
           </div>
-          <div className="p-4 rounded-xl bg-[#080F1D] dark:bg-[#080F1D] light:bg-[#F7F9FC] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] col-span-2 md:col-span-1">
-            <div className="text-3xl font-display font-bold text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235]">MIT</div>
-            <div className="text-xs text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] mt-1 font-medium">Open Source License</div>
+          <div className="p-4 rounded-xl bg-[#050508] dark:bg-[#050508] light:bg-[#F7F9FC] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] col-span-2 md:col-span-1">
+            <div className="text-3xl font-display font-bold text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235]">MIT</div>
+            <div className="text-xs text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] mt-1 font-medium">Open Source License</div>
           </div>
         </div>
       </section>
@@ -744,12 +744,12 @@ export function Landing() {
       </section>
 
       {/* 10. Final Conversion CTA (PRD Section 11 Section I) */}
-      <section className="py-16 px-6 max-w-7xl mx-auto border-t border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] text-center space-y-6">
-        <div className="bg-gradient-to-r from-[#101B2D] via-[#080F1D] to-[#101B2D] dark:from-[#101B2D] dark:via-[#080F1D] dark:to-[#101B2D] light:from-[#FFFFFF] light:via-[#F1F5FA] light:to-[#FFFFFF] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] rounded-2xl p-10 md:p-14 space-y-6 shadow-2xl">
-          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235]">
+      <section className="py-16 px-6 max-w-7xl mx-auto border-t border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] text-center space-y-6">
+        <div className="bg-gradient-to-r from-[#0E1018] via-[#050508] to-[#0E1018] dark:from-[#0E1018] dark:via-[#050508] dark:to-[#0E1018] light:from-[#FFFFFF] light:via-[#F1F5FA] light:to-[#FFFFFF] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] rounded-2xl p-10 md:p-14 space-y-6 shadow-2xl">
+          <h2 className="text-3xl sm:text-4xl font-display font-extrabold text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235]">
             Start Planning Your Microsoft Fabric Architecture
           </h2>
-          <p className="text-base text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] max-w-xl mx-auto">
+          <p className="text-base text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] max-w-xl mx-auto">
             Model your custom capacity requirements, evaluate 1-Year Reserved Instance discounts, and explore enterprise specification matrices in seconds.
           </p>
 
@@ -765,7 +765,7 @@ export function Landing() {
 
             <button
               onClick={() => navigate("/docs")}
-              className="px-6 py-3.5 bg-[#17263D] hover:bg-[#203452] dark:bg-[#17263D] dark:hover:bg-[#203452] light:bg-[#FFFFFF] light:hover:bg-[#F1F5FA] text-[#F3F7FC] dark:text-[#F3F7FC] light:text-[#142235] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] font-semibold rounded-xl transition-all flex items-center gap-2 text-sm cursor-pointer"
+              className="px-6 py-3.5 bg-[#161826] hover:bg-[#1A1E2E] dark:bg-[#161826] dark:hover:bg-[#1A1E2E] light:bg-[#FFFFFF] light:hover:bg-[#F1F5FA] text-[#F4F6FB] dark:text-[#F4F6FB] light:text-[#142235] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] font-semibold rounded-xl transition-all flex items-center gap-2 text-sm cursor-pointer"
             >
               <BookOpen className="w-5 h-5 text-[#3B82F6]" />
               Explore Documentation
@@ -773,7 +773,7 @@ export function Landing() {
 
             <Link
               to="/fsku/f64"
-              className="px-5 py-3.5 bg-[#17263D] hover:bg-[#203452] dark:bg-[#17263D] dark:hover:bg-[#203452] light:bg-[#FFFFFF] light:hover:bg-[#F1F5FA] text-[#22C55E] border border-[#22C55E]/30 font-semibold rounded-xl transition-all flex items-center gap-2 text-sm"
+              className="px-5 py-3.5 bg-[#161826] hover:bg-[#1A1E2E] dark:bg-[#161826] dark:hover:bg-[#1A1E2E] light:bg-[#FFFFFF] light:hover:bg-[#F1F5FA] text-[#22C55E] border border-[#22C55E]/30 font-semibold rounded-xl transition-all flex items-center gap-2 text-sm"
             >
               <Sparkles className="w-5 h-5" />
               View F64 Specification
@@ -783,7 +783,7 @@ export function Landing() {
               href="https://github.com/sabledattatray/fabric-master"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-3.5 bg-transparent hover:bg-[#17263D] dark:hover:bg-[#17263D] light:hover:bg-[#F1F5FA] text-[#A7B8CC] dark:text-[#A7B8CC] light:text-[#52657D] hover:text-[#F3F7FC] dark:hover:text-[#F3F7FC] light:hover:text-[#142235] border border-[#2B3B53] dark:border-[#2B3B53] light:border-[#DCE4EF] font-medium rounded-xl transition-all flex items-center gap-2 text-sm"
+              className="px-5 py-3.5 bg-transparent hover:bg-[#161826] dark:hover:bg-[#161826] light:hover:bg-[#F1F5FA] text-[#9EA7BD] dark:text-[#9EA7BD] light:text-[#52657D] hover:text-[#F4F6FB] dark:hover:text-[#F4F6FB] light:hover:text-[#142235] border border-[#23273D] dark:border-[#23273D] light:border-[#DCE4EF] font-medium rounded-xl transition-all flex items-center gap-2 text-sm"
             >
               <Github className="w-5 h-5" />
               GitHub

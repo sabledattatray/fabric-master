@@ -92,23 +92,23 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-2xl bg-[#161b22] border border-[#30363d] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
+        className="w-full max-w-2xl bg-[#0E1018] border border-[#23273D] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Header */}
-        <div className="flex items-center px-4 py-3 border-b border-[#30363d] bg-[#0d1117]">
-          <Search className="w-5 h-5 text-[#8b949e] mr-3 shrink-0" />
+        <div className="flex items-center px-4 py-3 border-b border-[#23273D] bg-[#050508]">
+          <Search className="w-5 h-5 text-[#9EA7BD] mr-3 shrink-0" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("Search tools, F-SKUs, comparisons, docs, labs... (ESC to close)")}
-            className="w-full bg-transparent text-[#e6edf3] placeholder-[#8b949e] text-base focus:outline-none"
+            className="w-full bg-transparent text-[#F4F6FB] placeholder-[#9EA7BD] text-base focus:outline-none"
             autoFocus
           />
           <button 
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-[#30363d] text-[#8b949e] hover:text-white transition-colors ml-2"
+            className="p-1 rounded-lg hover:bg-[#161826] text-[#9EA7BD] hover:text-white transition-colors ml-2"
           >
             <X className="w-5 h-5" />
           </button>
@@ -117,15 +117,15 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
         {/* Results Container */}
         <div className="overflow-y-auto p-3 space-y-4 custom-scrollbar">
           {!hasResults && (
-            <div className="py-12 text-center text-[#8b949e]">
-              No results found matching "<span className="text-[#e6edf3]">{query}</span>".
+            <div className="py-12 text-center text-[#9EA7BD]">
+              No results found matching "<span className="text-[#F4F6FB]">{query}</span>".
             </div>
           )}
 
           {/* Tools */}
           {tools.length > 0 && (
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] px-2 mb-2">
+              <div className="text-xs font-semibold uppercase tracking-wider text-[#9EA7BD] px-2 mb-2">
                 Tools & Calculators
               </div>
               <div className="space-y-1">
@@ -135,18 +135,18 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                     <button
                       key={t.path}
                       onClick={() => handleSelect(t.path)}
-                      className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#21262d] text-[#e6edf3] transition-colors group"
+                      className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#161826] text-[#F4F6FB] transition-colors group"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-[#0d1117] border border-[#30363d] text-[#58a6ff]">
+                        <div className="p-2 rounded-lg bg-[#050508] border border-[#23273D] text-[#58a6ff]">
                           <Icon className="w-4 h-4" />
                         </div>
                         <div>
                           <div className="font-medium text-sm group-hover:text-[#58a6ff] transition-colors">{t.title}</div>
-                          <div className="text-xs text-[#8b949e]">{t.desc}</div>
+                          <div className="text-xs text-[#9EA7BD]">{t.desc}</div>
                         </div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#58a6ff] opacity-0 group-hover:opacity-100 transition-all" />
+                      <ArrowRight className="w-4 h-4 text-[#9EA7BD] group-hover:text-[#58a6ff] opacity-0 group-hover:opacity-100 transition-all" />
                     </button>
                   );
                 })}
@@ -157,7 +157,7 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
           {/* F-SKUs */}
           {skus.length > 0 && (
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] px-2 mb-2">
+              <div className="text-xs font-semibold uppercase tracking-wider text-[#9EA7BD] px-2 mb-2">
                 Microsoft Fabric F-SKUs
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
@@ -165,16 +165,16 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                   <button
                     key={s.slug}
                     onClick={() => handleSelect(`/fsku/${s.slug}`)}
-                    className="text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#21262d] text-[#e6edf3] transition-colors border border-[#30363d]/50 group"
+                    className="text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#161826] text-[#F4F6FB] transition-colors border border-[#23273D] group"
                   >
                     <div>
                       <div className="font-semibold text-sm text-[#58a6ff] flex items-center gap-2">
                         {s.name} Capacity
                         {s.powerBiFreeUsers && <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#238636]/20 text-[#3fb950] border border-[#238636]/40 font-normal">PBI Free</span>}
                       </div>
-                      <div className="text-xs text-[#8b949e]">${s.monthlyReserved.toLocaleString()}/mo Reserved</div>
+                      <div className="text-xs text-[#9EA7BD]">${s.monthlyReserved.toLocaleString()}/mo Reserved</div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#58a6ff] opacity-0 group-hover:opacity-100 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-[#9EA7BD] group-hover:text-[#58a6ff] opacity-0 group-hover:opacity-100 transition-all" />
                   </button>
                 ))}
               </div>
@@ -184,7 +184,7 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
           {/* Comparisons */}
           {comparisons.length > 0 && (
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] px-2 mb-2">
+              <div className="text-xs font-semibold uppercase tracking-wider text-[#9EA7BD] px-2 mb-2">
                 SKU & Architecture Comparisons
               </div>
               <div className="space-y-1">
@@ -192,18 +192,18 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                   <button
                     key={c.slug}
                     onClick={() => handleSelect(`/compare/${c.slug}`)}
-                    className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#21262d] text-[#e6edf3] transition-colors group"
+                    className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#161826] text-[#F4F6FB] transition-colors group"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-[#0d1117] border border-[#30363d] text-[#d29922]">
+                      <div className="p-2 rounded-lg bg-[#050508] border border-[#23273D] text-[#d29922]">
                         <GitCompare className="w-4 h-4" />
                       </div>
                       <div>
                         <div className="font-medium text-sm group-hover:text-[#d29922] transition-colors">{c.title}</div>
-                        <div className="text-xs text-[#8b949e]">{c.subtitle}</div>
+                        <div className="text-xs text-[#9EA7BD]">{c.subtitle}</div>
                       </div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#d29922] opacity-0 group-hover:opacity-100 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-[#9EA7BD] group-hover:text-[#d29922] opacity-0 group-hover:opacity-100 transition-all" />
                   </button>
                 ))}
               </div>
@@ -213,7 +213,7 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
           {/* Documentation */}
           {docs.length > 0 && (
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] px-2 mb-2">
+              <div className="text-xs font-semibold uppercase tracking-wider text-[#9EA7BD] px-2 mb-2">
                 Knowledge Base & Documentation
               </div>
               <div className="space-y-1">
@@ -221,18 +221,18 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                   <button
                     key={d.id}
                     onClick={() => handleSelect(`/docs/${d.id}`)}
-                    className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#21262d] text-[#e6edf3] transition-colors group"
+                    className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#161826] text-[#F4F6FB] transition-colors group"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-[#0d1117] border border-[#30363d] text-[#a371f7]">
+                      <div className="p-2 rounded-lg bg-[#050508] border border-[#23273D] text-[#a371f7]">
                         <BookOpen className="w-4 h-4" />
                       </div>
                       <div>
                         <div className="font-medium text-sm group-hover:text-[#a371f7] transition-colors">{d.title}</div>
-                        <div className="text-xs text-[#8b949e] line-clamp-1">{d.description}</div>
+                        <div className="text-xs text-[#9EA7BD] line-clamp-1">{d.description}</div>
                       </div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#a371f7] opacity-0 group-hover:opacity-100 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-[#9EA7BD] group-hover:text-[#a371f7] opacity-0 group-hover:opacity-100 transition-all" />
                   </button>
                 ))}
               </div>
@@ -242,7 +242,7 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
           {/* Labs */}
           {labs.length > 0 && (
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-[#8b949e] px-2 mb-2">
+              <div className="text-xs font-semibold uppercase tracking-wider text-[#9EA7BD] px-2 mb-2">
                 Fabric Master Labs
               </div>
               <div className="space-y-1">
@@ -250,18 +250,18 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
                   <button
                     key={l.id}
                     onClick={() => handleSelect('/labs')}
-                    className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#21262d] text-[#e6edf3] transition-colors group"
+                    className="w-full text-left flex items-center justify-between p-2.5 rounded-xl hover:bg-[#161826] text-[#F4F6FB] transition-colors group"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-[#0d1117] border border-[#30363d] text-[#3fb950]">
+                      <div className="p-2 rounded-lg bg-[#050508] border border-[#23273D] text-[#3fb950]">
                         <Beaker className="w-4 h-4" />
                       </div>
                       <div>
                         <div className="font-medium text-sm group-hover:text-[#3fb950] transition-colors">{l.title}</div>
-                        <div className="text-xs text-[#8b949e] line-clamp-1">{l.description}</div>
+                        <div className="text-xs text-[#9EA7BD] line-clamp-1">{l.description}</div>
                       </div>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-[#8b949e] group-hover:text-[#3fb950] opacity-0 group-hover:opacity-100 transition-all" />
+                    <ArrowRight className="w-4 h-4 text-[#9EA7BD] group-hover:text-[#3fb950] opacity-0 group-hover:opacity-100 transition-all" />
                   </button>
                 ))}
               </div>
@@ -270,9 +270,9 @@ export function CommandSearchModal({ isOpen, onClose }: CommandSearchModalProps)
         </div>
 
         {/* Modal Footer */}
-        <div className="px-4 py-2 bg-[#0d1117] border-t border-[#30363d] flex items-center justify-between text-xs text-[#8b949e]">
+        <div className="px-4 py-2 bg-[#050508] border-t border-[#23273D] flex items-center justify-between text-xs text-[#9EA7BD]">
           <div className="flex items-center gap-2">
-            <kbd className="px-1.5 py-0.5 rounded bg-[#21262d] border border-[#30363d] text-[#c9d1d9] font-mono text-[10px]">CTRL + K</kbd>
+            <kbd className="px-1.5 py-0.5 rounded bg-[#161826] border border-[#23273D] text-[#F4F6FB] font-mono text-[10px]">CTRL + K</kbd>
             <span>to toggle search anywhere</span>
           </div>
           <div>Press ESC to close</div>

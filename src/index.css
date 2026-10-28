@@ -16,17 +16,17 @@
 :root,
 html.dark,
 :root[data-theme="dark"] {
-  --color-canvas: #080F1D;
-  --color-surface: #101B2D;
-  --color-surface-elevated: #17263D;
-  --color-border: #2B3B53;
-  --color-text-primary: #F3F7FC;
-  --color-text-secondary: #A7B8CC;
+  --color-canvas: #050508;
+  --color-surface: #0E1018;
+  --color-surface-elevated: #161826;
+  --color-border: #23273D;
+  --color-text-primary: #F4F6FB;
+  --color-text-secondary: #9EA7BD;
   --color-accent-primary: #3B82F6;
   --color-accent-cyan: #22D3EE;
   --color-success: #22C55E;
   --color-warning: #F59E0B;
-  --color-error: #F87171;
+  --color-error: #EF4444;
   color-scheme: dark;
 }
 
@@ -251,6 +251,199 @@ html.light textarea {
 html.light select option {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
+}
+
+/* ==========================================================================
+   Comprehensive Dark Theme (#050508 Obsidian) System Harmonization
+   ========================================================================== */
+
+/* 1. Page & App Canvas Backgrounds -> Pure Obsidian #050508 */
+html.dark .bg-\[\#0d1117\],
+html.dark .bg-\[\#0D1117\],
+html.dark .bg-\[\#080F1D\],
+html.dark .bg-\[\#080f1d\],
+html.dark .dark\:bg-\[\#080F1D\],
+html.dark .dark\:bg-\[\#080f1d\],
+html.dark .bg-\[\#0b1329\],
+html.dark .bg-\[\#0b1220\],
+html.dark aside,
+html.dark main {
+  background-color: #050508 !important;
+}
+
+/* Glassmorphic sticky header & blur surfaces */
+html.dark .bg-\[\#0D1117\]\/95,
+html.dark .bg-\[\#0d1117\]\/95,
+html.dark .bg-\[\#0b1329\]\/90 {
+  background-color: rgba(5, 5, 8, 0.95) !important;
+}
+
+/* 2. Card & Surface Backgrounds -> Rich Obsidian Slate #0E1018 */
+html.dark .bg-\[\#161b22\],
+html.dark .bg-\[\#161b22\]\/80,
+html.dark .bg-\[\#161b22\]\/90,
+html.dark .bg-\[\#101B2D\],
+html.dark .bg-\[\#101b2d\],
+html.dark .dark\:bg-\[\#101B2D\],
+html.dark .dark\:bg-\[\#101b2d\],
+html.dark .bg-\[\#0f172a\] {
+  background-color: #0E1018 !important;
+}
+
+html.dark .bg-\[\#161b22\]\/40,
+html.dark .dark\:bg-\[\#161b22\]\/40,
+html.dark .bg-\[\#101B2D\]\/40,
+html.dark .dark\:bg-\[\#101B2D\]\/40 {
+  background-color: rgba(14, 16, 24, 0.4) !important;
+}
+
+html.dark .bg-\[\#161b22\]\/60,
+html.dark .dark\:bg-\[\#161b22\]\/60,
+html.dark .bg-\[\#101B2D\]\/60,
+html.dark .dark\:bg-\[\#101B2D\]\/60 {
+  background-color: rgba(14, 16, 24, 0.6) !important;
+}
+
+/* 3. Elevated Surfaces, Inputs, Pills, Search Bars & Modals -> #161826 */
+html.dark .bg-\[\#21262d\],
+html.dark .bg-\[\#17263D\],
+html.dark .bg-\[\#17263d\],
+html.dark .dark\:bg-\[\#17263D\],
+html.dark .dark\:bg-\[\#17263d\],
+html.dark .bg-\[\#162032\],
+html.dark .bg-\[\#11192e\],
+html.dark .bg-\[\#1f2d47\],
+html.dark .bg-\[\#080F1D\]\/50,
+html.dark .bg-\[\#080f1d\]\/50,
+html.dark .dark\:bg-\[\#080F1D\]\/50,
+html.dark .dark\:bg-\[\#080f1d\]\/50 {
+  background-color: #161826 !important;
+}
+
+/* 4. Danger / Red Badges Backgrounds */
+html.dark .bg-\[\#1f1618\],
+html.dark .bg-\[\#331118\] {
+  background-color: #1F1015 !important;
+}
+
+/* 5. Borders -> Crisp Obsidian Hairline Borders #23273D */
+html.dark .border-\[\#30363d\],
+html.dark .dark\:border-\[\#30363d\],
+html.dark .border-\[\#30363d\]\/50,
+html.dark .dark\:border-\[\#30363d\]\/50,
+html.dark .border-\[\#30363d\]\/60,
+html.dark .dark\:border-\[\#30363d\]\/60,
+html.dark .border-\[\#2B3B53\],
+html.dark .border-\[\#2b3b53\],
+html.dark .dark\:border-\[\#2B3B53\],
+html.dark .dark\:border-\[\#2b3b53\],
+html.dark .border-\[\#2B3B53\]\/50,
+html.dark .dark\:border-\[\#2B3B53\]\/50,
+html.dark .border-\[\#2b3b53\]\/50,
+html.dark .dark\:border-\[\#2b3b53\]\/50,
+html.dark .border-\[\#21262d\],
+html.dark .border-\[\#1f2937\] {
+  border-color: #23273D !important;
+}
+
+/* 6. Primary Text Colors -> Brilliant White #F4F6FB */
+html.dark .text-\[\#F3F7FC\],
+html.dark .text-\[\#f3f7fc\],
+html.dark .dark\:text-\[\#F3F7FC\],
+html.dark .dark\:text-\[\#f3f7fc\],
+html.dark .text-\[\#f0f6fc\],
+html.dark .text-\[\#F0F6FC\],
+html.dark .text-\[\#e6edf3\],
+html.dark .text-\[\#c9d1d9\],
+html.dark .text-\[\#C9D1D9\],
+html.dark .text-slate-100,
+html.dark .text-slate-200 {
+  color: #F4F6FB !important;
+}
+
+/* 7. Secondary Text & Label Colors -> High-Contrast Slate #9EA7BD */
+html.dark .text-\[\#A7B8CC\],
+html.dark .text-\[\#a7b8cc\],
+html.dark .dark\:text-\[\#A7B8CC\],
+html.dark .dark\:text-\[\#a7b8cc\],
+html.dark .text-\[\#8b949e\],
+html.dark .text-\[\#8B949E\],
+html.dark .dark\:text-\[\#8b949e\],
+html.dark .text-slate-300,
+html.dark .text-slate-400 {
+  color: #9EA7BD !important;
+}
+
+/* 8. Muted / Subtle Text Colors -> Slate #64748B */
+html.dark .text-slate-500,
+html.dark .text-\[\#6e7681\] {
+  color: #64748B !important;
+}
+
+/* 9. Standalone White Text Protection in Dark Mode */
+html.dark .text-white {
+  color: #FFFFFF !important;
+}
+
+/* 10. Gradient Stops in Dark Mode */
+html.dark .from-\[\#101B2D\],
+html.dark .from-\[\#101b2d\],
+html.dark .dark\:from-\[\#101B2D\],
+html.dark .dark\:from-\[\#101b2d\],
+html.dark .from-\[\#0b1329\] {
+  --tw-gradient-from: #0E1018 !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position)) !important;
+}
+
+html.dark .to-\[\#080F1D\],
+html.dark .to-\[\#080f1d\],
+html.dark .dark\:to-\[\#080F1D\],
+html.dark .dark\:to-\[\#080f1d\],
+html.dark .to-\[\#0d1117\] {
+  --tw-gradient-to: #050508 !important;
+}
+
+html.dark .via-\[\#080F1D\],
+html.dark .via-\[\#080f1d\],
+html.dark .dark\:via-\[\#080F1D\],
+html.dark .dark\:via-\[\#080f1d\] {
+  --tw-gradient-via: #0A0C14 !important;
+  --tw-gradient-stops: var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position) !important;
+}
+
+/* 11. Interactive Hover States in Dark Mode */
+html.dark .hover\:bg-\[\#161b22\]:hover,
+html.dark .hover\:bg-\[\#21262d\]:hover,
+html.dark .hover\:bg-\[\#17263D\]:hover,
+html.dark .hover\:bg-\[\#17263d\]:hover,
+html.dark .hover\:bg-\[\#203452\]:hover,
+html.dark .dark\:hover\:bg-\[\#203452\]:hover,
+html.dark .dark\:hover\:bg-\[\#17263D\]:hover,
+html.dark .hover\:bg-\[\#1f2d47\]:hover {
+  background-color: #1A1E2E !important;
+}
+
+html.dark .hover\:text-white:hover,
+html.dark .hover\:text-\[\#F3F7FC\]:hover,
+html.dark .hover\:text-\[\#f3f7fc\]:hover,
+html.dark .hover\:text-\[\#c9d1d9\]:hover,
+html.dark .hover\:text-\[\#e6edf3\]:hover {
+  color: #FFFFFF !important;
+}
+
+/* 12. Input & Select Elements in Dark Mode */
+html.dark select,
+html.dark input[type="text"],
+html.dark input[type="number"],
+html.dark textarea {
+  background-color: #161826 !important;
+  border-color: #23273D !important;
+  color: #F4F6FB !important;
+}
+
+html.dark select option {
+  background-color: #161826 !important;
+  color: #F4F6FB !important;
 }
 
 /* Custom Scrollbars */
