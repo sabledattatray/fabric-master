@@ -60,6 +60,9 @@ body {
    ========================================================================== */
 
 /* 1. Page & App Canvas Backgrounds */
+html.light .bg-\[\#050508\],
+html.light .bg-\[\#050508\]\/95,
+html.light .dark\:bg-\[\#050508\],
 html.light .bg-\[\#0d1117\],
 html.light .bg-\[\#0D1117\],
 html.light .bg-\[\#0D1117\]\/95,
@@ -67,11 +70,26 @@ html.light .bg-\[\#080F1D\],
 html.light .bg-\[\#080f1d\],
 html.light .bg-\[\#0b1329\],
 html.light .bg-\[\#0b1329\]\/90,
-html.light .bg-\[\#0b1220\] {
+html.light .bg-\[\#0b1220\],
+html.light main {
   background-color: #F8FAFC !important;
 }
 
+/* Light Theme Header & Sidebar Invariant Styling */
+html.light header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom-color: #E2E8F0 !important;
+}
+
+html.light aside {
+  background-color: #FFFFFF !important;
+  border-right-color: #E2E8F0 !important;
+}
+
 /* 2. Card & Surface Backgrounds */
+html.light .bg-\[\#0E1018\],
+html.light .bg-\[\#0e1018\],
+html.light .dark\:bg-\[\#0E1018\],
 html.light .bg-\[\#161b22\],
 html.light .bg-\[\#161b22\]\/10,
 html.light .bg-\[\#161b22\]\/20,
@@ -92,6 +110,8 @@ html.light aside[aria-label="Planning assumptions and pricing provenance"] {
 }
 
 /* 3. Elevated Surfaces, Inputs, Pills & Table Headers */
+html.light .bg-\[\#161826\],
+html.light .dark\:bg-\[\#161826\],
 html.light .bg-\[\#21262d\],
 html.light .bg-\[\#17263D\],
 html.light .bg-\[\#17263d\],
@@ -110,6 +130,10 @@ html.light .bg-\[\#331118\] {
 }
 
 /* 5. Borders */
+html.light .border-\[\#23273D\],
+html.light .dark\:border-\[\#23273D\],
+html.light .border-\[\#23273D\]\/50,
+html.light .border-\[\#23273D\]\/60,
 html.light .border-\[\#30363d\],
 html.light .border-\[\#30363d\]\/50,
 html.light .border-\[\#30363d\]\/60,
@@ -123,6 +147,9 @@ html.light .border-\[\#1f2937\] {
 }
 
 /* 6. Primary Text Colors */
+html.light .text-\[\#F4F6FB\],
+html.light .text-\[\#f4f6fb\],
+html.light .dark\:text-\[\#F4F6FB\],
 html.light .text-\[\#F3F7FC\],
 html.light .text-\[\#f3f7fc\],
 html.light .text-\[\#f0f6fc\],
@@ -137,6 +164,9 @@ html.light .text-slate-200 {
 }
 
 /* 7. Secondary Text & Label Colors */
+html.light .text-\[\#9EA7BD\],
+html.light .text-\[\#9ea7bd\],
+html.light .dark\:text-\[\#9EA7BD\],
 html.light .text-\[\#A7B8CC\],
 html.light .text-\[\#a7b8cc\],
 html.light .text-\[\#8b949e\],
