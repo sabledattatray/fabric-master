@@ -32,6 +32,7 @@ import { OneLakeVisualizer } from "./pages/OneLakeVisualizer";
 import { AIAdvisor } from "./pages/AIAdvisor";
 import { ResourcesOpenSource } from "./pages/ResourcesOpenSource";
 import { Workspace } from "./pages/Workspace";
+import { Observability } from "./pages/Observability";
 
 function RouteContainer({ initialPath, children }: { initialPath?: string; children: React.ReactNode }) {
   return initialPath ? <MemoryRouter initialEntries={[initialPath]}>{children}</MemoryRouter> : <Router>{children}</Router>;
@@ -74,6 +75,7 @@ export default function App({ initialPath, helmetContext }: { initialPath?: stri
               <Route path="/ai-advisor" element={<AIAdvisor />} />
               <Route path="/resources/open-source" element={<ResourcesOpenSource />} />
               <Route path="/workspace" element={<Workspace />} />
+              <Route path="/observability" element={<Observability />} />
             </Routes>
           </Layout>
         </RouteContainer>

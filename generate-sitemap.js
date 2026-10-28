@@ -22,6 +22,7 @@ const indexableStaticRoutes = [
   { url: 'power-bi-capacity', priority: '0.8', changefreq: 'monthly' },
   { url: 'pricing', priority: '0.8', changefreq: 'monthly' },
   { url: 'fsku-comparisons', priority: '0.8', changefreq: 'monthly' },
+  { url: 'observability', priority: '0.9', changefreq: 'monthly' },
   { url: 'docs', priority: '0.8', changefreq: 'weekly' },
   { url: 'about', priority: '0.7', changefreq: 'monthly' }
 ];

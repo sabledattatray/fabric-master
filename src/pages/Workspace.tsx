@@ -27,7 +27,10 @@ import {
   X,
   AlertTriangle,
   HelpCircle,
-  Clock
+  Clock,
+  Bot,
+  FileText,
+  Printer
 } from "lucide-react";
 import {
   Scenario,
@@ -63,8 +66,25 @@ import {
   calculateSensitivityAnalysis,
   getStepByStepExplanation,
 } from "../lib/pricing";
+import {
+  ObservabilitySummary,
+  getSampleMedallionLakehouse,
+  getSampleThrottledWorkload,
+  getSampleSparkBatchBurn,
+  compareTelemetryWithScenario
+} from "../lib/observability";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ReferenceLine
+} from "recharts";
 
-type TabId = "overview" | "inputs" | "capacity" | "finops" | "comparison" | "architecture";
+type TabId = "overview" | "inputs" | "capacity" | "finops" | "comparison" | "architecture" | "observability";
 
 export function Workspace() {
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
@@ -83,6 +103,14 @@ export function Workspace() {
   const [showUnsupportedModal, setShowUnsupportedModal] = useState<boolean>(false);
   const [sensitivityVariant, setSensitivityVariant] = useState<"conservative" | "baseline" | "peak">("baseline");
   const [showMathDetails, setShowMathDetails] = useState<boolean>(false);
+
+  // Phase 7 Telemetry & Observability State
+  const [telemetryDataset, setTelemetryDataset] = useState<"medallion" | "throttled" | "spark">("medallion");
+  const telemetrySummary = useMemo(() => {
+    if (telemetryDataset === "throttled") return getSampleThrottledWorkload();
+    if (telemetryDataset === "spark") return getSampleSparkBatchBurn();
+    return getSampleMedallionLakehouse();
+  }, [telemetryDataset]);
 
   // Modal States
   const [showNewModal, setShowNewModal] = useState<boolean>(false);
@@ -455,6 +483,26 @@ export function Workspace() {
               <Info className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Assumptions</span>
             </button>
+
+            {/* AI Advisor Contextual Link */}
+            <Link
+              to="/ai-advisor"
+              className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#58a6ff]/10 hover:bg-[#58a6ff]/20 border border-[#58a6ff]/30 text-[#58a6ff] text-xs font-semibold transition"
+              title="Open AI Engineering Advisor grounded in this scenario"
+            >
+              <Bot className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">AI Advisor</span>
+            </Link>
+
+            {/* Decision Report Link */}
+            <Link
+              to={`/report?scenario=${activeId}`}
+              className="inline-flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-[#238636] hover:bg-[#2ea043] text-white text-xs font-semibold shadow-sm transition"
+              title="Open full printable enterprise decision report"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Decision Report</span>
+            </Link>
           </div>
         </div>
       </header>
@@ -557,6 +605,21 @@ export function Workspace() {
                 <span>Topology & Flow</span>
               </div>
               <ChevronRight className={`w-3.5 h-3.5 ${activeTab === "architecture" ? "text-white" : "text-slate-500"}`} />
+            </button>
+
+            <button
+              onClick={() => setActiveTab("observability")}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition ${
+                activeTab === "observability"
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                  : "text-slate-300 hover:bg-[#162032] hover:text-white"
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <Activity className="w-4 h-4" />
+                <span>Observability & Telemetry</span>
+              </div>
+              <ChevronRight className={`w-3.5 h-3.5 ${activeTab === "observability" ? "text-white" : "text-slate-500"}`} />
             </button>
 
             {/* Active Scenario Metadata Pill */}
@@ -1891,6 +1954,252 @@ export function Workspace() {
                     <span>Open Architecture Planner</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 7: Phase 7 Telemetry Observability */}
+          {activeTab === "observability" && activeScenario && evalData && (
+            <div className="space-y-6">
+              <div className="p-6 rounded-2xl bg-[#0f172a] border border-[#21262d] space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                        Phase 7 Subsystem
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                        <ShieldCheck className="w-3 h-3" />
+                        100% In-Browser Local
+                      </span>
+                    </div>
+                    <h2 className="text-xl font-bold text-white tracking-tight">
+                      Capacity Observability & Telemetry Diagnostics
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Correlate your planned scenario ({activeScenario.name}) with measured Microsoft Fabric telemetry, 24-hour background smoothing curves, and throttling risk.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <Link
+                      to="/observability"
+                      className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shrink-0 transition shadow-sm"
+                    >
+                      <Activity className="w-3.5 h-3.5" />
+                      <span>Open Full Observability Studio</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Dataset switcher */}
+                <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-400">Sample Stress Profile:</span>
+                    <button
+                      onClick={() => setTelemetryDataset("medallion")}
+                      className={`px-2.5 py-1 rounded border font-medium transition ${
+                        telemetryDataset === "medallion"
+                          ? "bg-blue-600 text-white border-blue-500"
+                          : "bg-[#162032] text-slate-300 border-[#30363d] hover:bg-[#1f2d47]"
+                      }`}
+                    >
+                      Medallion Lakehouse (F64 Healthy)
+                    </button>
+                    <button
+                      onClick={() => setTelemetryDataset("throttled")}
+                      className={`px-2.5 py-1 rounded border font-medium transition ${
+                        telemetryDataset === "throttled"
+                          ? "bg-red-600 text-white border-red-500"
+                          : "bg-[#162032] text-slate-300 border-[#30363d] hover:bg-[#1f2d47]"
+                      }`}
+                    >
+                      Morning Throttling Surge (F32)
+                    </button>
+                    <button
+                      onClick={() => setTelemetryDataset("spark")}
+                      className={`px-2.5 py-1 rounded border font-medium transition ${
+                        telemetryDataset === "spark"
+                          ? "bg-amber-600 text-white border-amber-500"
+                          : "bg-[#162032] text-slate-300 border-[#30363d] hover:bg-[#1f2d47]"
+                      }`}
+                    >
+                      Continuous Spark Burn (F16)
+                    </button>
+                  </div>
+
+                  <span className="text-[11px] font-mono text-slate-400">
+                    {telemetrySummary.validRecords} telemetry events ({telemetrySummary.timeRange.durationHours}h window)
+                  </span>
+                </div>
+
+                {/* Reality Check Comparison Banner */}
+                {(() => {
+                  const comparison = compareTelemetryWithScenario(
+                    telemetrySummary,
+                    evalData.targetSkuRecommendation.safeSkuName
+                  );
+                  return (
+                    <div className="p-4 rounded-xl bg-[#11192e] border border-[#21262d] space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                          Scenario Reality Check
+                        </span>
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
+                            comparison.fitAssessment === "Optimal"
+                              ? "bg-emerald-950/40 text-emerald-300 border-emerald-800"
+                              : comparison.fitAssessment === "Critical Throttling Risk"
+                              ? "bg-red-950/40 text-red-300 border-red-800"
+                              : "bg-amber-950/40 text-amber-300 border-amber-800"
+                          }`}
+                        >
+                          {comparison.fitAssessment}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs pt-1">
+                        <div>
+                          <span className="text-slate-500 block">Planned SKU Sizing:</span>
+                          <span className="font-bold text-white text-sm">
+                            {comparison.scenarioSku} ({comparison.scenarioSkuCu} CUs)
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block">Observed Smoothed Peak:</span>
+                          <span className="font-bold text-cyan-300 text-sm">
+                            {comparison.observedSmoothedPeakCu} CUs
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block">Capacity Utilization:</span>
+                          <span className="font-bold text-white text-sm">
+                            {comparison.utilizationPercent}% (Headroom: {comparison.headroomPercent}%)
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block">Throttling Incidents:</span>
+                          <span
+                            className={`font-bold text-sm ${
+                              telemetrySummary.throttlingEventsCount > 0 ? "text-red-400" : "text-emerald-400"
+                            }`}
+                          >
+                            {telemetrySummary.throttlingEventsCount} recorded
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-slate-300 border-t border-[#21262d] pt-2 leading-relaxed">
+                        <strong>Engineering Guidance:</strong> {comparison.recommendation}
+                      </p>
+                    </div>
+                  );
+                })()}
+
+                {/* Hourly Smoothing Timeline Chart */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-white">Hourly CU Consumption & 24-hr Smoothing Curve</span>
+                    <span className="text-slate-400">Limit: {evalData.targetSkuRecommendation.safeSkuCu} CUs</span>
+                  </div>
+                  <div className="h-64 w-full bg-[#11192e] p-3 rounded-xl border border-[#21262d]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={telemetrySummary.hourlyTimeSeries}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke="#21262d" vertical={false} />
+                        <XAxis
+                          dataKey="hour"
+                          stroke="#64748b"
+                          fontSize={10}
+                          tickFormatter={(val) => {
+                            const parts = val.split(" ");
+                            return parts.length > 1 ? parts[1].replace(":00 UTC", "h") : val;
+                          }}
+                        />
+                        <YAxis stroke="#64748b" fontSize={11} domain={[0, "auto"]} />
+                        <Tooltip
+                          content={({ active, payload, label }) => {
+                            if (active && payload && payload.length) {
+                              const d = payload[0].payload;
+                              return (
+                                <div className="bg-[#0f172a] border border-[#21262d] p-2.5 rounded-lg shadow-xl text-xs space-y-1">
+                                  <div className="font-bold text-white">{label}</div>
+                                  <div className="text-blue-400">Background: {d.backgroundCu} CU</div>
+                                  <div className="text-emerald-400">Interactive: {d.interactiveCu} CU</div>
+                                  <div className="text-amber-400 font-semibold">Smoothed: {d.smoothedCu} CU</div>
+                                  {d.throttled && <div className="text-red-400 font-bold">Throttling Detected</div>}
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="backgroundCu"
+                          stackId="1"
+                          stroke="#3b82f6"
+                          fill="#3b82f6"
+                          fillOpacity={0.4}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="interactiveCu"
+                          stackId="1"
+                          stroke="#10b981"
+                          fill="#10b981"
+                          fillOpacity={0.4}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="smoothedCu"
+                          stroke="#f59e0b"
+                          strokeWidth={2}
+                          fill="none"
+                        />
+                        <ReferenceLine
+                          y={evalData.targetSkuRecommendation.safeSkuCu}
+                          stroke="#ef4444"
+                          strokeDasharray="4 4"
+                          strokeWidth={2}
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Top Consuming Artifacts Preview */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-white">Top Consuming Artifacts</span>
+                    <Link to="/observability" className="text-blue-400 hover:underline flex items-center gap-1">
+                      <span>View All & Upload Custom CSV</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    {telemetrySummary.topConsumers.slice(0, 4).map((item, idx) => (
+                      <div key={idx} className="p-3 bg-[#11192e] rounded-xl border border-[#21262d] space-y-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-mono text-[10px] text-cyan-400 px-1.5 py-0.5 rounded bg-cyan-950/50">
+                            {item.itemKind}
+                          </span>
+                          <span className="font-bold text-white">{item.percentage}%</span>
+                        </div>
+                        <div className="text-xs font-semibold text-white truncate" title={item.itemName}>
+                          {item.itemName}
+                        </div>
+                        <div className="text-[11px] text-slate-400">
+                          {item.cuHours} CU-h consumed ({item.operationCount} ops)
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

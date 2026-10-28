@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import App from '../src/App';
 import '../src/i18n';
 import { ARTICLES } from '../src/data/articles';
-export const extraPaths = ARTICLES.map(article => '/docs/' + article.id).concat(['/privacy', '/terms']);
+export const extraPaths = ARTICLES.map(article => '/docs/' + article.id).concat(['/privacy', '/terms', '/observability']);
 
 export async function renderPage(route: string) {
   const context: any = {};

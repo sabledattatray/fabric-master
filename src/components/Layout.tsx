@@ -15,7 +15,8 @@ import {
   Sparkles,
   ShieldCheck,
   Github,
-  Bot
+  Bot,
+  Activity
 } from "lucide-react";
 import { LanguageSelector } from "./LanguageSelector";
 import { ThemeToggle } from "./ThemeToggle";
@@ -81,6 +82,7 @@ export function Layout({ children }: LayoutProps) {
     {
       title: t("Operations & Expertise"),
       items: [
+        { name: t("Capacity Observability"), href: "/observability", icon: Activity },
         { name: t("AI Advisor"), href: "/ai-advisor", icon: Bot },
         { name: t("Labs & Experiments"), href: "/labs", icon: Beaker },
       ],

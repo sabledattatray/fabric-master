@@ -33,6 +33,10 @@
       "destination": "/fsku-comparisons/index.html"
     },
     {
+      "source": "/observability",
+      "destination": "/observability/index.html"
+    },
+    {
       "source": "/docs",
       "destination": "/docs/index.html"
     },
