@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant light (&:where(.light, .light *));
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -29,12 +32,12 @@ html.dark,
 
 html.light,
 :root[data-theme="light"] {
-  --color-canvas: #F7F9FC;
+  --color-canvas: #F8FAFC;
   --color-surface: #FFFFFF;
   --color-surface-elevated: #F1F5FA;
-  --color-border: #DCE4EF;
-  --color-text-primary: #142235;
-  --color-text-secondary: #52657D;
+  --color-border: #E2E8F0;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
   --color-accent-primary: #2563EB;
   --color-accent-cyan: #0891B2;
   --color-success: #15803D;
@@ -52,84 +55,191 @@ body {
   min-height: 100vh;
 }
 
-/* Light Theme Overrides for Core Surfaces (PRD Section 5) */
+/* ==========================================================================
+   Comprehensive Light Theme Overrides & Invariant Protections (PRD Section 5)
+   ========================================================================== */
+
+/* 1. Page & App Canvas Backgrounds */
 html.light .bg-\[\#0d1117\],
 html.light .bg-\[\#0D1117\],
-html.light .bg-\[\#0D1117\]\/95 {
-  background-color: #F7F9FC !important;
-}
-
-html.light .bg-\[\#161b22\] {
-  background-color: #FFFFFF !important;
-}
-
-html.light .bg-\[\#21262d\] {
-  background-color: #F1F5FA !important;
-}
-
-html.light .border-\[\#30363d\],
-html.light .border-\[\#30363d\]\/50,
-html.light .border-\[\#30363d\]\/60 {
-  border-color: #DCE4EF !important;
-}
-
-html.light .text-\[\#c9d1d9\],
-html.light .text-\[\#e6edf3\],
-html.light .text-\[\#f0f6fc\],
-html.light .text-white {
-  color: #142235 !important;
-}
-
-html.light .text-\[\#8b949e\] {
-  color: #52657D !important;
-}
-
-html.light .hover\:bg-\[\#161b22\]:hover {
-  background-color: #F1F5FA !important;
-}
-
-html.light .hover\:bg-\[\#21262d\]:hover {
-  background-color: #E2E8F0 !important;
-}
-
-html.light .hover\:bg-\[\#30363d\]:hover {
-  background-color: #CBD5E1 !important;
-}
-
-html.light .hover\:text-white:hover,
-html.light .hover\:text-\[\#c9d1d9\]:hover {
-  color: #0F172A !important;
-}
-
+html.light .bg-\[\#0D1117\]\/95,
 html.light .bg-\[\#080F1D\],
 html.light .bg-\[\#080f1d\],
 html.light .bg-\[\#0b1329\],
-html.light .bg-\[\#0b1329\]\/90 {
-  background-color: #F7F9FC !important;
+html.light .bg-\[\#0b1329\]\/90,
+html.light .bg-\[\#0b1220\] {
+  background-color: #F8FAFC !important;
 }
 
+/* 2. Card & Surface Backgrounds */
+html.light .bg-\[\#161b22\],
+html.light .bg-\[\#101B2D\],
+html.light .bg-\[\#101b2d\],
 html.light .bg-\[\#0f172a\] {
   background-color: #FFFFFF !important;
 }
 
+/* 3. Elevated Surfaces, Inputs, Pills & Table Headers */
+html.light .bg-\[\#21262d\],
+html.light .bg-\[\#17263D\],
+html.light .bg-\[\#17263d\],
+html.light .bg-\[\#162032\],
 html.light .bg-\[\#11192e\],
-html.light .bg-\[\#162032\] {
-  background-color: #F1F5FA !important;
+html.light .bg-\[\#1f2d47\],
+html.light .bg-\[\#080F1D\]\/50,
+html.light .bg-\[\#080f1d\]\/50 {
+  background-color: #F1F5F9 !important;
 }
 
-html.light .border-\[\#21262d\] {
-  border-color: #DCE4EF !important;
+/* 4. Danger / Red Badges Backgrounds */
+html.light .bg-\[\#1f1618\],
+html.light .bg-\[\#331118\] {
+  background-color: #FEF2F2 !important;
 }
 
-html.light .text-slate-300,
+/* 5. Borders */
+html.light .border-\[\#30363d\],
+html.light .border-\[\#30363d\]\/50,
+html.light .border-\[\#30363d\]\/60,
+html.light .border-\[\#2B3B53\],
+html.light .border-\[\#2b3b53\],
+html.light .border-\[\#2B3B53\]\/50,
+html.light .border-\[\#2b3b53\]\/50,
+html.light .border-\[\#21262d\],
+html.light .border-\[\#1f2937\] {
+  border-color: #E2E8F0 !important;
+}
+
+/* 6. Primary Text Colors */
+html.light .text-\[\#F3F7FC\],
+html.light .text-\[\#f3f7fc\],
+html.light .text-\[\#f0f6fc\],
+html.light .text-\[\#F0F6FC\],
+html.light .text-\[\#e6edf3\],
+html.light .text-\[\#E6EDF3\],
+html.light .text-\[\#c9d1d9\],
+html.light .text-\[\#C9D1D9\],
+html.light .text-slate-100,
 html.light .text-slate-200 {
-  color: #1E293B !important;
+  color: #0F172A !important;
 }
 
+/* 7. Secondary Text & Label Colors */
+html.light .text-\[\#A7B8CC\],
+html.light .text-\[\#a7b8cc\],
+html.light .text-\[\#8b949e\],
+html.light .text-\[\#8B949E\],
+html.light .text-slate-300,
 html.light .text-slate-400 {
   color: #475569 !important;
 }
 
+/* 8. Muted / Subtle Text Colors */
+html.light .text-slate-500,
+html.light .text-\[\#6e7681\] {
+  color: #64748B !important;
+}
+
+/* 9. Standalone White Text vs Colored Action Buttons */
+/* Turn standalone white text dark, but PRESERVE crisp white text on colored buttons/badges! */
+html.light .text-white {
+  color: #0F172A !important;
+}
+
+html.light button.bg-blue-600,
+html.light button.bg-blue-500,
+html.light button.bg-\[\#2563EB\],
+html.light button.bg-\[\#1D4ED8\],
+html.light button.bg-\[\#3B82F6\],
+html.light button.bg-\[\#238636\],
+html.light button.bg-\[\#2ea043\],
+html.light button.bg-emerald-600,
+html.light button.bg-red-600,
+html.light a.bg-blue-600,
+html.light a.bg-blue-500,
+html.light a.bg-\[\#2563EB\],
+html.light a.bg-\[\#1D4ED8\],
+html.light a.bg-\[\#3B82F6\],
+html.light a.bg-\[\#238636\],
+html.light a.bg-emerald-600,
+html.light a.bg-red-600,
+html.light .btn-primary,
+html.light .bg-blue-600,
+html.light .bg-\[\#2563EB\],
+html.light .bg-\[\#3B82F6\],
+html.light .bg-\[\#238636\] {
+  color: #FFFFFF !important;
+}
+
+html.light button.bg-blue-600 *,
+html.light button.bg-blue-500 *,
+html.light button.bg-\[\#2563EB\] *,
+html.light button.bg-\[\#1D4ED8\] *,
+html.light button.bg-\[\#3B82F6\] *,
+html.light button.bg-\[\#238636\] *,
+html.light button.bg-\[\#2ea043\] *,
+html.light a.bg-blue-600 *,
+html.light a.bg-blue-500 *,
+html.light a.bg-\[\#2563EB\] *,
+html.light a.bg-\[\#1D4ED8\] *,
+html.light a.bg-\[\#3B82F6\] *,
+html.light a.bg-\[\#238636\] *,
+html.light .btn-primary * {
+  color: #FFFFFF !important;
+}
+
+/* 10. Gradient Stops in Light Mode */
+html.light .from-\[\#101B2D\],
+html.light .from-\[\#101b2d\],
+html.light .from-\[\#0b1329\] {
+  --tw-gradient-from: #FFFFFF !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position)) !important;
+}
+
+html.light .to-\[\#080F1D\],
+html.light .to-\[\#080f1d\],
+html.light .to-\[\#0d1117\] {
+  --tw-gradient-to: #F8FAFC !important;
+}
+
+html.light .via-\[\#080F1D\],
+html.light .via-\[\#080f1d\] {
+  --tw-gradient-via: #F1F5F9 !important;
+  --tw-gradient-stops: var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position) !important;
+}
+
+/* 11. Interactive Hover States in Light Mode */
+html.light .hover\:bg-\[\#161b22\]:hover,
+html.light .hover\:bg-\[\#21262d\]:hover,
+html.light .hover\:bg-\[\#17263D\]:hover,
+html.light .hover\:bg-\[\#17263d\]:hover,
+html.light .hover\:bg-\[\#203452\]:hover,
+html.light .hover\:bg-\[\#1f2d47\]:hover {
+  background-color: #E2E8F0 !important;
+}
+
+html.light .hover\:text-white:hover,
+html.light .hover\:text-\[\#F3F7FC\]:hover,
+html.light .hover\:text-\[\#f3f7fc\]:hover,
+html.light .hover\:text-\[\#c9d1d9\]:hover,
+html.light .hover\:text-\[\#e6edf3\]:hover {
+  color: #0F172A !important;
+}
+
+/* 12. Input & Select Elements in Light Mode */
+html.light select,
+html.light input[type="text"],
+html.light input[type="number"],
+html.light textarea {
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+html.light select option {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+}
 
 /* Custom Scrollbars */
 .custom-scrollbar::-webkit-scrollbar {
