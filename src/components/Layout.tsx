@@ -102,13 +102,13 @@ export function Layout({ children }: LayoutProps) {
       <header className="h-16 flex items-center justify-between px-4 md:px-6 bg-[#0D1117]/95 backdrop-blur-md border-b border-[#30363d] shrink-0 sticky top-0 z-50 transition-colors duration-300 print:hidden">
         <div className="flex items-center flex-1 min-w-0">
           <div
-            className="flex items-center space-x-2.5 text-white cursor-pointer group shrink-0"
+            className="flex items-center space-x-2.5 cursor-pointer group shrink-0"
             onClick={() => navigate("/")}
           >
-            <FabricMasterLogo className="w-7 h-7 md:w-8 md:h-8 text-[#c9d1d9] group-hover:text-[#58a6ff] transition-all duration-300 ease-in-out transform group-hover:scale-105" />
-            <span className="font-semibold text-lg md:text-xl tracking-tight group-hover:text-[#58a6ff] transition-colors duration-300 flex items-center gap-2">
+            <FabricMasterLogo className="w-7 h-7 md:w-8 md:h-8 transition-all duration-300 ease-in-out transform group-hover:scale-105" />
+            <span className="font-semibold text-lg md:text-xl tracking-tight text-[#0F172A] dark:text-[#F3F7FC] group-hover:text-[#3B82F6] transition-colors duration-300 flex items-center gap-2">
               {t("Fabric Master")}
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#58a6ff]/10 text-[#58a6ff] border border-[#58a6ff]/30 font-medium">v4.0</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/30 font-medium">v4.0</span>
             </span>
           </div>
 
@@ -233,8 +233,8 @@ export function Layout({ children }: LayoutProps) {
           <div className="relative flex-1 max-w-xs w-full bg-[#161b22] border-r border-[#30363d] flex flex-col p-4 z-10 overflow-y-auto">
             <div className="flex items-center justify-between pb-4 border-b border-[#30363d] mb-4">
               <div className="flex items-center gap-2">
-                <FabricMasterLogo className="w-6 h-6 text-[#58a6ff]" />
-                <span className="font-bold text-white">Fabric Master v4.0</span>
+                <FabricMasterLogo className="w-6 h-6" />
+                <span className="font-bold text-[#0F172A] dark:text-white">Fabric Master v4.0</span>
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
