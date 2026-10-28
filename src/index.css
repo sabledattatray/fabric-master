@@ -73,9 +73,21 @@ html.light .bg-\[\#0b1220\] {
 
 /* 2. Card & Surface Backgrounds */
 html.light .bg-\[\#161b22\],
+html.light .bg-\[\#161b22\]\/10,
+html.light .bg-\[\#161b22\]\/20,
+html.light .bg-\[\#161b22\]\/30,
+html.light .bg-\[\#161b22\]\/40,
+html.light .bg-\[\#161b22\]\/50,
+html.light .bg-\[\#161b22\]\/60,
+html.light .bg-\[\#161b22\]\/70,
+html.light .bg-\[\#161b22\]\/80,
+html.light .bg-\[\#161b22\]\/90,
 html.light .bg-\[\#101B2D\],
 html.light .bg-\[\#101b2d\],
-html.light .bg-\[\#0f172a\] {
+html.light .bg-\[\#101B2D\]\/40,
+html.light .bg-\[\#101B2D\]\/60,
+html.light .bg-\[\#0f172a\],
+html.light aside[aria-label="Planning assumptions and pricing provenance"] {
   background-color: #FFFFFF !important;
 }
 
